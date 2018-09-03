@@ -1,8 +1,77 @@
 <html>
+
+<head>
+	<style type="text/css">
+		
+		.collapsible {
+			background-color: #ee3233;
+			border-radius: 2px;
+			cursor: pointer;
+			outline: none;
+			width: 50%;
+			text-align: left;
+			font-size: 15px;
+			color: white;
+			border: none;
+		}
+
+		.collapsible: hover, .active {
+			background-color: red;
+		}
+
+		.collapsible:after {
+			content: '\002B';
+			font-size: 13px;
+			font-weight: bold;
+			color: white;
+			float: right;
+			margin-left:5px;
+		}
+
+		.active:after {
+			content: "\2212";
+		}
+
+		.content {
+  			padding: 0 18px;
+  			width: 50%;
+  			max-height: 0;
+  			overflow: hidden;
+  			transition: max-height 0.2s ease-out;
+  			background-color: #d1d1d1;
+		}
+
+	</style>
+
+
+</head>
+
 <body>
 
-	<p>Hello world</p>
+	<button class = "collapsible">Are You Registered?</button>
+	<div class="content">
+		<p>Put options here</p>
+		<p>Put submit button here</p>
+	</div>
 
+	<script type="text/javascript">
+		
+		var coll = document.getElementsByClassName("collapsible");
+		var i;
+
+		for (i = 0; i < coll.length; i++) {
+	  		coll[i].addEventListener("click", function() {
+		    	this.classList.toggle("active");
+			    var content = this.nextElementSibling;
+			    if (content.style.maxHeight){
+			      content.style.maxHeight = null;
+			    } else {
+			      content.style.maxHeight = content.scrollHeight + "px";
+			    } 
+  			});
+		}
+		
+	</script>
 
 
 </body>
