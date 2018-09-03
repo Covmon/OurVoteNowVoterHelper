@@ -8,15 +8,15 @@
 			border-radius: 2px;
 			cursor: pointer;
 			outline: none;
-			width: 50%;
+			width: 50vw;
 			text-align: left;
 			font-size: 15px;
 			color: white;
 			border: none;
 		}
 
-		.collapsible: hover, .active {
-			background-color: red;
+		.active, .collapsible:hover {
+			background-color: #ba2526;
 		}
 
 		.collapsible:after {
@@ -33,8 +33,7 @@
 		}
 
 		.content {
-  			padding: 0 18px;
-  			width: 50%;
+  			width: 50vw;
   			max-height: 0;
   			overflow: hidden;
   			transition: max-height 0.2s ease-out;
