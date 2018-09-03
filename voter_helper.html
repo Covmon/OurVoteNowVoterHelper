@@ -41,7 +41,22 @@
   			display: flex;
  			justify-content: center;
 		}
-		#design {
+		.button {
+			font-size: 15px;
+			background-color: white;
+			border-radius: 1px;
+			color: #ee3233;
+			border: 2px solid #ee3233;
+			padding: 8px 16px;
+			-webkit-transition-duration: 0.4s; /*for safari*/
+			transition-duration: 0.4s;
+			cursor: pointer;
+			margin: 10px 5px;
+		}
+
+		.button:hover {
+			color: #fff;
+			background-color: #ee3233;
 		}
 
 	</style>
@@ -53,8 +68,16 @@
 
 	<button class = "collapsible">Are You Registered?</button>
 	<div class="content">
-		<button id="design">Put options here</button>
-		<button id="design">Put submit button here</button>
+		<button class="button">Yes</button>
+		<button class="button">I'm not sure</button>
+		<button class="button">No</button>
+	</div>
+
+	<button class = "collapsible">What's your age?</button>
+	<div class="content">
+		<button class="button">Hmmm</button>
+		<button class="button">I'm not sure</button>
+		<button class="button">No</button>
 	</div>
 
 	<script type="text/javascript">
@@ -69,7 +92,7 @@
 			    if (content.style.maxHeight){
 			      content.style.maxHeight = null;
 			    } else {
-			      content.style.maxHeight = content.scrollHeight + "px";
+			      content.style.maxHeight = content.scrollHeight + 100 + "px";
 			    } 
   			});
 		}
