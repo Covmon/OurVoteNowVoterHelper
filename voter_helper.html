@@ -1,10 +1,14 @@
 <html>
 
-	<head>
+<head>
 	<style type="text/css">
 
 		body {
 			background-color: rgb(50,50,50);
+		}
+
+		.wrapper {
+			text-align: center;
 		}
 		
 		.collapsible {
@@ -12,12 +16,13 @@
 			border-radius: 2px;
 			cursor: pointer;
 			outline: none;
-			width: 99vw;
-			text-align: left;
+			width: 50vw;
+			text-align: center;
 			font-size: 15px;
 			color: white;
 			border: none;
 			transition-duration: 0.1s;
+			padding: 5px;
 		}
 
 		.active, .collapsible:hover {
@@ -37,7 +42,7 @@
 		}
 
 		.content {
-  			width: 99vw;
+  			width: 50vw;
   			max-height: 0;
   			overflow: hidden;
   			transition: max-height 0.4s ease-out;
@@ -45,6 +50,7 @@
   			display: flex;
  			justify-content: center;
  			border-radius: 2px;
+ 			margin: 0 auto;
 		}
 		.button {
 			font-size: 15px;
@@ -71,18 +77,24 @@
 
 <body>
 
-	<button class = "collapsible">Are You Registered?</button>
-	<div class="content">
-		<button class="button">Yes</button>
-		<button class="button">I'm not sure</button>
-		<button class="button">No</button>
+	<h1 style="color:white; text-align: center; margin: 20px;">Our Vote Now Voter Helper Tool</h1>
+
+	<div class="wrapper">
+		<button class = "collapsible initial">Are You Registered?</button>
+		<div class="content">
+			<button class="button 1">Yes</button>
+			<button class="button 1">I'm not sure</button>
+			<button class="button 1">No</button>
+		</div>
 	</div>
 
-	<button class = "collapsible">What's your age?</button>
-	<div class="content">
-		<button class="button">Hmmm</button>
-		<button class="button">I'm not sure</button>
-		<button class="button">No</button>
+	<div class="wrapper">
+		<button class = "collapsible">What's your age?</button>
+		<div class="content">
+			<button class="button 2">Hmmm</button>
+			<button class="button 2">I'm not sure</button>
+			<button class="button 2">No</button>
+		</div>
 	</div>
 
 	<script type="text/javascript">
@@ -92,15 +104,39 @@
 
 		for (i = 0; i < coll.length; i++) {
 	  		coll[i].addEventListener("click", function() {
-		    	this.classList.toggle("active");
-			    var content = this.nextElementSibling;
+	  			toggleCollapsable(this)
+	  		});
+		}
+
+		/*Start with the first collapsable open*/
+		var init = document.getElementsByClassName("initial");
+		var j;
+
+		for (i=0;i<init.length; i++) {
+			toggleCollapsable(init[i]);
+		}
+
+		function toggleCollapsable(collapse) {
+			collapse.classList.toggle("active");
+			    var content = collapse.nextElementSibling;
 			    if (content.style.maxHeight){
 			      content.style.maxHeight = null;
 			    } else {
 			      content.style.maxHeight = content.scrollHeight + 100 + "px";
 			    } 
-  			});
 		}
+
+		/*Clicking the first collapsable's buttons triggers the next collapsable*/
+		var buttons1 = document.getElementsByClassName("1");
+
+		var k;
+		for (k=0; k<buttons1.length; k++) {
+			buttons1[k].addEventListener("click", function() {
+				toggleCollapsable(coll[0]);
+				toggleCollapsable(coll[1]);
+			})
+		}
+
 		
 	</script>
 
