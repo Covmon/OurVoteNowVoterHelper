@@ -86,7 +86,7 @@
 	<div class="wrapper">
 		<button class = "collapsible initial">Are You Registered?</button>
 		<div class="content">
-			<button class="button 1">Yes</button>
+			<button class="button 1", id="1", onclick="makePermenant()">Yes</button>
 			<button class="button 1">I'm not sure</button>
 			<button class="button 1">No</button>
 		</div>
@@ -141,6 +141,10 @@
 			})
 		}
 
+		function makePermenant {
+			document.getElementById("1").style.color = '#fff';
+    		document.getElementById("1").style.background = '#ee3233';
+		}
 		
 	</script>
 
