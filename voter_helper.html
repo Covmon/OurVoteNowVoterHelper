@@ -86,18 +86,18 @@
 	<div class="wrapper">
 		<button class = "collapsible initial">Are You Registered?</button>
 		<div class="content">
-			<button class="button 1", id="1", onclick="myFunction()">Yes</button>
-			<button class="button 1">I'm not sure</button>
-			<button class="button 1">No</button>
+			<button class="button 1", id="yes", onclick="clickButton(this.id, this.value)", value="unclicked">Yes</button>
+			<button class="button 1", id="not sure", onclick="clickButton(this.id, this.value)", value="unclicked">I'm not sure</button>
+			<button class="button 1", id="no", onclick="clickButton(this.id, this.value)", value="unclicked">No</button>
 		</div>
 	</div>
 
 	<div class="wrapper">
 		<button class = "collapsible">What's your age?</button>
 		<div class="content">
-			<button class="button 2">Hmmm</button>
-			<button class="button 2">I'm not sure</button>
-			<button class="button 2">No</button>
+			<button class="button 2", id="hmmm", onclick="clickButton(this.id, this.value)", value="unclicked">Hmmm</button>
+			<button class="button 2", id="im not sure", onclick="clickButton(this.id, this.value)", value="unclicked">I'm not sure</button>
+			<button class="button 2", id="noo", onclick="clickButton(this.id, this.value)", value="unclicked">No</button>
 		</div>
 	</div>
 
@@ -141,9 +141,21 @@
 			})
 		}
 
-		function myFunction() {
-			document.getElementById("1").style.color = '#fff';
-  			document.getElementById("1").style.background = '#ee3233';
+		function clickButton(id, value) {
+			window.alert(value)
+			if (value = "unclicked") {
+				window.alert(value)
+				document.getElementById(id).style.color = '#fff';
+  				document.getElementById(id).style.background = '#ee3233';
+  				document.getElementById(id).value = "clicked"
+  				window.alert(value)
+  			} else {
+  				window.alert(value)
+  			  	document.getElementById(id).style.color = '#ee3233';
+  				document.getElementById(id).style.background = 'white';
+  				document.getElementById(id).value = "unclicked"
+  				window.alert(value)
+  			}
 		}
 
 	</script>
