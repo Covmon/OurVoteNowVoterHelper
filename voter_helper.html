@@ -16,6 +16,8 @@
 		}
 		
 		.collapsible {
+			margin-bottom: 2px;
+			margin-top: 2px;
 			background-color: #ee3233;
 			border-radius: 2px;
 			cursor: pointer;
@@ -85,6 +87,18 @@
 			background-color: #ee3233;
 		}
 
+		.button-active:hover {
+			color: #fff;
+			border-color: #9e1f20;
+			background-color: #9e1f20;
+		}
+
+		.button-deselected:hover {
+			color: #ee3233;
+			background-color: #fff;
+			border-color: #ee3233;
+		}
+
 		#revealer {
 
 		}
@@ -101,9 +115,9 @@
 	<div class="wrapper">
 		<button class = "collapsible initial" id="coll1">Are You Registered?</button>
 		<div class="content">
-			<button class="button 1", id="1-1", onclick="clickButton(this.id, this.value)", value="unclicked">Yes</button>
-			<button class="button 1", id="1-2", onclick="clickButton(this.id, this.value)", value="unclicked">I'm not sure</button>
-			<button class="button 1", id="1-3", onclick="clickButton(this.id, this.value)", value="unclicked">No</button>
+			<button class="button 1" id="1-1">Yes</button>
+			<button class="button 1" id="1-2">I'm not sure</button>
+			<button class="button 1" id="1-3">No</button>
 		</div>
 	</div>
 
@@ -112,15 +126,17 @@
 		<div class="content">
 			<p id="revealer">For the first answer, you selected: ?</p>
 
-			<button class="button 2", id="2-1", onclick="clickButton(this.id, this.value)", value="unclicked">Younger than 17 1/2</button>
-			<button class="button 2", id="2-2", onclick="clickButton(this.id, this.value)", value="unclicked">Older than 17 1/2</button>
+			<button class="button 2" id="2-1">Younger than 17 1/2</button>
+			<button class="button 2" id="2-2">Older than 17 1/2</button>
 		</div>
 	</div>
+
 
 	<script type="text/javascript">
 
 		var currentSelections = ["1-0", "2-0"];
 		
+		//Add collapse and expand events to all collapsibles
 		var coll = document.getElementsByClassName("collapsible");
 		var i;
 
@@ -148,6 +164,14 @@
 			    } 
 		}
 
+		//Add click button events to all buttons
+		var buttons = document.getElementsByClassName("button");
+		for (i = 0; i < buttons.length; i++) {
+	  		buttons[i].addEventListener("click", function() {
+	  			clickButton(this.id)
+	  		});
+		}
+
 		/*Clicking the first collapsable's buttons triggers the next collapsable*/
 		var buttons1 = document.getElementsByClassName("1");
 
@@ -167,7 +191,10 @@
 			var buttonNumber = id.charAt(2);
 
 			if (id == currentSelections[collRowIndex]) { //we clicked the one that's already active
-				document.getElementById(id).classList.remove("button-active"); //Unselect current selection
+				var button = document.getElementById(id);
+				button.classList.remove("button-active"); //Unselect current selection
+				//button.style.color = "#ee3233";
+				//button.style.backgroundColor = "white";
 				currentSelections[collRowIndex] = "" + collRowNumber + "-0"
 
 				switch (collRowNumber) {
@@ -177,7 +204,8 @@
 				}
 
 			} else { //we clicked one that's not already active
-
+				console.log(currentSelections);
+				console.log(collRowIndex);
 				if (currentSelections[collRowIndex].charAt(2) != "0") {
 					document.getElementById(currentSelections[collRowIndex]).classList.remove("button-active"); //unhighlight the previous selection
 				}
