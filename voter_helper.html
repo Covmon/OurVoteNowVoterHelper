@@ -7,6 +7,10 @@
 			background-color: rgb(50,50,50);
 		}
 
+		p {
+			
+		}
+
 		.wrapper {
 			text-align: center;
 		}
@@ -51,11 +55,13 @@
   			overflow: hidden;
   			transition: max-height 0.4s ease-out;
   			background-color: rgb(230, 230, 230);
+  			/*
   			display: flex;
- 			justify-content: center;
+ 			justify-content: center;*/
  			border-radius: 2px;
  			margin: 0 auto;
 		}
+
 		.button {
 			font-size: 15px;
 			background-color: white;
@@ -66,12 +72,21 @@
 			-webkit-transition-duration: 0.4s; /*for safari*/
 			transition-duration: 0.4s;
 			cursor: pointer;
-			margin: 10px 5px;
+			margin: 15px 5px;
 		}
 
 		.button:hover {
 			color: #fff;
 			background-color: #ee3233;
+		}
+
+		.button-active {
+			color: #fff;
+			background-color: #ee3233;
+		}
+
+		#revealer {
+
 		}
 
 	</style>
@@ -84,24 +99,27 @@
 	<h1 style="color:white; text-align: center; margin: 20px;">Our Vote Now Voter Helper Tool</h1>
 
 	<div class="wrapper">
-		<button class = "collapsible initial">Are You Registered?</button>
+		<button class = "collapsible initial" id="coll1">Are You Registered?</button>
 		<div class="content">
-			<button class="button 1", id="yes", onclick="clickButton(this.id, this.value)", value="unclicked">Yes</button>
-			<button class="button 1", id="not sure", onclick="clickButton(this.id, this.value)", value="unclicked">I'm not sure</button>
-			<button class="button 1", id="no", onclick="clickButton(this.id, this.value)", value="unclicked">No</button>
+			<button class="button 1", id="1-1", onclick="clickButton(this.id, this.value)", value="unclicked">Yes</button>
+			<button class="button 1", id="1-2", onclick="clickButton(this.id, this.value)", value="unclicked">I'm not sure</button>
+			<button class="button 1", id="1-3", onclick="clickButton(this.id, this.value)", value="unclicked">No</button>
 		</div>
 	</div>
 
 	<div class="wrapper">
-		<button class = "collapsible">What's your age?</button>
+		<button class = "collapsible" id="coll2">What's your age?</button>
 		<div class="content">
-			<button class="button 2", id="hmmm", onclick="clickButton(this.id, this.value)", value="unclicked">Hmmm</button>
-			<button class="button 2", id="im not sure", onclick="clickButton(this.id, this.value)", value="unclicked">I'm not sure</button>
-			<button class="button 2", id="noo", onclick="clickButton(this.id, this.value)", value="unclicked">No</button>
+			<p id="revealer">For the first answer, you selected: ?</p>
+
+			<button class="button 2", id="2-1", onclick="clickButton(this.id, this.value)", value="unclicked">Younger than 17 1/2</button>
+			<button class="button 2", id="2-2", onclick="clickButton(this.id, this.value)", value="unclicked">Older than 17 1/2</button>
 		</div>
 	</div>
 
 	<script type="text/javascript">
+
+		var currentSelections = ["1-0", "2-0"];
 		
 		var coll = document.getElementsByClassName("collapsible");
 		var i;
@@ -136,12 +154,53 @@
 		var k;
 		for (k=0; k<buttons1.length; k++) {
 			buttons1[k].addEventListener("click", function() {
-				toggleCollapsable(coll[0]);
-				toggleCollapsable(coll[1]);
+				//toggleCollapsable(coll[0]);
+				//toggleCollapsable(coll[1]);
 			})
 		}
 
-		function clickButton(id, value) {
+		function clickButton(id) {
+
+			var collRowNumber = id.charAt(0);
+			var collRowIndex = collRowNumber - 1;
+
+			var buttonNumber = id.charAt(2);
+
+			if (id == currentSelections[collRowIndex]) { //we clicked the one that's already active
+				document.getElementById(id).classList.remove("button-active"); //Unselect current selection
+				currentSelections[collRowIndex] = "" + collRowNumber + "-0"
+
+				switch (collRowNumber) {
+					case "1":
+					handleRow1Selection("?");
+					break;
+				}
+
+			} else { //we clicked one that's not already active
+
+				if (currentSelections[collRowIndex].charAt(2) != "0") {
+					document.getElementById(currentSelections[collRowIndex]).classList.remove("button-active"); //unhighlight the previous selection
+				}
+
+				currentSelections[collRowIndex] = id;
+				console.log("Clicked button " + id + " in row " + collRowNumber);
+
+				document.getElementById(id).classList.add("button-active");
+
+				toggleCollapsable(coll[collRowIndex]);
+				if (coll.length > collRowIndex + 1) {
+
+					toggleCollapsable(coll[collRowIndex + 1]);
+				}
+
+				switch (collRowNumber) {
+					case "1":
+					handleRow1Selection(buttonNumber);
+					break;
+				}
+			}
+
+			/*
 			window.alert(value)
 			if (value = "unclicked") {
 				window.alert(value)
@@ -155,7 +214,11 @@
   				document.getElementById(id).style.background = 'white';
   				document.getElementById(id).value = "unclicked"
   				window.alert(value)
-  			}
+  			}*/
+		}
+
+		function handleRow1Selection(selection) {
+			document.getElementById("revealer").innerHTML = "For the first answer, you selected: Button " + selection + ". Now enter your age.";
 		}
 
 	</script>
