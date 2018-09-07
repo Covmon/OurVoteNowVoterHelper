@@ -99,6 +99,22 @@
 			border-color: #ee3233;
 		}
 
+		.input-text {
+			border: none;
+			border-bottom: 3px solid gray;
+			transition-duration: 0.4s;
+			border-radius: 2px;
+			outline: 0 none;
+			font-size: 15px;
+			margin: 15px 5px;
+			padding: 8px 16px;
+		}
+
+		.input-text:focus {
+			border-bottom: 3px solid #ee3233;
+
+		}
+
 		#revealer {
 
 		}
@@ -128,6 +144,16 @@
 
 			<button class="button 2" id="2-1">Younger than 17 1/2</button>
 			<button class="button 2" id="2-2">Older than 17 1/2</button>
+		</div>
+	</div>
+
+	<div class="wrapper">
+		<button class = "collapsible" id="coll3">Where's your residence?</button>
+		<div class="content">
+			<p id="revealer">For the second answer, you selected: ?</p>
+
+			<input class="input-text" type="text" name="street" value="" placeholder="Street">
+			<input class="input-text" type="text" name="city" value="" placeholder="City">
 		</div>
 	</div>
 
