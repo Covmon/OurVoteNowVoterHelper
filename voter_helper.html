@@ -106,13 +106,26 @@
 			border-radius: 2px;
 			outline: 0 none;
 			font-size: 15px;
-			margin: 15px 5px;
+			margin: 5px 5px;
 			padding: 8px 16px;
 		}
 
-		.input-text:focus {
-			border-bottom: 3px solid #ee3233;
+		.input-text:hover {
+			border-bottom: 3px solid #222;
+		}
 
+		.input-text:focus {
+			border-color: #ee3233;
+			background-color: white;
+		}
+
+		select {
+			font-size: 100px;
+			/*outline: 0 none;*/
+		}
+
+		select:focus {
+			/*border: 3px solid #ee3233;*/
 		}
 
 		#revealer {
@@ -154,6 +167,15 @@
 
 			<input class="input-text" type="text" name="street" value="" placeholder="Street">
 			<input class="input-text" type="text" name="city" value="" placeholder="City">
+			<select class="select" name="state">
+				<option value="" disabled selected>State</option>
+				<option value="ga">GA</option>
+				<option value="fl">FL</option>
+				<option value="none">Other</option>
+			</select>
+			<input class="input-text" type="text" name="zip" value="" placeholder="Zip">
+			
+
 		</div>
 	</div>
 
