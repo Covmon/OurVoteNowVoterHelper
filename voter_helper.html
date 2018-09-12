@@ -23,7 +23,7 @@
 		.collapsible {
 			margin-bottom: 2px;
 			margin-top: 2px;
-			background-color: #ee3233;
+			background-color: #711400;
 			border-radius: 2px;
 			cursor: pointer;
 			outline: none;
@@ -36,10 +36,6 @@
 			padding: 5px;
 		}
 
-		.shaded {
-			background-color: #711400
-		}
-
 		.active, .collapsible:hover {
 			background-color: #ba2526;
 		}
@@ -50,6 +46,7 @@
 
 		.collapsible:after {
 			content: '\002B';
+			background-color: #ee3233;
 			font-size: 13px;
 			font-weight: bold;
 			color: white;
@@ -189,7 +186,7 @@
 	</div>
 
 	<!--Category: "votetype"-->
-	<div class="wrapper hidden" id="votetype">
+	<div class="wrapper shaded" id="votetype">
 		<button class = "collapsible" id="coll-votetype">How do you want to vote?</button>
 		<div class="content">
 			<button class="button 5" id="votetype-early" category="votetype" value="early">Early</button>
@@ -199,7 +196,7 @@
 	</div>
 
 	<!--Your personalized instructions appear here-->
-	<div class="wrapper hidden" id="instructions">
+	<div class="wrapper shaded" id="instructions">
 		<button class="collapsible" id="coll-instructions">Your next steps...</button>
 		<div class="content">
 			<h2 id="instructions-title">Thanks for using the OurVoteNow voter helper tool.</h1>
