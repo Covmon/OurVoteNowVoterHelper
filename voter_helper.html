@@ -36,10 +36,6 @@
 			padding: 5px;
 		}
 
-		.answered {
-			content: "\2714";
-		}
-
 		.active, .collapsible:hover {
 			background-color: #ba2526;
 		}
@@ -49,8 +45,7 @@
 		}
 
 		.collapsible:after {
-			content:'\1F512';
-			background-color: #ee3233;
+			content:'\002b'; /*Plus sign*/
 			font-size: 13px;
 			font-weight: bold;
 			color: white;
@@ -58,7 +53,15 @@
 		}
 
 		.active:after {
-			content: "\2714";
+			content: "\2212"; /*Minus sign*/
+		}
+
+		.answered:after {
+			content: "\2705"; /*Check mark*/
+		}
+
+		.locked:after {
+			content: "\1F512" /*Locked Sign*/
 		}
 
 		.content {
@@ -161,7 +164,7 @@
 
 	<!--Category: "age"-->
 	<div class="wrapper hidden" id="age">
-		<button class = "collapsible" id="coll-age">What's your age?</button>
+		<button class = "collapsible locked" id="coll-age">What's your age?</button>
 		<div class="content">
 
 			<button class="button 2" id="age-younger" category="age" value="younger">Younger than 17 1/2</button>
@@ -170,8 +173,8 @@
 	</div>
 
 	<!--Category: "address"-->
-	<div class="wrapper shaded" id="address">
-		<button class = "collapsible" id="coll-address">Where's your residence address?</button>
+	<div class="wrapper" id="address">
+		<button class = "collapsible locked" id="coll-address">Where's your residence address?</button>
 		<div class="content">
 
 			<input class="input-text" type="text" name="street" value="" id="street" placeholder="Street">
@@ -190,8 +193,8 @@
 	</div>
 
 	<!--Category: "votetype"-->
-	<div class="wrapper shaded" id="votetype">
-		<button class = "collapsible" id="coll-votetype">How do you want to vote?</button>
+	<div class="wrapper" id="votetype">
+		<button class = "collapsible locked" id="coll-votetype">How do you want to vote?</button>
 		<div class="content">
 			<button class="button 5" id="votetype-early" category="votetype" value="early">Early</button>
 			<button class="button 5" id="votetype-absentee" category="votetype" value="absentee">Absentee</button>
@@ -200,8 +203,8 @@
 	</div>
 
 	<!--Your personalized instructions appear here-->
-	<div class="wrapper shaded" id="instructions">
-		<button class="collapsible" id="coll-instructions">Your next steps...</button>
+	<div class="wrapper" id="instructions">
+		<button class="collapsible locked" id="coll-instructions">Your next steps...</button>
 		<div class="content">
 			<h2 id="instructions-title">Thanks for using the OurVoteNow voter helper tool.</h1>
 			<p id="instructions-text">Here are those instructions</p>
@@ -245,13 +248,17 @@
 		}
 
 		function toggleCollapsable(collapse) {
-			collapse.classList.toggle("active");
+			if (collapse.classList.contains("locked")) { //This row is locked, don't open it up
+				return;
+			} else {
+				collapse.classList.toggle("active");
 			    var content = collapse.nextElementSibling;
 			    if (content.style.maxHeight){
 			      content.style.maxHeight = null;
 			    } else {
 			      content.style.maxHeight = content.scrollHeight + 100 + "px";
 			    } 
+			}
 		}
 
 		//Add click button events to all buttons
@@ -259,32 +266,36 @@
 			var buttons = document.getElementsByClassName("button");
 			for (i = 0; i < buttons.length; i++) {
 		  		buttons[i].addEventListener("click", function() {
-		  			clickButton(this.className,this.id)
+		  			clickButton(this.id)
 		  		});
 			}
 		}
 
-		function clickButton(classs, id) {
+		function clickButton(id) {
 
-			var classClicked = document.getElementsByClassName(classs);
+			//var classClicked = document.getElementsByClassName(classs);
 			var buttonClicked = document.getElementById(id);
 			var buttonValue = buttonClicked.value;
 			var buttonCategory = buttonClicked.getAttribute("category");
-			classClicked.classList.add("answered");
+			var collapsibleID = "coll-" + buttonCategory;
+			var collapsibleSection = document.getElementById(collapsibleID);
+			//classClicked.classList.add("answered");
 
 			console.log("Button clicked of category: " + buttonCategory + ", value: " + buttonValue);
 
 			if (buttonValue == responses[buttonCategory]) { //we clicked a select button that's already active
 				buttonClicked.classList.remove("button-active");
+				collapsibleSection.classList.remove("answered");
+
 
 				responses[buttonCategory] = "";
 
 			} else if (buttonValue == "submit" || buttonValue == "link") { //this is a submit button
 
 				submitRow(buttonCategory);
+				collapsibleSection.classList.add("answered");
 
 			} else { //this is a select button that's not already active
-				window.alert('ok')
 				if (responses[buttonCategory] != "") { //Is there already another button in this category selected?
 
 					var otherID = "" + buttonCategory + "-" + responses[buttonCategory]; //eg "age" + "younger" = "age-younger"
@@ -294,6 +305,8 @@
 
 				responses[buttonCategory] = buttonValue;
 				buttonClicked.classList.add("button-active");
+				collapsibleSection.classList.add("answered");
+
 
 
 				submitRow(buttonCategory);
@@ -331,13 +344,16 @@
 				nextSection = document.getElementById("address");
 
 				nextCollapsible = document.getElementById("coll-address");
+				nextCollapsible.classList.remove("locked");
 				toggleCollapsable(nextCollapsible);
 
 			} else if (registeredValue == "maybe" || registeredValue == "no") {
 
 				nextSection = document.getElementById("age");
+				nextSection.classList.remove("hidden");
 
 				nextCollapsible = document.getElementById("coll-age");
+				nextCollapsible.classList.remove("locked");
 				toggleCollapsable(nextCollapsible);
 			} else {
 
@@ -399,6 +415,7 @@
 
 			var nextSection = document.getElementById("votetype");
 			var nextCollapsible = document.getElementById("coll-votetype");
+			nextCollapsible.classList.remove("locked");
 
 			var currentCollapsible = document.getElementById("coll-address");
 
@@ -442,6 +459,7 @@
 			nextSection.classList.remove("hidden");
 
 			nextCollapsible = document.getElementById("coll-instructions");
+			nextCollapsible.classList.remove("locked");
 			toggleCollapsable(nextCollapsible);
 		}
 
