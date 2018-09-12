@@ -23,7 +23,7 @@
 		.collapsible {
 			margin-bottom: 2px;
 			margin-top: 2px;
-			background-color: #711400;
+			background-color: #ee3233;
 			border-radius: 2px;
 			cursor: pointer;
 			outline: none;
@@ -36,6 +36,10 @@
 			padding: 5px;
 		}
 
+		.answered {
+			content: "\2714";
+		}
+
 		.active, .collapsible:hover {
 			background-color: #ba2526;
 		}
@@ -45,7 +49,7 @@
 		}
 
 		.collapsible:after {
-			content: '\002B';
+			content:'\1F512';
 			background-color: #ee3233;
 			font-size: 13px;
 			font-weight: bold;
@@ -54,7 +58,7 @@
 		}
 
 		.active:after {
-			content: "\2212";
+			content: "\2714";
 		}
 
 		.content {
@@ -255,16 +259,18 @@
 			var buttons = document.getElementsByClassName("button");
 			for (i = 0; i < buttons.length; i++) {
 		  		buttons[i].addEventListener("click", function() {
-		  			clickButton(this.id)
+		  			clickButton(this.className,this.id)
 		  		});
 			}
 		}
 
-		function clickButton(id) {
+		function clickButton(classs, id) {
 
+			var classClicked = document.getElementsByClassName(classs);
 			var buttonClicked = document.getElementById(id);
 			var buttonValue = buttonClicked.value;
 			var buttonCategory = buttonClicked.getAttribute("category");
+			classClicked.classList.add("answered");
 
 			console.log("Button clicked of category: " + buttonCategory + ", value: " + buttonValue);
 
@@ -278,7 +284,7 @@
 				submitRow(buttonCategory);
 
 			} else { //this is a select button that's not already active
-
+				window.alert('ok')
 				if (responses[buttonCategory] != "") { //Is there already another button in this category selected?
 
 					var otherID = "" + buttonCategory + "-" + responses[buttonCategory]; //eg "age" + "younger" = "age-younger"
@@ -323,7 +329,6 @@
 			if (registeredValue == "yes") {
 
 				nextSection = document.getElementById("address");
-				nextSection.classList.remove("shaded");
 
 				nextCollapsible = document.getElementById("coll-address");
 				toggleCollapsable(nextCollapsible);
@@ -331,7 +336,6 @@
 			} else if (registeredValue == "maybe" || registeredValue == "no") {
 
 				nextSection = document.getElementById("age");
-				nextSection.classList.remove("shaded");
 
 				nextCollapsible = document.getElementById("coll-age");
 				toggleCollapsable(nextCollapsible);
