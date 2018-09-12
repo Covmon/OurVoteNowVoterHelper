@@ -12,12 +12,12 @@
 			padding-bottom: 0px;
 		}
 
-		.hidden {
-			display: none;
-		}
-
 		.wrapper {
 			text-align: center;
+		}
+
+		.hidden {
+			display: none;
 		}
 		
 		.collapsible {
@@ -34,6 +34,10 @@
 			border: none;
 			transition-duration: 0.1s;
 			padding: 5px;
+		}
+
+		.shaded {
+			background-color: #711400
 		}
 
 		.active, .collapsible:hover {
@@ -126,7 +130,7 @@
 		}
 
 		select {
-			font-size: 100px;
+			font-size: 25px;
 			/*outline: 0 none;*/
 		}
 
@@ -165,7 +169,7 @@
 	</div>
 
 	<!--Category: "address"-->
-	<div class="wrapper hidden" id="address">
+	<div class="wrapper shaded" id="address">
 		<button class = "collapsible" id="coll-address">Where's your residence address?</button>
 		<div class="content">
 
@@ -292,50 +296,6 @@
 				submitRow(buttonCategory);
 
 			}
-
-			/*
-			var collRowNumber = id.charAt(0);
-			var collRowIndex = collRowNumber - 1;
-
-			var buttonNumber = id.charAt(2);
-
-			if (id == currentSelections[collRowIndex]) { //we clicked the one that's already active
-				var button = document.getElementById(id);
-				button.classList.remove("button-active"); //Unselect current selection
-				//button.style.color = "#ee3233";
-				//button.style.backgroundColor = "white";
-				currentSelections[collRowIndex] = "" + collRowNumber + "-0"
-
-				switch (collRowNumber) {
-					case "1":
-					handleRow1Selection("?");
-					break;
-				}
-
-			} else { //we clicked one that's not already active
-				console.log(currentSelections);
-				console.log(collRowIndex);
-				if (currentSelections[collRowIndex].charAt(2) != "0") {
-					document.getElementById(currentSelections[collRowIndex]).classList.remove("button-active"); //unhighlight the previous selection
-				}
-
-				currentSelections[collRowIndex] = id;
-				console.log("Clicked button " + id + " in row " + collRowNumber);
-
-				document.getElementById(id).classList.add("button-active");
-
-				toggleCollapsable(coll[collRowIndex]);
-				if (coll.length > collRowIndex + 1) {
-
-					toggleCollapsable(coll[collRowIndex + 1]);
-				}
-
-				switch (collRowNumber) {
-					case "1":
-					handleRow1Selection(buttonNumber);
-					break;
-				}
-			}*/
 		}
 
 		function submitRow(buttonCategory) {
@@ -366,7 +326,7 @@
 			if (registeredValue == "yes") {
 
 				nextSection = document.getElementById("address");
-				nextSection.classList.remove("hidden");
+				nextSection.classList.remove("shaded");
 
 				nextCollapsible = document.getElementById("coll-address");
 				toggleCollapsable(nextCollapsible);
@@ -374,7 +334,7 @@
 			} else if (registeredValue == "maybe" || registeredValue == "no") {
 
 				nextSection = document.getElementById("age");
-				nextSection.classList.remove("hidden");
+				nextSection.classList.remove("shaded");
 
 				nextCollapsible = document.getElementById("coll-age");
 				toggleCollapsable(nextCollapsible);
