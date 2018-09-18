@@ -10,6 +10,12 @@
 		p {
 			padding: 10px;
 			padding-bottom: 0px;
+			color: black;
+		}
+
+		h2 {
+			margin-top: 20px;
+			color: black;
 		}
 
 		.wrapper {
@@ -546,6 +552,16 @@
 
 			title.innerHTML = "Regular voting";
 			text.innerHTML = "Awesome! The General Election takes place November 6th, and you can cast your ballot from XX:XX am until XX:XX pm. Use this link to learn where to go to vote:";
+		}
+
+		function voterInfoQuery(address) {
+			var url = "https://www.googleapis.com/civicinfo/v2/elections?key=AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
+			var url2 = "https://www.googleapis.com/civicinfo/v2/voterinfo?address=4839-Adams-Walk-Dunwoody-GA-30338&key=AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc&electionId=6000";
+			
+			var xmlHttp = new XMLHttpRequest();
+		    xmlHttp.open( "GET", url2, false ); // false for synchronous request
+		    xmlHttp.send( null );
+		    var responseText = xmlHttp.responseText;
 		}
 
 	</script>
