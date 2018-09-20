@@ -550,22 +550,32 @@
 			link.setAttribute("target", "_blank");
 			button.innerHTML = "How to vote on election day";
 
+			let query = voterInfoQuery();
+			let election = query.election.name;
+			let date = query.election.electionDay;
+
 			title.innerHTML = "Regular voting";
-			text.innerHTML = "Awesome! The General Election takes place November 6th, and you can cast your ballot from XX:XX am until XX:XX pm. Use this link to learn where to go to vote:";
+			text.innerHTML = "You can vote in the " + election + " on " + date + ". Use this link to learn where to go to vote:";
+
+
 		}
 
 		function voterInfoQuery(address) {
-			var url = "https://www.googleapis.com/civicinfo/v2/elections?key=AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
-			var url2 = "https://www.googleapis.com/civicinfo/v2/voterinfo?address=4839-Adams-Walk-Dunwoody-GA-30338&key=AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc&electionId=6000";
+			//var url = "https://www.googleapis.com/civicinfo/v2/elections?key=AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
+			var url = "https://www.googleapis.com/civicinfo/v2/voterinfo?address=4839-Adams-Walk-Dunwoody-GA-30338&key=AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc&electionId=6000";
 
 			var xmlHttp = new XMLHttpRequest();
-		    xmlHttp.open( "GET", url2, false ); // false for synchronous request
+		    xmlHttp.open( "GET", url, false ); // false for synchronous request
 		    xmlHttp.send( null );
 		    var responseText = xmlHttp.responseText;
 		    var responseObject = JSON.parse(responseText);
 
+
 		    console.log("Here is the response object from the Google Voter Info Query:");
 		    console.log(responseObject);
+
+		    return responseObject;
+
 		}
 
 	</script>
