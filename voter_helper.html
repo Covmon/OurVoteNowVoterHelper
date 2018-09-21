@@ -226,7 +226,7 @@
 	<script type="text/javascript">
 
 		var currentSelections = ["1-0", "2-0"];
-		var responses = {"registered": "", "age": "", "address": "", "votetype": ""};
+		var responses = {"registered": "", "age": "", "address": ["", "", "", ""], "votetype": ""};
 
 		setupButtonEvents();
 		setupCollapsibles();
@@ -417,7 +417,7 @@
 			var address = "" + street + " " + city + " " + state + " " + zip;
 			console.log(address);
 
-			responses["address"] = address;
+			responses["address"] = [street, city, state, zip];
 
 			var nextSection = document.getElementById("votetype");
 			var nextCollapsible = document.getElementById("coll-votetype");
@@ -548,21 +548,42 @@
 
 			link.setAttribute("href", "https://www.mvp.sos.ga.gov/MVP/mvp.do");
 			link.setAttribute("target", "_blank");
-			button.innerHTML = "How to vote on election day";
+			button.innerHTML = "More voting information";
 
-			let query = voterInfoQuery();
-			let election = query.election.name;
-			let date = query.election.electionDay;
+			let street = responses["address"][0];
+			let city = responses["address"][1];
+			let state = responses["address"][2];
+			let zip = responses["address"][3];
 
-			title.innerHTML = "Regular voting";
-			text.innerHTML = "You can vote in the " + election + " on " + date + ". Use this link to learn where to go to vote:";
+			let query = voterInfoQuery(street, city, state, zip, 6000);
+
+			if ("error" in query) {
+				console.log("Error");
+
+				title.innerHTML = "Error";
+
+				if (query.error.errors[0].reason == "parseError") {
+					text.innerHTML = "Please enter a valid address and try again.";
+				}
+
+			} else {
+
+				let election = query.election.name;
+				let date = query.election.electionDay;
+
+				title.innerHTML = "Regular voting";
+				text.innerHTML = "Get ready to vote! <br /> <b>Election:</b> " + election + " <br /> <b>Date:</b> " + date + "<br /> <b>Polling place:</b> <br />Use this link to learn where to go to vote:";
+
+			}
+
 
 
 		}
 
-		function voterInfoQuery(address) {
+		function voterInfoQuery(street, city, state, zip, electionId) {
+			var apiKey = "AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
 			//var url = "https://www.googleapis.com/civicinfo/v2/elections?key=AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
-			var url = "https://www.googleapis.com/civicinfo/v2/voterinfo?address=4839-Adams-Walk-Dunwoody-GA-30338&key=AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc&electionId=6000";
+			var url = "https://www.googleapis.com/civicinfo/v2/voterinfo?address=" + street + "-" + city + "-" + state + "-" + zip + "&electionId=" + electionId + "&key=" + apiKey;
 
 			var xmlHttp = new XMLHttpRequest();
 		    xmlHttp.open( "GET", url, false ); // false for synchronous request
@@ -573,6 +594,7 @@
 
 		    console.log("Here is the response object from the Google Voter Info Query:");
 		    console.log(responseObject);
+
 
 		    return responseObject;
 
