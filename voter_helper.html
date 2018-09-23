@@ -188,8 +188,56 @@
 			<select class="select" name="state" id="state">
 				<option value="" disabled selected>State</option>
 				<option value="GA">GA</option>
+				<option value="AL">AL</option>
+				<option value="AK">AK</option>
+				<option value="AR">AR</option>	
+				<option value="AZ">AZ</option>
+				<option value="CA">CA</option>
+				<option value="CO">CO</option>
+				<option value="CT">CT</option>
+				<option value="DC">DC</option>
+				<option value="DE">DE</option>
 				<option value="FL">FL</option>
-				<option value="other">Other</option>
+				<option value="HI">HI</option>
+				<option value="IA">IA</option>	
+				<option value="ID">ID</option>
+				<option value="IL">IL</option>
+				<option value="IN">IN</option>
+				<option value="KS">KS</option>
+				<option value="KY">KY</option>
+				<option value="LA">LA</option>
+				<option value="MA">MA</option>
+				<option value="MD">MD</option>
+				<option value="ME">ME</option>
+				<option value="MI">MI</option>
+				<option value="MN">MN</option>
+				<option value="MO">MO</option>	
+				<option value="MS">MS</option>
+				<option value="MT">MT</option>
+				<option value="NC">NC</option>	
+				<option value="NE">NE</option>
+				<option value="NH">NH</option>
+				<option value="NJ">NJ</option>
+				<option value="NM">NM</option>			
+				<option value="NV">NV</option>
+				<option value="NY">NY</option>
+				<option value="ND">ND</option>
+				<option value="OH">OH</option>
+				<option value="OK">OK</option>
+				<option value="OR">OR</option>
+				<option value="PA">PA</option>
+				<option value="RI">RI</option>
+				<option value="SC">SC</option>
+				<option value="SD">SD</option>
+				<option value="TN">TN</option>
+				<option value="TX">TX</option>
+				<option value="UT">UT</option>
+				<option value="VT">VT</option>
+				<option value="VA">VA</option>
+				<option value="WA">WA</option>
+				<option value="WI">WI</option>	
+				<option value="WV">WV</option>
+				<option value="WY">WY</option>
 			</select>
 			<input class="input-text" type="text" name="zip" id="zip" value="" placeholder="Zip">
 
@@ -520,10 +568,34 @@
 
 			link.setAttribute("href", "https://www.mvp.sos.ga.gov/MVP/mvp.do");
 			link.setAttribute("target", "_blank");
-			button.innerHTML = "How to vote early";
+			button.innerHTML = "More Early Voting Info";
 
-			title.innerHTML = "Early voting";
-			text.innerHTML = "Awesome! The General Election takes place November 6th, but you can vote early from XX/XX until XX/XX. Use this link to find your early voting location:";
+			let street = responses["address"][0];
+			let city = responses["address"][1];
+			let state = responses["address"][2];
+			let zip = responses["address"][3];
+
+			let query = voterInfoQuery(street, city, state, zip, 6000);
+
+			if ("error" in query) {
+				console.log("Error");
+
+				title.innerHTML = "Error";
+
+				if (query.error.errors[0].reason == "parseError") {
+					text.innerHTML = "Please enter a valid address and try again.";
+				}
+
+			} else {
+
+				let election = query.election.name;
+				let date = query.election.electionDay;
+
+
+				title.innerHTML = "Early voting";
+				text.innerHTML = "Get ready to vote early! <br /> <b>Election:</b> " + election + "<br /> <b>Early Voting Location:</b>" + " <br /> <b>Start and End Dates:</b> " + date + "<br /> <b>Polling Hours:</b>" + "<br /> <br /> Use this link to learn where to go to vote:";
+
+			}
 		}
 
 		function displayInstructionsAbsenteeVoting() {
@@ -572,7 +644,7 @@
 				let date = query.election.electionDay;
 
 				title.innerHTML = "Regular voting";
-				text.innerHTML = "Get ready to vote! <br /> <b>Election:</b> " + election + " <br /> <b>Date:</b> " + date + "<br /> <b>Polling place:</b> <br />Use this link to learn where to go to vote:";
+				text.innerHTML = "Get ready to vote! <br /> <b>Election:</b> " + election + " <br /> <b>Date:</b> " + date + "<br /> <br /> <b>Polling place:</b> <br />Use this link to learn where to go to vote:";
 
 			}
 
