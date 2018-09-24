@@ -570,14 +570,14 @@
 			link.setAttribute("target", "_blank");
 			button.innerHTML = "More Early Voting Info";
 
-			let street = responses["address"][0];
-			let city = responses["address"][1];
-			let state = responses["address"][2];
+			let street = responses["address"][0]; //First element of the "address" array in responses[] is street
+			let city = responses["address"][1]; //Second element is city
+			let state = responses["address"][2]; //Etc.
 			let zip = responses["address"][3];
 
 			let query = voterInfoQuery(street, city, state, zip, 6000);
 
-			if ("error" in query) {
+			if ("error" in query) { //Was there an error returned instead of voting info?
 				console.log("Error");
 
 				title.innerHTML = "Error";
@@ -586,13 +586,19 @@
 					text.innerHTML = "Please enter a valid address and try again.";
 				}
 
-			} else {
-
+			} else { //No error
 
 				let election = query.election.name;
 				let date = query.election.electionDay;
-				//let pollingLocations = query.pollingLocations.address
-				//let pollingHours = query.pollingLocations.pollingHours
+				
+				/*
+				var voteSiteHTML = ""
+
+				for (location in query.pollingLocations) {
+					let site = new VotingSite(location.address, location.pollingHours, location.startDate, location.endDate);
+
+					voteSiteHTML += site.outputVoteSiteInfo();
+				}*/
 
 				title.innerHTML = "Early voting";
 				text.innerHTML = "Get ready to vote early! <br /> <b>Election:</b> " + election + "<br /> <b>Early Voting Location:</b>" + pollingLocations + " <br /> <b>Start and End Dates:</b> " + date + "<br /> <b>Polling Hours:</b>" + pollingHours + "<br /> <br /> Use this link to learn where to go to vote:";
@@ -645,6 +651,15 @@
 				let election = query.election.name;
 				let date = query.election.electionDay;
 
+				/*
+				var voteSiteHTML = ""
+
+				for (location in query.pollingLocations) {
+					let site = new VotingSite(location.address, location.pollingHours, location.startDate, location.endDate);
+
+					voteSiteHTML += site.outputVoteSiteInfo();
+				}*/
+
 				title.innerHTML = "Regular voting";
 				text.innerHTML = "Get ready to vote! <br /> <b>Election:</b> " + election + " <br /> <b>Date:</b> " + date + "<br /> <br /> <b>Polling place:</b> <br />Use this link to learn where to go to vote:";
 
@@ -671,8 +686,9 @@
 
 
 		    return responseObject;
+		}
 
-		  /* function displayUserElections  ()  {
+	    /*function displayUserElections  ()  {
 		  	var title = document.getElementById("instructions-title");
 			var text = document.getElementById("instructions-text");
 			var button = document.getElementById("instructions-button");
@@ -706,10 +722,30 @@
 					window.alert(i + ". " + array[i]);
 
 			}
-
-
-
 		}*/
+
+		class VotingSite() {
+
+			constructor(address, hours, startDate, endDate) {
+				this.address = address;
+				this.hours = hours;
+				this.startDate = startDate;
+				this.endDate = endDate;
+			}
+
+			outputVoteSiteInfo() { //Compile vote site info together into an html snippet and return
+
+				let address = "<b /> <b>" + this.address.locationName + "</b> <b />" + this.address.line1 + "<b />" + this.address.city + ", " + this.address.state + this.address.zip;
+
+				let dates = "<b />" + this.hours + ", " + this.startDate + "-" + this.endDate;
+
+				let output = address + dates;
+
+				return output;
+			}
+
+
+		}
 
 
 	</script>
