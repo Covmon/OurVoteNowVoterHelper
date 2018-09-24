@@ -10,12 +10,6 @@
 		p {
 			padding: 10px;
 			padding-bottom: 0px;
-			color: black;
-		}
-
-		h2 {
-			margin-top: 20px;
-			color: black;
 		}
 
 		.wrapper {
@@ -51,7 +45,8 @@
 		}
 
 		.collapsible:after {
-			content:'\002b'; /*Plus sign*/
+			content:'\1F512';
+			background-color: #ee3233;
 			font-size: 13px;
 			font-weight: bold;
 			color: white;
@@ -59,15 +54,7 @@
 		}
 
 		.active:after {
-			content: "\2212"; /*Minus sign*/
-		}
-
-		.answered:after {
-			content: "\2705"; /*Check mark*/
-		}
-
-		.locked:after {
-			content: "\1F512" /*Locked Sign*/
+			content: "\2714";
 		}
 
 		.content {
@@ -170,7 +157,7 @@
 
 	<!--Category: "age"-->
 	<div class="wrapper hidden" id="age">
-		<button class = "collapsible locked" id="coll-age">What's your age?</button>
+		<button class = "collapsible" id="coll-age">What's your age?</button>
 		<div class="content">
 
 			<button class="button 2" id="age-younger" category="age" value="younger">Younger than 17 1/2</button>
@@ -179,8 +166,8 @@
 	</div>
 
 	<!--Category: "address"-->
-	<div class="wrapper" id="address">
-		<button class = "collapsible locked" id="coll-address">Where's your residence address?</button>
+	<div class="wrapper shaded" id="address">
+		<button class = "collapsible" id="coll-address">Where's your residence address?</button>
 		<div class="content">
 
 			<input class="input-text" type="text" name="street" value="" id="street" placeholder="Street">
@@ -188,56 +175,8 @@
 			<select class="select" name="state" id="state">
 				<option value="" disabled selected>State</option>
 				<option value="GA">GA</option>
-				<option value="AL">AL</option>
-				<option value="AK">AK</option>
-				<option value="AR">AR</option>	
-				<option value="AZ">AZ</option>
-				<option value="CA">CA</option>
-				<option value="CO">CO</option>
-				<option value="CT">CT</option>
-				<option value="DC">DC</option>
-				<option value="DE">DE</option>
 				<option value="FL">FL</option>
-				<option value="HI">HI</option>
-				<option value="IA">IA</option>	
-				<option value="ID">ID</option>
-				<option value="IL">IL</option>
-				<option value="IN">IN</option>
-				<option value="KS">KS</option>
-				<option value="KY">KY</option>
-				<option value="LA">LA</option>
-				<option value="MA">MA</option>
-				<option value="MD">MD</option>
-				<option value="ME">ME</option>
-				<option value="MI">MI</option>
-				<option value="MN">MN</option>
-				<option value="MO">MO</option>	
-				<option value="MS">MS</option>
-				<option value="MT">MT</option>
-				<option value="NC">NC</option>	
-				<option value="NE">NE</option>
-				<option value="NH">NH</option>
-				<option value="NJ">NJ</option>
-				<option value="NM">NM</option>			
-				<option value="NV">NV</option>
-				<option value="NY">NY</option>
-				<option value="ND">ND</option>
-				<option value="OH">OH</option>
-				<option value="OK">OK</option>
-				<option value="OR">OR</option>
-				<option value="PA">PA</option>
-				<option value="RI">RI</option>
-				<option value="SC">SC</option>
-				<option value="SD">SD</option>
-				<option value="TN">TN</option>
-				<option value="TX">TX</option>
-				<option value="UT">UT</option>
-				<option value="VT">VT</option>
-				<option value="VA">VA</option>
-				<option value="WA">WA</option>
-				<option value="WI">WI</option>	
-				<option value="WV">WV</option>
-				<option value="WY">WY</option>
+				<option value="other">Other</option>
 			</select>
 			<input class="input-text" type="text" name="zip" id="zip" value="" placeholder="Zip">
 
@@ -247,8 +186,8 @@
 	</div>
 
 	<!--Category: "votetype"-->
-	<div class="wrapper" id="votetype">
-		<button class = "collapsible locked" id="coll-votetype">How do you want to vote?</button>
+	<div class="wrapper shaded" id="votetype">
+		<button class = "collapsible" id="coll-votetype">How do you want to vote?</button>
 		<div class="content">
 			<button class="button 5" id="votetype-early" category="votetype" value="early">Early</button>
 			<button class="button 5" id="votetype-absentee" category="votetype" value="absentee">Absentee</button>
@@ -257,8 +196,8 @@
 	</div>
 
 	<!--Your personalized instructions appear here-->
-	<div class="wrapper" id="instructions">
-		<button class="collapsible locked" id="coll-instructions">Your next steps...</button>
+	<div class="wrapper shaded" id="instructions">
+		<button class="collapsible" id="coll-instructions">Your next steps...</button>
 		<div class="content">
 			<h2 id="instructions-title">Thanks for using the OurVoteNow voter helper tool.</h1>
 			<p id="instructions-text">Here are those instructions</p>
@@ -274,7 +213,7 @@
 	<script type="text/javascript">
 
 		var currentSelections = ["1-0", "2-0"];
-		var responses = {"registered": "", "age": "", "address": ["", "", "", ""], "votetype": ""};
+		var responses = {"registered": "", "age": "", "address": "", "votetype": ""};
 
 		setupButtonEvents();
 		setupCollapsibles();
@@ -302,17 +241,13 @@
 		}
 
 		function toggleCollapsable(collapse) {
-			if (collapse.classList.contains("locked")) { //This row is locked, don't open it up
-				return;
-			} else {
-				collapse.classList.toggle("active");
+			collapse.classList.toggle("active");
 			    var content = collapse.nextElementSibling;
 			    if (content.style.maxHeight){
 			      content.style.maxHeight = null;
 			    } else {
 			      content.style.maxHeight = content.scrollHeight + 100 + "px";
 			    } 
-			}
 		}
 
 		//Add click button events to all buttons
@@ -327,29 +262,23 @@
 
 		function clickButton(id) {
 
-			//var classClicked = document.getElementsByClassName(classs);
 			var buttonClicked = document.getElementById(id);
 			var buttonValue = buttonClicked.value;
 			var buttonCategory = buttonClicked.getAttribute("category");
-			var collapsibleID = "coll-" + buttonCategory;
-			var collapsibleSection = document.getElementById(collapsibleID);
-			//classClicked.classList.add("answered");
 
 			console.log("Button clicked of category: " + buttonCategory + ", value: " + buttonValue);
 
 			if (buttonValue == responses[buttonCategory]) { //we clicked a select button that's already active
 				buttonClicked.classList.remove("button-active");
-				collapsibleSection.classList.remove("answered");
-
 
 				responses[buttonCategory] = "";
 
 			} else if (buttonValue == "submit" || buttonValue == "link") { //this is a submit button
 
 				submitRow(buttonCategory);
-				collapsibleSection.classList.add("answered");
 
 			} else { //this is a select button that's not already active
+
 				if (responses[buttonCategory] != "") { //Is there already another button in this category selected?
 
 					var otherID = "" + buttonCategory + "-" + responses[buttonCategory]; //eg "age" + "younger" = "age-younger"
@@ -359,8 +288,6 @@
 
 				responses[buttonCategory] = buttonValue;
 				buttonClicked.classList.add("button-active");
-				collapsibleSection.classList.add("answered");
-
 
 
 				submitRow(buttonCategory);
@@ -396,18 +323,17 @@
 			if (registeredValue == "yes") {
 
 				nextSection = document.getElementById("address");
+				nextSection.classList.remove("shaded");
 
 				nextCollapsible = document.getElementById("coll-address");
-				nextCollapsible.classList.remove("locked");
 				toggleCollapsable(nextCollapsible);
 
 			} else if (registeredValue == "maybe" || registeredValue == "no") {
 
 				nextSection = document.getElementById("age");
-				nextSection.classList.remove("hidden");
+				nextSection.classList.remove("shaded");
 
 				nextCollapsible = document.getElementById("coll-age");
-				nextCollapsible.classList.remove("locked");
 				toggleCollapsable(nextCollapsible);
 			} else {
 
@@ -465,11 +391,10 @@
 			var address = "" + street + " " + city + " " + state + " " + zip;
 			console.log(address);
 
-			responses["address"] = [street, city, state, zip];
+			responses["address"] = address;
 
 			var nextSection = document.getElementById("votetype");
 			var nextCollapsible = document.getElementById("coll-votetype");
-			nextCollapsible.classList.remove("locked");
 
 			var currentCollapsible = document.getElementById("coll-address");
 
@@ -513,7 +438,6 @@
 			nextSection.classList.remove("hidden");
 
 			nextCollapsible = document.getElementById("coll-instructions");
-			nextCollapsible.classList.remove("locked");
 			toggleCollapsable(nextCollapsible);
 		}
 
@@ -568,36 +492,10 @@
 
 			link.setAttribute("href", "https://www.mvp.sos.ga.gov/MVP/mvp.do");
 			link.setAttribute("target", "_blank");
-			button.innerHTML = "More Early Voting Info";
+			button.innerHTML = "How to vote early";
 
-			let street = responses["address"][0];
-			let city = responses["address"][1];
-			let state = responses["address"][2];
-			let zip = responses["address"][3];
-
-			let query = voterInfoQuery(street, city, state, zip, 6000);
-
-			if ("error" in query) {
-				console.log("Error");
-
-				title.innerHTML = "Error";
-
-				if (query.error.errors[0].reason == "parseError") {
-					text.innerHTML = "Please enter a valid address and try again.";
-				}
-
-			} else {
-
-
-				let election = query.election.name;
-				let date = query.election.electionDay;
-				//let pollingLocations = query.pollingLocations.address
-				//let pollingHours = query.pollingLocations.pollingHours
-
-				title.innerHTML = "Early voting";
-				text.innerHTML = "Get ready to vote early! <br /> <b>Election:</b> " + election + "<br /> <b>Early Voting Location:</b>" + pollingLocations + " <br /> <b>Start and End Dates:</b> " + date + "<br /> <b>Polling Hours:</b>" + pollingHours + "<br /> <br /> Use this link to learn where to go to vote:";
-
-			}
+			title.innerHTML = "Early voting";
+			text.innerHTML = "Awesome! The General Election takes place November 6th, but you can vote early from XX/XX until XX/XX. Use this link to find your early voting location:";
 		}
 
 		function displayInstructionsAbsenteeVoting() {
@@ -622,95 +520,11 @@
 
 			link.setAttribute("href", "https://www.mvp.sos.ga.gov/MVP/mvp.do");
 			link.setAttribute("target", "_blank");
-			button.innerHTML = "More voting information";
+			button.innerHTML = "How to vote on election day";
 
-			let street = responses["address"][0];
-			let city = responses["address"][1];
-			let state = responses["address"][2];
-			let zip = responses["address"][3];
-
-			let query = voterInfoQuery(street, city, state, zip, 6000);
-
-			if ("error" in query) {
-				console.log("Error");
-
-				title.innerHTML = "Error";
-
-				if (query.error.errors[0].reason == "parseError") {
-					text.innerHTML = "Please enter a valid address and try again.";
-				}
-
-			} else {
-
-				let election = query.election.name;
-				let date = query.election.electionDay;
-
-				title.innerHTML = "Regular voting";
-				text.innerHTML = "Get ready to vote! <br /> <b>Election:</b> " + election + " <br /> <b>Date:</b> " + date + "<br /> <br /> <b>Polling place:</b> <br />Use this link to learn where to go to vote:";
-
-			}
-
-
-
+			title.innerHTML = "Regular voting";
+			text.innerHTML = "Awesome! The General Election takes place November 6th, and you can cast your ballot from XX:XX am until XX:XX pm. Use this link to learn where to go to vote:";
 		}
-
-		function voterInfoQuery(street, city, state, zip, electionId) {
-			var apiKey = "AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
-			//var url = "https://www.googleapis.com/civicinfo/v2/elections?key=AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
-			var url = "https://www.googleapis.com/civicinfo/v2/voterinfo?address=" + street + "-" + city + "-" + state + "-" + zip + "&electionId=" + electionId + "&key=" + apiKey;
-
-			var xmlHttp = new XMLHttpRequest();
-		    xmlHttp.open( "GET", url, false ); // false for synchronous request
-		    xmlHttp.send( null );
-		    var responseText = xmlHttp.responseText;
-		    var responseObject = JSON.parse(responseText);
-
-
-		    console.log("Here is the response object from the Google Voter Info Query:");
-		    console.log(responseObject);
-
-
-		    return responseObject;
-
-		  /* function displayUserElections  ()  {
-		  	var title = document.getElementById("instructions-title");
-			var text = document.getElementById("instructions-text");
-			var button = document.getElementById("instructions-button");
-			var link = document.getElementById("instructions-link");
-
-			link.setAttribute("href", "https://www.mvp.sos.ga.gov/MVP/mvp.do");
-			link.setAttribute("target", "_blank");
-			button.innerHTML = "More voting information";
-
-			let street = responses["address"][0];
-			let city = responses["address"][1];
-			let state = responses["address"][2];
-			let zip = responses["address"][3];
-
-			let query = voterInfoQuery(street, city, state, zip, 6000);
-
-			if ("error" in query) {
-				console.log("Error");
-
-				title.innerHTML = "Error";
-
-				if (query.error.errors[0].reason == "parseError") {
-					text.innerHTML = "Please enter a valid address and try again.";
-				}
-
-			} else {
-
-				let contests = query.election.contests
-
-				for (i = 0; i < contests.length; i++)
-					window.alert(i + ". " + array[i]);
-
-			}
-
-
-
-		}*/
-
 
 	</script>
 
