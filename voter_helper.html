@@ -590,7 +590,7 @@
 
 				let election = query.election.name;
 				let date = query.election.electionDay;
-				
+
 				/*
 				var voteSiteHTML = ""
 
@@ -601,7 +601,7 @@
 				}*/
 
 				title.innerHTML = "Early voting";
-				text.innerHTML = "Get ready to vote early! <br /> <b>Election:</b> " + election + "<br /> <b>Early Voting Location:</b>" + pollingLocations + " <br /> <b>Start and End Dates:</b> " + date + "<br /> <b>Polling Hours:</b>" + pollingHours + "<br /> <br /> Use this link to learn where to go to vote:";
+				text.innerHTML = "Get ready to vote early! <br /> <b>Election:</b> " + election + "<br /> <b>Early Voting Location:</b>" + " <br /> <b>Start and End Dates:</b> " + date + "<br /> <b>Polling Hours:</b>" + "<br /> <br /> Use this link to learn where to go to vote:";
 
 			}
 		}
@@ -724,7 +724,7 @@
 			}
 		}*/
 
-		class VotingSite() {
+		class VotingSite {
 
 			constructor(address, hours, startDate, endDate) {
 				this.address = address;
