@@ -315,6 +315,20 @@
 			}
 		}
 
+		function openCollapsable(collapse) {
+			if (collapse.classList.contains("locked") || collapse.classList.contains("active")) { //Row is locked or already open, don't open it up again
+				return;
+			} else {
+				collapse.classList.add("active");
+			    var content = collapse.nextElementSibling;
+			    if (content.style.maxHeight){
+			      content.style.maxHeight = null;
+			    } else {
+			      content.style.maxHeight = content.scrollHeight + 100 + "px";
+			    } 
+			}
+		}
+
 		//Add click button events to all buttons
 		function setupButtonEvents() {
 			var buttons = document.getElementsByClassName("button");
@@ -429,7 +443,7 @@
 			if (ageValue == "younger") {
 
 				displayInstructionsTooYoung();
-				toggleInstructionsPanel(nextSection, nextCollapsible);
+				openInstructionsPanel(nextSection, nextCollapsible);
 				
 			} else if (ageValue == "older") {
 
@@ -439,12 +453,12 @@
 				if (registered == "maybe") {
 
 					displayInstructionsCheckRegistration();
-					toggleInstructionsPanel(nextSection, nextCollapsible);
+					openInstructionsPanel(nextSection, nextCollapsible);
 
 				} else if (registered == "no") {
 
 					displayInstructionsRegister();
-					toggleInstructionsPanel(nextSection, nextCollapsible);
+					openInstructionsPanel(nextSection, nextCollapsible);
 
 				} else if (registered == "yes") {
 					console.log("ERROR: how did we get here?");
@@ -491,30 +505,30 @@
 			if (votetypeValue == "early") {
 
 				displayInstructionsEarlyVoting();
-				toggleInstructionsPanel(nextSection, nextCollapsible);
+				openInstructionsPanel(nextSection, nextCollapsible);
 
 			} else if (votetypeValue == "absentee") {
 
 				displayInstructionsAbsenteeVoting();
-				toggleInstructionsPanel(nextSection, nextCollapsible);
+				openInstructionsPanel(nextSection, nextCollapsible);
 
 			} else if (votetypeValue == "regular") {
 
 				displayInstructionsRegularVoting();
-				toggleInstructionsPanel(nextSection, nextCollapsible);
+				openInstructionsPanel(nextSection, nextCollapsible);
 
 			} else {
 				console.log("ERROR: votetype value not valid");
 			}
 		}
 
-		function toggleInstructionsPanel(nextSection, nextCollapsible) {
+		function openInstructionsPanel(nextSection, nextCollapsible) {
 			nextSection = document.getElementById("instructions");
 			nextSection.classList.remove("hidden");
 
 			nextCollapsible = document.getElementById("coll-instructions");
 			nextCollapsible.classList.remove("locked");
-			toggleCollapsable(nextCollapsible);
+			openCollapsable(nextCollapsible);
 		}
 
 		function displayInstructionsTooYoung() {
@@ -601,7 +615,7 @@
 				}*/
 
 				title.innerHTML = "Early voting";
-				text.innerHTML = "Get ready to vote early! <br /> <b>Election:</b> " + election + "<br /> <b>Early Voting Location:</b>" + " <br /> <b>Start and End Dates:</b> " + date + "<br /> <b>Polling Hours:</b>" + "<br /> <br /> Use this link to learn where to go to vote:";
+				text.innerHTML = "Get ready to vote early! <br /> <b>Election:</b> " + election + "<br /> <b>Early Voting Location:</b>" + " <br /> <b>Election Day:</b> " + date + "<br /> <b>Polling Hours:</b>" + "<br />";
 
 			}
 		}
@@ -661,7 +675,7 @@
 				}*/
 
 				title.innerHTML = "Regular voting";
-				text.innerHTML = "Get ready to vote! <br /> <b>Election:</b> " + election + " <br /> <b>Date:</b> " + date + "<br /> <br /> <b>Polling place:</b> <br />Use this link to learn where to go to vote:";
+				text.innerHTML = "Get ready to vote! <br /> <b>Election:</b> " + election + " <br /> <b>Election Day:</b> " + date + "<br /> <br /> <b>Polling place:</b> <br />";
 
 			}
 
