@@ -90,10 +90,9 @@
 			color: #ee3233;
 			border: 2px solid #ee3233;
 			border-radius: 1px;
-			display: table-cell;
-			/*font-size: 15px;
+			font-size: 15px;
 			padding: 8px 16px;
-			margin: 15px 5px;*/
+			margin: 15px 5px;
 			-webkit-transition-duration: 0.4s; /*for safari*/
 			transition-duration: 0.4s;
 			cursor: pointer;
@@ -290,8 +289,6 @@
 
 		setupButtonEvents();
 		setupCollapsibles();
-
-
 		
 		//Add collapse and expand events to all collapsibles
 		function setupCollapsibles() {
@@ -314,6 +311,7 @@
 		}
 
 		function toggleCollapsable(collapse) {
+			console.log("TOGGLE A COLLAPSIBLE");
 			if (collapse.classList.contains("locked")) { //This row is locked, don't open it up
 				return;
 			} else {
@@ -328,16 +326,22 @@
 		}
 
 		function openCollapsable(collapse) {
-			if (collapse.classList.contains("locked") || collapse.classList.contains("active")) { //Row is locked or already open, don't open it up again
+			console.log("OPEN A COLLAPSIBLE");
+			if (collapse.classList.contains("locked")) { //Row is locked or already open, don't open it up again
 				return;
 			} else {
 				collapse.classList.add("active");
 			    var content = collapse.nextElementSibling;
-			    if (content.style.maxHeight){
-			      content.style.maxHeight = null;
-			    } else {
-			      content.style.maxHeight = content.scrollHeight + 100 + "px";
-			    } 
+			    content.style.maxHeight = content.scrollHeight + 100 + "px";
+			}
+		}
+
+		function closeCollapsable(collapse) {
+			console.log("CLOSE A COLLAPSIBLE");
+			collapse.classList.remove("active");
+			var content = collapse.nextElementSibling;
+			if (content.style.maxHeight){
+				content.style.maxHeight = null;
 			}
 		}
 
@@ -492,17 +496,25 @@
 			console.log(address);
 
 			responses["address"] = [street, city, state, zip];
+			
+			if (responses["votetype"] == "") {
+				var nextSection = document.getElementById("votetype");
+				var nextCollapsible = document.getElementById("coll-votetype");
+				nextCollapsible.classList.remove("locked");
 
-			var nextSection = document.getElementById("votetype");
-			var nextCollapsible = document.getElementById("coll-votetype");
-			nextCollapsible.classList.remove("locked");
+				var currentCollapsible = document.getElementById("coll-address");
 
-			var currentCollapsible = document.getElementById("coll-address");
+				nextSection.classList.remove("hidden");
+				toggleCollapsable(nextCollapsible);
+				toggleCollapsable(currentCollapsible);
+			} else {
+				var currentCollapsible = document.getElementById("coll-address");
+				toggleCollapsable(currentCollapsible);
 
-			nextSection.classList.remove("hidden");
-
-			toggleCollapsable(currentCollapsible);
-			toggleCollapsable(nextCollapsible);
+				submitVoteType();
+			}
+			
+				
 		}
 
 		function submitVoteType() {
@@ -512,7 +524,7 @@
 			var nextCollapsible;
 
 			var currentCollapsible = document.getElementById("coll-votetype");
-			toggleCollapsable(currentCollapsible);
+			closeCollapsable(currentCollapsible);
 
 			if (votetypeValue == "early") {
 
@@ -617,17 +629,44 @@
 				let election = query.election.name;
 				let date = query.election.electionDay;
 
-				/*
-				var voteSiteHTML = ""
+				if ("earlyVoteSites" in query) {
+					var voteSiteCount = query.earlyVoteSites.length;
+					console.log(voteSiteCount);
+					var voteSiteHTML = "";
 
-				for (location in query.pollingLocations) {
-					let site = new VotingSite(location.address, location.pollingHours, location.startDate, location.endDate);
+					if (voteSiteCount >= 3) {
+						console.log("At least 3 early vote sites found");
 
-					voteSiteHTML += site.outputVoteSiteInfo();
-				}*/
+						let site1 = new VotingSite(query.earlyVoteSites[0]);
+						let site2 = new VotingSite(query.earlyVoteSites[1]);
+						let site3 = new VotingSite(query.earlyVoteSites[2]);
 
-				title.innerHTML = "Early voting";
-				text.innerHTML = "Get ready to vote early! <br /> <b>Election:</b> " + election + "<br /> <b>Early Voting Location:</b>" + " <br /> <b>Election Day:</b> " + date + "<br /> <b>Polling Hours:</b>" + "<br />";
+						voteSiteHTML += site1.outputVoteSiteInfo() + site2.outputVoteSiteInfo() + site3.outputVoteSiteInfo();
+					} else if (voteSiteCount >= 2) {
+						console.log("2 early vote sites found ");
+						let site1 = new VotingSite(query.earlyVoteSites[0]);
+						let site2 = new VotingSite(query.earlyVoteSites[1]);
+
+						voteSiteHTML += site1.outputVoteSiteInfo() + site2.outputVoteSiteInfo();
+
+					} else if (voteSiteCount >= 1) {
+						console.log("Only 1 early vote site found");
+						let site1 = new VotingSite(query.earlyVoteSites[0]);
+
+						voteSiteHTML += site1.outputVoteSiteInfo();
+
+					} else {
+						console.log("No Early Vote Sites");
+					}
+
+					title.innerHTML = "Early Voting";
+					text.innerHTML = "<b>Election:</b> " + election + "<br /> <br />" + "<b>Early Voting Sites:</b><br /> <hr>" + voteSiteHTML + "<br />";
+				
+				} else {
+					title.innerHTML = "Check Back Later";
+					text.innerHTML = "Sorry, early voting locations have not been released for your location yet. Please try again later.";
+				}
+
 
 			}
 		}
@@ -699,6 +738,7 @@
 			var apiKey = "AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
 			//var url = "https://www.googleapis.com/civicinfo/v2/elections?key=AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
 			var url = "https://www.googleapis.com/civicinfo/v2/voterinfo?address=" + street + "-" + city + "-" + state + "-" + zip + "&electionId=" + electionId + "&key=" + apiKey;
+			var testURL = "https://www.googleapis.com/civicinfo/v2/voterinfo?address=104-N-1st-St-Belen-NM-87002&electionId=6000&key=AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
 
 			var xmlHttp = new XMLHttpRequest();
 		    xmlHttp.open( "GET", url, false ); // false for synchronous request
@@ -752,20 +792,67 @@
 
 		class VotingSite {
 
-			constructor(address, hours, startDate, endDate) {
-				this.address = address;
-				this.hours = hours;
-				this.startDate = startDate;
-				this.endDate = endDate;
+			//location.address, location.pollingHours, location.startDate, location.endDate, 
+			constructor(voteSiteObject) {
+				this.address = voteSiteObject.address;
+				this.hours = voteSiteObject.pollingHours;
+				this.startDate = voteSiteObject.startDate;
+				this.endDate = voteSiteObject.endDate;
+				this.voteSiteObject = voteSiteObject;
+			}
+
+
+			convertDate(date_str) {
+				let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+  				var temp_date = date_str.split("-");
+  				return  months[Number(temp_date[1]) - 1] + " " + temp_date[2] + ", " + temp_date[0];
 			}
 
 			outputVoteSiteInfo() { //Compile vote site info together into an html snippet and return
 
-				let address = "<b /> <b>" + this.address.locationName + "</b> <b />" + this.address.line1 + "<b />" + this.address.city + ", " + this.address.state + this.address.zip;
+				let addressString = "<br /> <b>" + this.address.locationName + "</b> <br />" + this.address.line1 + "<br />" + this.address.city + ", " + this.address.state + " " + this.address.zip;
+				
+				//Get which days the polls are open
+				let allDays = ["Sat", "Mon", "Tue", "Wed", "Thu", "Fri", "Sun"];
+				let actualDays = [];
 
-				let dates = "<b />" + this.hours + ", " + this.startDate + "-" + this.endDate;
+				for (var day of allDays) {
+					if (this.hours.includes(day)) {
+						actualDays.push(day);
+					}
+				}
 
-				let output = address + dates + "<b />";
+				var daysString = "";
+				var dayCounter = 0;
+				for (var day of actualDays) {
+					dayCounter++;
+					if (dayCounter < actualDays.length) {
+						daysString += day + ", ";
+					} else {
+						daysString += day;
+					}
+				}
+
+				//Get the hours the polls are open
+				let allHours = ["6 am", "7 am", "8 am", "9 am", "10 am", "11 am", "12 pm", "1 pm", "2 pm", "3 pm", "4 pm", "5 pm", "6 pm", "7 pm", "8 pm", "9 pm", "10 pm", "11 pm"];
+				let actualHours = [];
+
+				for (var hour of allHours) {
+					if (this.hours.includes(hour)) {
+						actualHours.push(hour);
+					}
+				}
+
+				//Convert start and end dates to more readable form
+				let startDateConverted = this.convertDate(this.startDate);
+				let endDateConverted = this.convertDate(this.endDate);
+
+				let datesString = "<br />" + daysString + "<br />" + actualHours[0] + " - " + actualHours[actualHours.length - 1] + "<br /> " + startDateConverted + " thru " + endDateConverted;
+				
+
+				//Combine the address and the dates/hours
+				let output = addressString + "<br />" + datesString + "<br /> <br /> <hr>";
 
 				return output;
 			}
