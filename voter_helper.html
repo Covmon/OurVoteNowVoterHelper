@@ -641,19 +641,19 @@
 						let site2 = new VotingSite(query.earlyVoteSites[1]);
 						let site3 = new VotingSite(query.earlyVoteSites[2]);
 
-						voteSiteHTML += site1.outputVoteSiteInfo() + site2.outputVoteSiteInfo() + site3.outputVoteSiteInfo();
+						voteSiteHTML += site1.outputEarlyVoteSiteInfo() + site2.outputEarlyVoteSiteInfo() + site3.outputEarlyVoteSiteInfo();
 					} else if (voteSiteCount >= 2) {
 						console.log("2 early vote sites found ");
 						let site1 = new VotingSite(query.earlyVoteSites[0]);
 						let site2 = new VotingSite(query.earlyVoteSites[1]);
 
-						voteSiteHTML += site1.outputVoteSiteInfo() + site2.outputVoteSiteInfo();
+						voteSiteHTML += site1.outputEarlyVoteSiteInfo() + site2.outputEarlyVoteSiteInfo();
 
 					} else if (voteSiteCount >= 1) {
 						console.log("Only 1 early vote site found");
 						let site1 = new VotingSite(query.earlyVoteSites[0]);
 
-						voteSiteHTML += site1.outputVoteSiteInfo();
+						voteSiteHTML += site1.outputEarlyVoteSiteInfo();
 
 					} else {
 						console.log("No Early Vote Sites");
@@ -664,7 +664,7 @@
 				
 				} else {
 					title.innerHTML = "Check Back Later";
-					text.innerHTML = "Sorry, early voting locations have not been released for your location yet. Please try again later.";
+					text.innerHTML = "Sorry, early voting locations have not been released yet for your location. Please try again later.";
 				}
 
 
@@ -713,20 +713,45 @@
 
 			} else {
 
-				let election = query.election.name;
-				let date = query.election.electionDay;
+				if ("pollingLocations" in query) {
+					let election = query.election.name;
+					let date = convertDate(query.election.electionDay);
 
-				/*
-				var voteSiteHTML = ""
+					var voteSiteCount = query.pollingLocations.length;
+					console.log(voteSiteCount);
+					var voteSiteHTML = "";
 
-				for (location in query.pollingLocations) {
-					let site = new VotingSite(location.address, location.pollingHours, location.startDate, location.endDate);
+					if (voteSiteCount >= 3) {
+						console.log("At least 3 early vote sites found");
 
-					voteSiteHTML += site.outputVoteSiteInfo();
-				}*/
+						let site1 = new VotingSite(query.pollingLocations[0]);
+						let site2 = new VotingSite(query.pollingLocations[1]);
+						let site3 = new VotingSite(query.pollingLocations[2]);
 
-				title.innerHTML = "Regular voting";
-				text.innerHTML = "Get ready to vote! <br /> <b>Election:</b> " + election + " <br /> <b>Election Day:</b> " + date + "<br /> <br /> <b>Polling place:</b> <br />";
+						voteSiteHTML += site1.outputRegularVoteSiteInfo() + site2.outputRegularVoteSiteInfo() + site3.outputRegularVoteSiteInfo();
+					} else if (voteSiteCount >= 2) {
+						console.log("2 early vote sites found ");
+						let site1 = new VotingSite(query.pollingLocations[0]);
+						let site2 = new VotingSite(query.pollingLocations[1]);
+
+						voteSiteHTML += site1.outputRegularVoteSiteInfo() + site2.outputRegularVoteSiteInfo();
+
+					} else if (voteSiteCount >= 1) {
+						console.log("Only 1 early vote site found");
+						let site1 = new VotingSite(query.pollingLocations[0]);
+
+						voteSiteHTML += site1.outputRegularVoteSiteInfo();
+
+					} else {
+						console.log("No Early Vote Sites");
+					}
+
+					title.innerHTML = "Regular voting";
+					text.innerHTML = "<b>Election:</b> " + election + "<br /> <b>Election Date:</b>" + date + "<br /> <br />" + "<b>Polling Locations:</b><br /> <hr>" + voteSiteHTML + "<br />";
+				} else {
+					title.innerHTML("Check Back Later");
+					text.innerHTML = "Sorry, regular voting locations have not been released yet for your location. Please try again later.";
+				}
 
 			}
 
@@ -809,7 +834,7 @@
   				return  months[Number(temp_date[1]) - 1] + " " + temp_date[2] + ", " + temp_date[0];
 			}
 
-			outputVoteSiteInfo() { //Compile vote site info together into an html snippet and return
+			outputEarlyVoteSiteInfo() { //Compile vote site info together into an html snippet and return
 
 				let addressString = "<br /> <b>" + this.address.locationName + "</b> <br />" + this.address.line1 + "<br />" + this.address.city + ", " + this.address.state + " " + this.address.zip;
 				
@@ -850,6 +875,52 @@
 
 				let datesString = "<br />" + daysString + "<br />" + actualHours[0] + " - " + actualHours[actualHours.length - 1] + "<br /> " + startDateConverted + " thru " + endDateConverted;
 				
+
+				//Combine the address and the dates/hours
+				let output = addressString + "<br />" + datesString + "<br /> <br /> <hr>";
+
+				return output;
+			}
+
+			outputRegularVoteSiteInfo() { //Compile vote site info together into an html snippet and return
+
+				let addressString = "<br /> <b>" + this.address.locationName + "</b> <br />" + this.address.line1 + "<br />" + this.address.city + ", " + this.address.state + " " + this.address.zip;
+
+				//Get which days the polls are open
+				let allDays = ["Sat", "Mon", "Tue", "Wed", "Thu", "Fri", "Sun"];
+				let actualDays = [];
+
+				for (var day of allDays) {
+					if (this.hours.includes(day)) {
+						actualDays.push(day);
+					}
+				}
+
+				var daysString = "";
+				var dayCounter = 0;
+				for (var day of actualDays) {
+					dayCounter++;
+					if (dayCounter < actualDays.length) {
+						daysString += day + ", ";
+					} else {
+						daysString += day;
+					}
+				}
+
+				//Get the hours the polls are open
+				let allHours = ["6 am", "7 am", "8 am", "9 am", "10 am", "11 am", "12 pm", "1 pm", "2 pm", "3 pm", "4 pm", "5 pm", "6 pm", "7 pm", "8 pm", "9 pm", "10 pm", "11 pm"];
+				let actualHours = [];
+
+				for (var hour of allHours) {
+					if (this.hours.includes(hour)) {
+						actualHours.push(hour);
+					}
+				}
+
+				//Convert start and end dates to more readable form
+				let startDateConverted = this.convertDate(this.startDate);
+
+				let datesString = "<br />" + daysString + ", " + actualHours[0] + " - " + actualHours[actualHours.length - 1] + "<br /> " + startDateConverted;
 
 				//Combine the address and the dates/hours
 				let output = addressString + "<br />" + datesString + "<br /> <br /> <hr>";
