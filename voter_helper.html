@@ -287,6 +287,7 @@
 		<div class="content">
 			<h2 id="location-title">Thanks for using the OurVoteNow voter helper tool.</h1>
 			<p id="location-text">Put a map here, and candidate info</p>
+			<p id="locationinfo-text">Yup</p>
 
 			<a href="#" id="location-link" target="_self">
 				<button class="button 4" id="locationinfo-button" category="locationinfo" value="link">Go</button>
@@ -403,8 +404,11 @@
 				collapsibleSection.classList.add("answered");
 
 			} else if (buttonValue == "select") {
-				let address = buttonClicked.getAttribute("address");
-				submitRow(buttonCategory, address);
+
+				//et address = buttonClicked.getAttribute("address");
+				console.log("select button clicked with address " + id);
+				submitRow(buttonCategory, id);
+
 			} else { //this is a select button that's not already active
 				if (responses[buttonCategory] != "") { //Is there already another button in this category selected?
 
@@ -439,6 +443,7 @@
 					submitVoteType();
 					break;
 				case "site":
+					console.log("submit row with additional info " + additionalInfo);
 					submitSiteChoice(additionalInfo);
 					break;
 			}
@@ -576,7 +581,7 @@
 		}
 
 		function submitSiteChoice(address) {
-			console.log("Submitted Voting Site Choice");
+			console.log("Submitted Voting Site Choice with address" + address);
 
 			var currentCollapsible = document.getElementById("coll-instructions");
 			closeCollapsable(currentCollapsible);
@@ -595,6 +600,9 @@
 		}
 		
 		function displayLocationPanel(address) {
+
+			let text = document.getElementById("locationinfo-text");
+			text.innerHTML = address;
 
 		}
 
@@ -933,7 +941,8 @@
 
 				let datesString = "<br />" + daysString + "<br />" + actualHours[0] + " - " + actualHours[actualHours.length - 1] + "<br /> " + startDateConverted + " thru " + endDateConverted;
 				
-				let buttonString = "<button class='button site-button' id='site-submit' category='site' address='" + basicAddress + "' value='select'>Select This Site</button>";
+				console.log("creatin button with basic address " + basicAddress);
+				let buttonString = "<button class='button site-button' category='site' id='" + basicAddress + "' value='select'>Select This Site</button>";
 
 				//Combine the address and the dates/hours
 				let output = addressString + "<br />" + datesString + "<br /> <br />" + buttonString + "<br /> <br /> <hr>";
@@ -982,7 +991,7 @@
 
 				let datesString = "<br />" + daysString + ", " + actualHours[0] + " - " + actualHours[actualHours.length - 1] + "<br /> " + startDateConverted;
 				
-				let buttonString = "<button class='button site-button' id='site-submit' category='site' address='" + basicAddress + "' value='select'>Select This Site</button>";
+				let buttonString = "<button class='button site-button' category='site' id='" + basicAddress + "' value='select'>Select This Site</button>";
 
 				//Combine the address and the dates/hours
 				let output = addressString + "<br />" + datesString + "<br /> <br />" + buttonString + "<br /> <br /> <hr>";
