@@ -405,22 +405,24 @@
 
 			console.log("Button clicked of category: " + buttonCategory + ", value: " + buttonValue);
 
-			if (buttonValue == responses[buttonCategory]) { //we clicked a select button that's already active
+			if (buttonValue == responses[buttonCategory]) { //we clicked a select button that's already active, unfill it
 				buttonClicked.classList.remove("button-active");
 				collapsibleSection.classList.remove("answered");
 
 
 				responses[buttonCategory] = "";
 
-			} else if (buttonValue == "submit" || buttonValue == "link") { //this is a submit button
+			} else if (buttonValue == "submit") { //this is a submit button, mark the row as answered but don't fill in the button
 
 				submitRow(buttonCategory);
 				collapsibleSection.classList.add("answered");
 
-			} else if (buttonValue == "select") {
+			} else if (buttonValue == "link") { //this is a link to another page
 
-				//et address = buttonClicked.getAttribute("address");
-				console.log("select button clicked with address " + id);
+				submitRow(buttonCategory);
+
+			} else if (buttonValue == "select") {//this selects a choice but does not mark a row as answered
+
 				submitRow(buttonCategory, id);
 
 			} else { //this is a select button that's not already active
@@ -735,7 +737,7 @@
 						console.log("No Early Vote Sites");
 					}
 
-					title.innerHTML = "Early Voting";
+					title.innerHTML = "Early Voting Locations and Times";
 					text.innerHTML = "<b>Election:</b> " + election + "<br /> <br />" + "<b>Early Voting Sites:</b><br /> <hr>" + voteSiteHTML + "<br />";
 					
 					activateSiteButtons();
