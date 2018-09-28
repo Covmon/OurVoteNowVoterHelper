@@ -157,7 +157,7 @@
 
 		#iframe-map {
 			width: 40vw;
-			height: 200px;
+			height: 400px;
 		}
 
 
@@ -283,17 +283,22 @@
 	</div>
 
 	<!--More info about an election or voting site appears here-->
-	<div class="wrapper hidden" id="locationinfo">
-		<button class="collapsible locked" id="coll-locationinfo">More info</button>
+	<div class="wrapper hidden" id="info">
+		<button class="collapsible locked" id="coll-info">More info</button>
 		<div class="content">
 			<h2 id="location-title">Thanks for using the OurVoteNow voter helper tool.</h1>
 			<p id="location-text">Put a map here, and candidate info</p>
-			<p id="locationinfo-text">Yup</p>
 			<div id="map">
 			</div>
+			<br />
+			<hr>
+			<br />
+			<br />
+			<h2 id="electioninfo-title">Candidates and Sample Ballots</h2>
+			<p>Coming soon...</p>
 
 			<a href="#" id="location-link" target="_self">
-				<button class="button 4" id="locationinfo-button" category="locationinfo" value="link">Go</button>
+				<button class="button 4" id="info-button" category="info" value="link">Go</button>
 			</a>
 
 		</div>
@@ -338,7 +343,8 @@
 			    if (content.style.maxHeight){
 			      content.style.maxHeight = null;
 			    } else {
-			      content.style.maxHeight = content.scrollHeight + 100 + "px";
+				console.log(content.scrollHeight + 100 + "px");
+			    content.style.maxHeight = content.scrollHeight + 100 + "px";
 			    } 
 			}
 		}
@@ -349,8 +355,13 @@
 				return;
 			} else {
 				collapse.classList.add("active");
-			    var content = collapse.nextElementSibling;
-			    content.style.maxHeight = content.scrollHeight + 100 + "px";
+				var content = collapse.nextElementSibling;
+				console.log(content.scrollHeight + 100 + "px");
+				if (collapse.id == "coll-info") {
+					content.style.maxHeight = content.scrollHeight + 500 + "px";
+				} else {
+					content.style.maxHeight = content.scrollHeight + 100 + "px";
+				}
 			}
 		}
 
@@ -594,27 +605,21 @@
 		}
 
 		function openLocationPanel() {
-			nextSection = document.getElementById("locationinfo");
+			nextSection = document.getElementById("info");
 			nextSection.classList.remove("hidden");
 
-			nextCollapsible = document.getElementById("coll-locationinfo");
+			nextCollapsible = document.getElementById("coll-info");
 			nextCollapsible.classList.remove("locked");
 			openCollapsable(nextCollapsible);
 		}
 		
 		function displayLocationPanel(address) {
 
-			let text = document.getElementById("locationinfo-text");
-			text.innerHTML = address;
+			let title = document.getElementById("location-title");
+			title.innerHTML = "Map";
 
 			let mapDiv = document.getElementById("map");
-			//map.innerHTML = mapsEmbed(address);
-			let iframe = mapsEmbed(address);
-			mapDiv.appendChild(iframe);
-			iframe.contentWindow.document.open();
-			iframe.contentWindow.document.write(html);
-			iframe.contentWindow.document.close();
-
+			mapDiv.innerHTML = mapsEmbed(address);
 		}
 
 		function openInstructionsPanel(nextSection, nextCollapsible) {
@@ -857,15 +862,10 @@
 
 		function mapsEmbed(address) {
 			let key = "AIzaSyDK3ZSMvwY6jtfrrJyzuTEmEmr3PLwHePU";
-			let code = "<iframe width='500' height='300' id='iframe-map' frameborder= '0' style='border:0' src='https://www.google.com/maps/embed/v1/place?key=" + key + "&q=" + address + " allowfullscreen></iframe>";
+			var addressPlus = address.split(' ').join('+');
+			let code = '<iframe id="iframe-map" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=' + key + '&zoom=15&q=' + addressPlus + '" allowfullscreen></iframe>';
 
-			var iframe = document.createElement('iframe');
-			iframe.setAttribute("id", "iframe-map");
-			iframe.setAttribute("frameborder", "0");
-			iframe.setAttribute("style", "border:0");
-			iframe.setAttribute("src", "src='https://www.google.com/maps/embed/v1/place?key=" + key + "&q=" + address);
-
-			return iframe;
+			return code;
 		}
 
 	    /*function displayUserElections  ()  {
