@@ -155,8 +155,9 @@
 			/*outline: 0 none;*/
 		}
 
-		select:focus {
-			/*border: 3px solid #ee3233;*/
+		#iframe-map {
+			width: 40vw;
+			height: 200px;
 		}
 
 
@@ -288,6 +289,8 @@
 			<h2 id="location-title">Thanks for using the OurVoteNow voter helper tool.</h1>
 			<p id="location-text">Put a map here, and candidate info</p>
 			<p id="locationinfo-text">Yup</p>
+			<div id="map">
+			</div>
 
 			<a href="#" id="location-link" target="_self">
 				<button class="button 4" id="locationinfo-button" category="locationinfo" value="link">Go</button>
@@ -604,6 +607,14 @@
 			let text = document.getElementById("locationinfo-text");
 			text.innerHTML = address;
 
+			let mapDiv = document.getElementById("map");
+			//map.innerHTML = mapsEmbed(address);
+			let iframe = mapsEmbed(address);
+			mapDiv.appendChild(iframe);
+			iframe.contentWindow.document.open();
+			iframe.contentWindow.document.write(html);
+			iframe.contentWindow.document.close();
+
 		}
 
 		function openInstructionsPanel(nextSection, nextCollapsible) {
@@ -831,7 +842,7 @@
 			var testURL = "https://www.googleapis.com/civicinfo/v2/voterinfo?address=104-N-1st-St-Belen-NM-87002&electionId=6000&key=AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
 
 			var xmlHttp = new XMLHttpRequest();
-		    xmlHttp.open( "GET", url, false ); // false for synchronous request
+		    xmlHttp.open( "GET", testURL, false ); // false for synchronous request
 		    xmlHttp.send( null );
 		    var responseText = xmlHttp.responseText;
 		    var responseObject = JSON.parse(responseText);
@@ -842,6 +853,19 @@
 
 
 		    return responseObject;
+		}
+
+		function mapsEmbed(address) {
+			let key = "AIzaSyDK3ZSMvwY6jtfrrJyzuTEmEmr3PLwHePU";
+			let code = "<iframe width='500' height='300' id='iframe-map' frameborder= '0' style='border:0' src='https://www.google.com/maps/embed/v1/place?key=" + key + "&q=" + address + " allowfullscreen></iframe>";
+
+			var iframe = document.createElement('iframe');
+			iframe.setAttribute("id", "iframe-map");
+			iframe.setAttribute("frameborder", "0");
+			iframe.setAttribute("style", "border:0");
+			iframe.setAttribute("src", "src='https://www.google.com/maps/embed/v1/place?key=" + key + "&q=" + address);
+
+			return iframe;
 		}
 
 	    /*function displayUserElections  ()  {
