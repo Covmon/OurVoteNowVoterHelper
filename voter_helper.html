@@ -281,6 +281,20 @@
 		</div>
 	</div>
 
+	<!--More info about an election or voting site appears here-->
+	<div class="wrapper hidden" id="locationinfo">
+		<button class="collapsible locked" id="coll-locationinfo">More info</button>
+		<div class="content">
+			<h2 id="location-title">Thanks for using the OurVoteNow voter helper tool.</h1>
+			<p id="location-text">Put a map here, and candidate info</p>
+
+			<a href="#" id="location-link" target="_self">
+				<button class="button 4" id="locationinfo-button" category="locationinfo" value="link">Go</button>
+			</a>
+
+		</div>
+	</div>
+
 
 	<script type="text/javascript">
 
@@ -355,6 +369,15 @@
 			}
 		}
 
+		function activateSiteButtons() {
+			var buttons = document.getElementsByClassName("button site-button");
+			for (i = 0; i < buttons.length; i++) {
+		  		buttons[i].addEventListener("click", function() {
+		  			clickButton(this.id)
+		  		});
+			}
+		}
+
 		function clickButton(id) {
 
 			//var classClicked = document.getElementsByClassName(classs);
@@ -379,6 +402,9 @@
 				submitRow(buttonCategory);
 				collapsibleSection.classList.add("answered");
 
+			} else if (buttonValue == "select") {
+				let address = buttonClicked.getAttribute("address");
+				submitRow(buttonCategory, address);
 			} else { //this is a select button that's not already active
 				if (responses[buttonCategory] != "") { //Is there already another button in this category selected?
 
@@ -398,7 +424,7 @@
 			}
 		}
 
-		function submitRow(buttonCategory) {
+		function submitRow(buttonCategory, additionalInfo="") {
 			switch(buttonCategory) {
 				case "registered":
 					submitRegistered();
@@ -411,6 +437,9 @@
 					break;
 				case "votetype":
 					submitVoteType();
+					break;
+				case "site":
+					submitSiteChoice(additionalInfo);
 					break;
 			}
 		}
@@ -546,6 +575,29 @@
 			}
 		}
 
+		function submitSiteChoice(address) {
+			console.log("Submitted Voting Site Choice");
+
+			var currentCollapsible = document.getElementById("coll-instructions");
+			closeCollapsable(currentCollapsible);
+
+			openLocationPanel();
+			displayLocationPanel(address);
+		}
+
+		function openLocationPanel() {
+			nextSection = document.getElementById("locationinfo");
+			nextSection.classList.remove("hidden");
+
+			nextCollapsible = document.getElementById("coll-locationinfo");
+			nextCollapsible.classList.remove("locked");
+			openCollapsable(nextCollapsible);
+		}
+		
+		function displayLocationPanel(address) {
+
+		}
+
 		function openInstructionsPanel(nextSection, nextCollapsible) {
 			nextSection = document.getElementById("instructions");
 			nextSection.classList.remove("hidden");
@@ -661,7 +713,9 @@
 
 					title.innerHTML = "Early Voting";
 					text.innerHTML = "<b>Election:</b> " + election + "<br /> <br />" + "<b>Early Voting Sites:</b><br /> <hr>" + voteSiteHTML + "<br />";
-				
+					
+					activateSiteButtons();
+
 				} else {
 					title.innerHTML = "Check Back Later";
 					text.innerHTML = "Sorry, early voting locations have not been released yet for your location. Please try again later.";
@@ -748,6 +802,9 @@
 
 					title.innerHTML = "Regular voting";
 					text.innerHTML = "<b>Election:</b> " + election + "<br /> <b>Election Date:</b>" + date + "<br /> <br />" + "<b>Polling Locations:</b><br /> <hr>" + voteSiteHTML + "<br />";
+				
+					activateSiteButtons();
+
 				} else {
 					title.innerHTML = "Check Back Later";
 					text.innerHTML = "Sorry, regular voting locations have not been released yet for your location. Please try again later.";
@@ -836,6 +893,7 @@
 
 			outputEarlyVoteSiteInfo() { //Compile vote site info together into an html snippet and return
 
+				let basicAddress = this.address.line1 + " " + this.address.city + " " + this.address.state + " " + this.address.zip;
 				let addressString = "<br /> <b>" + this.address.locationName + "</b> <br />" + this.address.line1 + "<br />" + this.address.city + ", " + this.address.state + " " + this.address.zip;
 				
 				//Get which days the polls are open
@@ -875,15 +933,17 @@
 
 				let datesString = "<br />" + daysString + "<br />" + actualHours[0] + " - " + actualHours[actualHours.length - 1] + "<br /> " + startDateConverted + " thru " + endDateConverted;
 				
+				let buttonString = "<button class='button site-button' id='site-submit' category='site' address='" + basicAddress + "' value='select'>Select This Site</button>";
 
 				//Combine the address and the dates/hours
-				let output = addressString + "<br />" + datesString + "<br /> <br /> <hr>";
+				let output = addressString + "<br />" + datesString + "<br /> <br />" + buttonString + "<br /> <br /> <hr>";
 
 				return output;
 			}
 
 			outputRegularVoteSiteInfo() { //Compile vote site info together into an html snippet and return
 
+				let basicAddress = this.address.line1 + " " + this.address.city + " " + this.address.state + " " + this.address.zip;
 				let addressString = "<br /> <b>" + this.address.locationName + "</b> <br />" + this.address.line1 + "<br />" + this.address.city + ", " + this.address.state + " " + this.address.zip;
 
 				//Get which days the polls are open
@@ -921,9 +981,11 @@
 				let startDateConverted = this.convertDate(this.startDate);
 
 				let datesString = "<br />" + daysString + ", " + actualHours[0] + " - " + actualHours[actualHours.length - 1] + "<br /> " + startDateConverted;
+				
+				let buttonString = "<button class='button site-button' id='site-submit' category='site' address='" + basicAddress + "' value='select'>Select This Site</button>";
 
 				//Combine the address and the dates/hours
-				let output = addressString + "<br />" + datesString + "<br /> <br /> <hr>";
+				let output = addressString + "<br />" + datesString + "<br /> <br />" + buttonString + "<br /> <br /> <hr>";
 
 				return output;
 			}
