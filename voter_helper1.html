@@ -1,5 +1,7 @@
 <html>
 
+<meta name=viewport content="width=device-width, initial-scale=1">
+
 <head>
 	<style type="text/css">
 
@@ -10,6 +12,12 @@
 		p {
 			padding: 10px;
 			padding-bottom: 0px;
+			color: black;
+		}
+
+		h2 {
+			margin-top: 20px;
+			color: black;
 		}
 
 		.wrapper {
@@ -45,8 +53,7 @@
 		}
 
 		.collapsible:after {
-			content:'\1F512';
-			background-color: #ee3233;
+			content:'\002b'; /*Plus sign*/
 			font-size: 13px;
 			font-weight: bold;
 			color: white;
@@ -54,7 +61,15 @@
 		}
 
 		.active:after {
-			content: "\2714";
+			content: "\2212"; /*Minus sign*/
+		}
+
+		.answered:after {
+			content: "\2705"; /*Check mark*/
+		}
+
+		.locked:after {
+			content: "\1F512" /*Locked Sign*/
 		}
 
 		.content {
@@ -63,24 +78,24 @@
   			overflow: hidden;
   			transition: max-height 0.4s ease-out;
   			background-color: rgb(230, 230, 230);
-  			/*
-  			display: flex;
- 			justify-content: center;*/
+  			display: block;
+ 			/*justify-content: center;*/
  			border-radius: 2px;
  			margin: 0 auto;
 		}
 
 		.button {
-			font-size: 15px;
+			/*identify in terms of other stuff*/
 			background-color: white;
-			border-radius: 1px;
 			color: #ee3233;
 			border: 2px solid #ee3233;
+			border-radius: 1px;
+			font-size: 15px;
 			padding: 8px 16px;
+			margin: 15px 5px;
 			-webkit-transition-duration: 0.4s; /*for safari*/
 			transition-duration: 0.4s;
 			cursor: pointer;
-			margin: 15px 5px;
 		}
 
 		.button:hover {
@@ -126,18 +141,30 @@
 			background-color: white;
 		}
 
+		@media only screen and (max-width: 600px) {
+    		.collapsible {
+				width: 75vw;
+    		}
+    		.content {
+    			width: 75vw;
+    		}
+    	}
+
 		select {
 			font-size: 25px;
 			/*outline: 0 none;*/
 		}
 
-		select:focus {
-			/*border: 3px solid #ee3233;*/
+		#iframe-map {
+			width: 40vw;
+			height: 400px;
 		}
 
 
 	</style>
 
+	<!-- AddEvent script -->
+	<script type="text/javascript" src="https://addevent.com/libs/atc/1.6.1/atc.min.js" async defer></script>
 
 </head>
 
@@ -157,7 +184,7 @@
 
 	<!--Category: "age"-->
 	<div class="wrapper hidden" id="age">
-		<button class = "collapsible" id="coll-age">What's your age?</button>
+		<button class = "collapsible locked" id="coll-age">What's your age?</button>
 		<div class="content">
 
 			<button class="button 2" id="age-younger" category="age" value="younger">Younger than 17 1/2</button>
@@ -166,8 +193,8 @@
 	</div>
 
 	<!--Category: "address"-->
-	<div class="wrapper shaded" id="address">
-		<button class = "collapsible" id="coll-address">Where's your residence address?</button>
+	<div class="wrapper" id="address">
+		<button class = "collapsible locked" id="coll-address">Where's your residence address?</button>
 		<div class="content">
 
 			<input class="input-text" type="text" name="street" value="" id="street" placeholder="Street">
@@ -175,8 +202,56 @@
 			<select class="select" name="state" id="state">
 				<option value="" disabled selected>State</option>
 				<option value="GA">GA</option>
+				<option value="AL">AL</option>
+				<option value="AK">AK</option>
+				<option value="AR">AR</option>	
+				<option value="AZ">AZ</option>
+				<option value="CA">CA</option>
+				<option value="CO">CO</option>
+				<option value="CT">CT</option>
+				<option value="DC">DC</option>
+				<option value="DE">DE</option>
 				<option value="FL">FL</option>
-				<option value="other">Other</option>
+				<option value="HI">HI</option>
+				<option value="IA">IA</option>	
+				<option value="ID">ID</option>
+				<option value="IL">IL</option>
+				<option value="IN">IN</option>
+				<option value="KS">KS</option>
+				<option value="KY">KY</option>
+				<option value="LA">LA</option>
+				<option value="MA">MA</option>
+				<option value="MD">MD</option>
+				<option value="ME">ME</option>
+				<option value="MI">MI</option>
+				<option value="MN">MN</option>
+				<option value="MO">MO</option>	
+				<option value="MS">MS</option>
+				<option value="MT">MT</option>
+				<option value="NC">NC</option>	
+				<option value="NE">NE</option>
+				<option value="NH">NH</option>
+				<option value="NJ">NJ</option>
+				<option value="NM">NM</option>			
+				<option value="NV">NV</option>
+				<option value="NY">NY</option>
+				<option value="ND">ND</option>
+				<option value="OH">OH</option>
+				<option value="OK">OK</option>
+				<option value="OR">OR</option>
+				<option value="PA">PA</option>
+				<option value="RI">RI</option>
+				<option value="SC">SC</option>
+				<option value="SD">SD</option>
+				<option value="TN">TN</option>
+				<option value="TX">TX</option>
+				<option value="UT">UT</option>
+				<option value="VT">VT</option>
+				<option value="VA">VA</option>
+				<option value="WA">WA</option>
+				<option value="WI">WI</option>	
+				<option value="WV">WV</option>
+				<option value="WY">WY</option>
 			</select>
 			<input class="input-text" type="text" name="zip" id="zip" value="" placeholder="Zip">
 
@@ -186,8 +261,8 @@
 	</div>
 
 	<!--Category: "votetype"-->
-	<div class="wrapper shaded" id="votetype">
-		<button class = "collapsible" id="coll-votetype">How do you want to vote?</button>
+	<div class="wrapper" id="votetype">
+		<button class = "collapsible locked" id="coll-votetype">How do you want to vote?</button>
 		<div class="content">
 			<button class="button 5" id="votetype-early" category="votetype" value="early">Early</button>
 			<button class="button 5" id="votetype-absentee" category="votetype" value="absentee">Absentee</button>
@@ -196,8 +271,8 @@
 	</div>
 
 	<!--Your personalized instructions appear here-->
-	<div class="wrapper shaded" id="instructions">
-		<button class="collapsible" id="coll-instructions">Your next steps...</button>
+	<div class="wrapper" id="instructions">
+		<button class="collapsible locked" id="coll-instructions">Your next steps...</button>
 		<div class="content">
 			<h2 id="instructions-title">Thanks for using the OurVoteNow voter helper tool.</h1>
 			<p id="instructions-text">Here are those instructions</p>
@@ -209,16 +284,52 @@
 		</div>
 	</div>
 
+	<!--More info about an election or voting site appears here-->
+	<div class="wrapper hidden" id="info">
+		<button class="collapsible locked" id="coll-info">More info</button>
+		<div class="content">
+			<h2 id="location-title">Thanks for using the OurVoteNow voter helper tool.</h1>
+			<p id="location-text">Put a map here, and candidate info</p>
+			<div id="map">
+			</div>
+			<br />
+			<hr>
+			<br />
+			<!--https://www.addevent.com/add-to-calendar-button-->
+			<h2>Add to Calendar</h2> 
+			<div title="Add to Calendar" class="addeventatc">
+				Add to Calendar
+				<!--Whenever they say the are going to vote-->
+			    <span class="location-calender-start" id="location-calender-button-start">10/15/2018 08:00 AM</span> 
+			    <span class="location-calender-end" id="location-calender-button-end">10/15/2018 10:00 AM</span>
+			    <span class="location-calender-timezone" id="location-calender-button-timezone">America/Los_Angeles</span>
+			    <span class="location-calender-title" id="location-calender-button-title">2018 US Midterm Voting</span>
+			    <span class="location-calender-description" id="location-calender-button-description">Every vote matters!</span>
+			    <span class="location-calender-location" id="location-calender-button-location">Location of the event</span>
+			    <span class="alarm_reminder">1440</span>
+			    <span class="alarm_reminder">60</span>
+			</div>
+			<br>
+			<hr>
+			<br />
+			<h2 id="electioninfo-title">Candidates and Sample Ballots</h2>
+			<p>Coming soon...</p>
+
+			<a href="#" id="location-link" target="_self">
+				<button class="button 4" id="info-button" category="info" value="link">Go</button>
+			</a>
+
+		</div>
+	</div>
+
 
 	<script type="text/javascript">
 
 		var currentSelections = ["1-0", "2-0"];
-		var responses = {"registered": "", "age": "", "address": "", "votetype": ""};
+		var responses = {"registered": "", "age": "", "address": ["", "", "", ""], "votetype": ""};
 
 		setupButtonEvents();
 		setupCollapsibles();
-
-
 		
 		//Add collapse and expand events to all collapsibles
 		function setupCollapsibles() {
@@ -241,13 +352,44 @@
 		}
 
 		function toggleCollapsable(collapse) {
-			collapse.classList.toggle("active");
+			console.log("TOGGLE A COLLAPSIBLE");
+			if (collapse.classList.contains("locked")) { //This row is locked, don't open it up
+				return;
+			} else {
+				collapse.classList.toggle("active");
 			    var content = collapse.nextElementSibling;
 			    if (content.style.maxHeight){
 			      content.style.maxHeight = null;
 			    } else {
-			      content.style.maxHeight = content.scrollHeight + 100 + "px";
+				console.log(content.scrollHeight + 100 + "px");
+			    content.style.maxHeight = content.scrollHeight + 100 + "px";
 			    } 
+			}
+		}
+
+		function openCollapsable(collapse) {
+			console.log("OPEN A COLLAPSIBLE");
+			if (collapse.classList.contains("locked")) { //Row is locked or already open, don't open it up again
+				return;
+			} else {
+				collapse.classList.add("active");
+				var content = collapse.nextElementSibling;
+				console.log(content.scrollHeight + 100 + "px");
+				if (collapse.id == "coll-info") {
+					content.style.maxHeight = content.scrollHeight + 500 + "px";
+				} else {
+					content.style.maxHeight = content.scrollHeight + 100 + "px";
+				}
+			}
+		}
+
+		function closeCollapsable(collapse) {
+			console.log("CLOSE A COLLAPSIBLE");
+			collapse.classList.remove("active");
+			var content = collapse.nextElementSibling;
+			if (content.style.maxHeight){
+				content.style.maxHeight = null;
+			}
 		}
 
 		//Add click button events to all buttons
@@ -260,25 +402,48 @@
 			}
 		}
 
+		function activateSiteButtons() {
+			var buttons = document.getElementsByClassName("button site-button");
+			for (i = 0; i < buttons.length; i++) {
+		  		buttons[i].addEventListener("click", function() {
+		  			clickButton(this.id)
+		  		});
+			}
+		}
+
 		function clickButton(id) {
 
+			//var classClicked = document.getElementsByClassName(classs);
 			var buttonClicked = document.getElementById(id);
 			var buttonValue = buttonClicked.value;
 			var buttonCategory = buttonClicked.getAttribute("category");
+			var collapsibleID = "coll-" + buttonCategory;
+			var collapsibleSection = document.getElementById(collapsibleID);
+			//classClicked.classList.add("answered");
 
 			console.log("Button clicked of category: " + buttonCategory + ", value: " + buttonValue);
 
-			if (buttonValue == responses[buttonCategory]) { //we clicked a select button that's already active
+			if (buttonValue == responses[buttonCategory]) { //we clicked a select button that's already active, unfill it
 				buttonClicked.classList.remove("button-active");
+				collapsibleSection.classList.remove("answered");
+
 
 				responses[buttonCategory] = "";
 
-			} else if (buttonValue == "submit" || buttonValue == "link") { //this is a submit button
+			} else if (buttonValue == "submit") { //this is a submit button, mark the row as answered but don't fill in the button
+
+				submitRow(buttonCategory);
+				collapsibleSection.classList.add("answered");
+
+			} else if (buttonValue == "link") { //this is a link to another page
 
 				submitRow(buttonCategory);
 
-			} else { //this is a select button that's not already active
+			} else if (buttonValue == "select") {//this selects a choice but does not mark a row as answered
 
+				submitRow(buttonCategory, id);
+
+			} else { //this is a select button that's not already active
 				if (responses[buttonCategory] != "") { //Is there already another button in this category selected?
 
 					var otherID = "" + buttonCategory + "-" + responses[buttonCategory]; //eg "age" + "younger" = "age-younger"
@@ -288,14 +453,14 @@
 
 				responses[buttonCategory] = buttonValue;
 				buttonClicked.classList.add("button-active");
-
+				collapsibleSection.classList.add("answered");
 
 				submitRow(buttonCategory);
 
 			}
 		}
 
-		function submitRow(buttonCategory) {
+		function submitRow(buttonCategory, additionalInfo="") {
 			switch(buttonCategory) {
 				case "registered":
 					submitRegistered();
@@ -308,6 +473,10 @@
 					break;
 				case "votetype":
 					submitVoteType();
+					break;
+				case "site":
+					console.log("submit row with additional info " + additionalInfo);
+					submitSiteChoice(additionalInfo);
 					break;
 			}
 		}
@@ -323,17 +492,18 @@
 			if (registeredValue == "yes") {
 
 				nextSection = document.getElementById("address");
-				nextSection.classList.remove("shaded");
 
 				nextCollapsible = document.getElementById("coll-address");
+				nextCollapsible.classList.remove("locked");
 				toggleCollapsable(nextCollapsible);
 
 			} else if (registeredValue == "maybe" || registeredValue == "no") {
 
 				nextSection = document.getElementById("age");
-				nextSection.classList.remove("shaded");
+				nextSection.classList.remove("hidden");
 
 				nextCollapsible = document.getElementById("coll-age");
+				nextCollapsible.classList.remove("locked");
 				toggleCollapsable(nextCollapsible);
 			} else {
 
@@ -355,7 +525,7 @@
 			if (ageValue == "younger") {
 
 				displayInstructionsTooYoung();
-				toggleInstructionsPanel(nextSection, nextCollapsible);
+				openInstructionsPanel(nextSection, nextCollapsible);
 				
 			} else if (ageValue == "older") {
 
@@ -365,12 +535,12 @@
 				if (registered == "maybe") {
 
 					displayInstructionsCheckRegistration();
-					toggleInstructionsPanel(nextSection, nextCollapsible);
+					openInstructionsPanel(nextSection, nextCollapsible);
 
 				} else if (registered == "no") {
 
 					displayInstructionsRegister();
-					toggleInstructionsPanel(nextSection, nextCollapsible);
+					openInstructionsPanel(nextSection, nextCollapsible);
 
 				} else if (registered == "yes") {
 					console.log("ERROR: how did we get here?");
@@ -391,17 +561,26 @@
 			var address = "" + street + " " + city + " " + state + " " + zip;
 			console.log(address);
 
-			responses["address"] = address;
+			responses["address"] = [street, city, state, zip];
+			
+			if (responses["votetype"] == "") {
+				var nextSection = document.getElementById("votetype");
+				var nextCollapsible = document.getElementById("coll-votetype");
+				nextCollapsible.classList.remove("locked");
 
-			var nextSection = document.getElementById("votetype");
-			var nextCollapsible = document.getElementById("coll-votetype");
+				var currentCollapsible = document.getElementById("coll-address");
 
-			var currentCollapsible = document.getElementById("coll-address");
+				nextSection.classList.remove("hidden");
+				toggleCollapsable(nextCollapsible);
+				toggleCollapsable(currentCollapsible);
+			} else {
+				var currentCollapsible = document.getElementById("coll-address");
+				toggleCollapsable(currentCollapsible);
 
-			nextSection.classList.remove("hidden");
-
-			toggleCollapsable(currentCollapsible);
-			toggleCollapsable(nextCollapsible);
+				submitVoteType();
+			}
+			
+				
 		}
 
 		function submitVoteType() {
@@ -411,34 +590,66 @@
 			var nextCollapsible;
 
 			var currentCollapsible = document.getElementById("coll-votetype");
-			toggleCollapsable(currentCollapsible);
+			closeCollapsable(currentCollapsible);
 
 			if (votetypeValue == "early") {
 
 				displayInstructionsEarlyVoting();
-				toggleInstructionsPanel(nextSection, nextCollapsible);
+				openInstructionsPanel(nextSection, nextCollapsible);
 
 			} else if (votetypeValue == "absentee") {
 
 				displayInstructionsAbsenteeVoting();
-				toggleInstructionsPanel(nextSection, nextCollapsible);
+				openInstructionsPanel(nextSection, nextCollapsible);
 
 			} else if (votetypeValue == "regular") {
 
 				displayInstructionsRegularVoting();
-				toggleInstructionsPanel(nextSection, nextCollapsible);
+				openInstructionsPanel(nextSection, nextCollapsible);
 
 			} else {
 				console.log("ERROR: votetype value not valid");
 			}
 		}
 
-		function toggleInstructionsPanel(nextSection, nextCollapsible) {
+		function submitSiteChoice(address) {
+			console.log("Submitted Voting Site Choice with address" + address);
+
+			var currentCollapsible = document.getElementById("coll-instructions");
+			closeCollapsable(currentCollapsible);
+
+			openLocationPanel();
+			displayLocationPanel(address);
+		}
+
+		function openLocationPanel() {
+			nextSection = document.getElementById("info");
+			nextSection.classList.remove("hidden");
+
+			nextCollapsible = document.getElementById("coll-info");
+			nextCollapsible.classList.remove("locked");
+			openCollapsable(nextCollapsible);
+		}
+		
+		function displayLocationPanel(address) {
+
+			let title = document.getElementById("location-title");
+			title.innerHTML = "Map";
+
+			let mapDiv = document.getElementById("map");
+			mapDiv.innerHTML = mapsEmbed(address);
+
+			/*let buttonDiv = document.getElementById("location-calender-button-location");
+			buttonDiv.innerHTML = address;*/
+		}
+
+		function openInstructionsPanel(nextSection, nextCollapsible) {
 			nextSection = document.getElementById("instructions");
 			nextSection.classList.remove("hidden");
 
 			nextCollapsible = document.getElementById("coll-instructions");
-			toggleCollapsable(nextCollapsible);
+			nextCollapsible.classList.remove("locked");
+			openCollapsable(nextCollapsible);
 		}
 
 		function displayInstructionsTooYoung() {
@@ -492,10 +703,71 @@
 
 			link.setAttribute("href", "https://www.mvp.sos.ga.gov/MVP/mvp.do");
 			link.setAttribute("target", "_blank");
-			button.innerHTML = "How to vote early";
+			button.innerHTML = "More Early Voting Info";
 
-			title.innerHTML = "Early voting";
-			text.innerHTML = "Awesome! The General Election takes place November 6th, but you can vote early from XX/XX until XX/XX. Use this link to find your early voting location:";
+			let street = responses["address"][0]; //First element of the "address" array in responses[] is street
+			let city = responses["address"][1]; //Second element is city
+			let state = responses["address"][2]; //Etc.
+			let zip = responses["address"][3];
+
+			let query = voterInfoQuery(street, city, state, zip, 6000);
+
+			if ("error" in query) { //Was there an error returned instead of voting info?
+				console.log("Error");
+
+				title.innerHTML = "Error";
+
+				if (query.error.errors[0].reason == "parseError") {
+					text.innerHTML = "Please enter a valid address and try again.";
+				}
+
+			} else { //No error
+
+				let election = query.election.name;
+				let date = query.election.electionDay;
+
+				if ("earlyVoteSites" in query) {
+					var voteSiteCount = query.earlyVoteSites.length;
+					console.log(voteSiteCount);
+					var voteSiteHTML = "";
+
+					if (voteSiteCount >= 3) {
+						console.log("At least 3 early vote sites found");
+
+						let site1 = new VotingSite(query.earlyVoteSites[0]);
+						let site2 = new VotingSite(query.earlyVoteSites[1]);
+						let site3 = new VotingSite(query.earlyVoteSites[2]);
+
+						voteSiteHTML += site1.outputEarlyVoteSiteInfo() + site2.outputEarlyVoteSiteInfo() + site3.outputEarlyVoteSiteInfo();
+					} else if (voteSiteCount >= 2) {
+						console.log("2 early vote sites found ");
+						let site1 = new VotingSite(query.earlyVoteSites[0]);
+						let site2 = new VotingSite(query.earlyVoteSites[1]);
+
+						voteSiteHTML += site1.outputEarlyVoteSiteInfo() + site2.outputEarlyVoteSiteInfo();
+
+					} else if (voteSiteCount >= 1) {
+						console.log("Only 1 early vote site found");
+						let site1 = new VotingSite(query.earlyVoteSites[0]);
+
+						voteSiteHTML += site1.outputEarlyVoteSiteInfo();
+
+					} else {
+						console.log("No Early Vote Sites");
+					}
+
+					title.innerHTML = "Early Voting Locations and Times";
+					text.innerHTML = "<b>Election:</b> " + election + "<br /> <br />" + "<b>Early Voting Sites:</b><br /> <hr>" + voteSiteHTML + "<br />";
+					
+					activateSiteButtons();
+
+				} else {
+					title.innerHTML = "Check Back Later";
+					text.innerHTML = "Sorry, early voting locations have not been released yet for your location. Please try again later.";
+				}
+
+
+			}
 		}
 
 		function displayInstructionsAbsenteeVoting() {
@@ -520,11 +792,261 @@
 
 			link.setAttribute("href", "https://www.mvp.sos.ga.gov/MVP/mvp.do");
 			link.setAttribute("target", "_blank");
-			button.innerHTML = "How to vote on election day";
+			button.innerHTML = "More voting information";
 
-			title.innerHTML = "Regular voting";
-			text.innerHTML = "Awesome! The General Election takes place November 6th, and you can cast your ballot from XX:XX am until XX:XX pm. Use this link to learn where to go to vote:";
+			let street = responses["address"][0];
+			let city = responses["address"][1];
+			let state = responses["address"][2];
+			let zip = responses["address"][3];
+
+			let query = voterInfoQuery(street, city, state, zip, 6000);
+
+			if ("error" in query) {
+				console.log("Error");
+
+				title.innerHTML = "Error";
+
+				if (query.error.errors[0].reason == "parseError") {
+					text.innerHTML = "Please enter a valid address and try again.";
+				}
+
+			} else {
+
+				if ("pollingLocations" in query) {
+					let election = query.election.name;
+					let date = convertDate(query.election.electionDay);
+
+					var voteSiteCount = query.pollingLocations.length;
+					console.log(voteSiteCount);
+					var voteSiteHTML = "";
+
+					if (voteSiteCount >= 3) {
+						console.log("At least 3 early vote sites found");
+
+						let site1 = new VotingSite(query.pollingLocations[0]);
+						let site2 = new VotingSite(query.pollingLocations[1]);
+						let site3 = new VotingSite(query.pollingLocations[2]);
+
+						voteSiteHTML += site1.outputRegularVoteSiteInfo() + site2.outputRegularVoteSiteInfo() + site3.outputRegularVoteSiteInfo();
+					} else if (voteSiteCount >= 2) {
+						console.log("2 early vote sites found ");
+						let site1 = new VotingSite(query.pollingLocations[0]);
+						let site2 = new VotingSite(query.pollingLocations[1]);
+
+						voteSiteHTML += site1.outputRegularVoteSiteInfo() + site2.outputRegularVoteSiteInfo();
+
+					} else if (voteSiteCount >= 1) {
+						console.log("Only 1 early vote site found");
+						let site1 = new VotingSite(query.pollingLocations[0]);
+
+						voteSiteHTML += site1.outputRegularVoteSiteInfo();
+
+					} else {
+						console.log("No Early Vote Sites");
+					}
+
+					title.innerHTML = "Regular voting";
+					text.innerHTML = "<b>Election:</b> " + election + "<br /> <b>Election Date:</b>" + date + "<br /> <br />" + "<b>Polling Locations:</b><br /> <hr>" + voteSiteHTML + "<br />";
+				
+					activateSiteButtons();
+
+				} else {
+					title.innerHTML = "Check Back Later";
+					text.innerHTML = "Sorry, regular voting locations have not been released yet for your location. Please try again later.";
+				}
+
+			}
+
+
+
 		}
+
+		function voterInfoQuery(street, city, state, zip, electionId) {
+			var apiKey = "AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
+			//var url = "https://www.googleapis.com/civicinfo/v2/elections?key=AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
+			var url = "https://www.googleapis.com/civicinfo/v2/voterinfo?address=" + street + "-" + city + "-" + state + "-" + zip + "&electionId=" + electionId + "&key=" + apiKey;
+			var testURL = "https://www.googleapis.com/civicinfo/v2/voterinfo?address=104-N-1st-St-Belen-NM-87002&electionId=6000&key=AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
+
+			var xmlHttp = new XMLHttpRequest();
+		    xmlHttp.open( "GET", testURL, false ); // false for synchronous request
+		    xmlHttp.send( null );
+		    var responseText = xmlHttp.responseText;
+		    var responseObject = JSON.parse(responseText);
+
+
+		    console.log("Here is the response object from the Google Voter Info Query:");
+		    console.log(responseObject);
+
+
+		    return responseObject;
+		}
+
+		function mapsEmbed(address) {
+			let key = "AIzaSyDK3ZSMvwY6jtfrrJyzuTEmEmr3PLwHePU";
+			var addressPlus = address.split(' ').join('+');
+			let code = '<iframe id="iframe-map" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=' + key + '&zoom=15&q=' + addressPlus + '" allowfullscreen></iframe>';
+
+			return code;
+		}
+
+	    /*function displayUserElections  ()  {
+		  	var title = document.getElementById("instructions-title");
+			var text = document.getElementById("instructions-text");
+			var button = document.getElementById("instructions-button");
+			var link = document.getElementById("instructions-link");
+
+			link.setAttribute("href", "https://www.mvp.sos.ga.gov/MVP/mvp.do");
+			link.setAttribute("target", "_blank");
+			button.innerHTML = "More voting information";
+
+			let street = responses["address"][0];
+			let city = responses["address"][1];
+			let state = responses["address"][2];
+			let zip = responses["address"][3];
+
+			let query = voterInfoQuery(street, city, state, zip, 6000);
+
+			if ("error" in query) {
+				console.log("Error");
+
+				title.innerHTML = "Error";
+
+				if (query.error.errors[0].reason == "parseError") {
+					text.innerHTML = "Please enter a valid address and try again.";
+				}
+
+			} else {
+
+				let contests = query.election.contests
+
+				for (i = 0; i < contests.length; i++)
+					window.alert(i + ". " + array[i]);
+
+			}
+		}*/
+
+		class VotingSite {
+
+			//location.address, location.pollingHours, location.startDate, location.endDate, 
+			constructor(voteSiteObject) {
+				this.address = voteSiteObject.address;
+				this.hours = voteSiteObject.pollingHours;
+				this.startDate = voteSiteObject.startDate;
+				this.endDate = voteSiteObject.endDate;
+				this.voteSiteObject = voteSiteObject;
+			}
+
+
+			convertDate(date_str) {
+				let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+  				var temp_date = date_str.split("-");
+  				return  months[Number(temp_date[1]) - 1] + " " + temp_date[2] + ", " + temp_date[0];
+			}
+
+			outputEarlyVoteSiteInfo() { //Compile vote site info together into an html snippet and return
+
+				let basicAddress = this.address.line1 + " " + this.address.city + " " + this.address.state + " " + this.address.zip;
+				let addressString = "<br /> <b>" + this.address.locationName + "</b> <br />" + this.address.line1 + "<br />" + this.address.city + ", " + this.address.state + " " + this.address.zip;
+				
+				//Get which days the polls are open
+				let allDays = ["Sat", "Mon", "Tue", "Wed", "Thu", "Fri", "Sun"];
+				let actualDays = [];
+
+				for (var day of allDays) {
+					if (this.hours.includes(day)) {
+						actualDays.push(day);
+					}
+				}
+
+				var daysString = "";
+				var dayCounter = 0;
+				for (var day of actualDays) {
+					dayCounter++;
+					if (dayCounter < actualDays.length) {
+						daysString += day + ", ";
+					} else {
+						daysString += day;
+					}
+				}
+
+				//Get the hours the polls are open
+				let allHours = ["6 am", "7 am", "8 am", "9 am", "10 am", "11 am", "12 pm", "1 pm", "2 pm", "3 pm", "4 pm", "5 pm", "6 pm", "7 pm", "8 pm", "9 pm", "10 pm", "11 pm"];
+				let actualHours = [];
+
+				for (var hour of allHours) {
+					if (this.hours.includes(hour)) {
+						actualHours.push(hour);
+					}
+				}
+
+				//Convert start and end dates to more readable form
+				let startDateConverted = this.convertDate(this.startDate);
+				let endDateConverted = this.convertDate(this.endDate);
+
+				let datesString = "<br />" + daysString + "<br />" + actualHours[0] + " - " + actualHours[actualHours.length - 1] + "<br /> " + startDateConverted + " thru " + endDateConverted;
+				
+				console.log("creatin button with basic address " + basicAddress);
+				let buttonString = "<button class='button site-button' category='site' id='" + basicAddress + "' value='select'>Select This Site</button>";
+
+				//Combine the address and the dates/hours
+				let output = addressString + "<br />" + datesString + "<br /> <br />" + buttonString + "<br /> <br /> <hr>";
+
+				return output;
+			}
+
+			outputRegularVoteSiteInfo() { //Compile vote site info together into an html snippet and return
+
+				let basicAddress = this.address.line1 + " " + this.address.city + " " + this.address.state + " " + this.address.zip;
+				let addressString = "<br /> <b>" + this.address.locationName + "</b> <br />" + this.address.line1 + "<br />" + this.address.city + ", " + this.address.state + " " + this.address.zip;
+
+				//Get which days the polls are open
+				let allDays = ["Sat", "Mon", "Tue", "Wed", "Thu", "Fri", "Sun"];
+				let actualDays = [];
+
+				for (var day of allDays) {
+					if (this.hours.includes(day)) {
+						actualDays.push(day);
+					}
+				}
+
+				var daysString = "";
+				var dayCounter = 0;
+				for (var day of actualDays) {
+					dayCounter++;
+					if (dayCounter < actualDays.length) {
+						daysString += day + ", ";
+					} else {
+						daysString += day;
+					}
+				}
+
+				//Get the hours the polls are open
+				let allHours = ["6 am", "7 am", "8 am", "9 am", "10 am", "11 am", "12 pm", "1 pm", "2 pm", "3 pm", "4 pm", "5 pm", "6 pm", "7 pm", "8 pm", "9 pm", "10 pm", "11 pm"];
+				let actualHours = [];
+
+				for (var hour of allHours) {
+					if (this.hours.includes(hour)) {
+						actualHours.push(hour);
+					}
+				}
+
+				//Convert start and end dates to more readable form
+				let startDateConverted = this.convertDate(this.startDate);
+
+				let datesString = "<br />" + daysString + ", " + actualHours[0] + " - " + actualHours[actualHours.length - 1] + "<br /> " + startDateConverted;
+				
+				let buttonString = "<button class='button site-button' category='site' id='" + basicAddress + "' value='select'>Select This Site</button>";
+
+				//Combine the address and the dates/hours
+				let output = addressString + "<br />" + datesString + "<br /> <br />" + buttonString + "<br /> <br /> <hr>";
+
+				return output;
+			}
+
+
+		}
+
 
 	</script>
 
