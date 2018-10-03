@@ -635,8 +635,18 @@
 			let mapDiv = document.getElementById("map");
 			mapDiv.innerHTML = mapsEmbed(address);
 
-			let buttonDiv = document.getElementById("atd-location");
+			let state = responses["address"][2]
+
+			let timezoneDis = document.getElementById("add-to-calendar-timezone");
+			var userTimezone;
+
+			
+			timezoneDis.innerHTML = 
+
+			let buttonDiv = document.getElementById("add-to-calendar-location");
 			buttonDiv.innerHTML = address;
+
+
 
 		}
 
