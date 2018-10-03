@@ -20,6 +20,10 @@
 			color: black;
 		}
 
+		hr {
+			width: 48vw;
+		}
+
 		.wrapper {
 			text-align: center;
 		}
@@ -141,15 +145,6 @@
 			background-color: white;
 		}
 
-		@media only screen and (max-width: 600px) {
-    		.collapsible {
-				width: 75vw;
-    		}
-    		.content {
-    			width: 75vw;
-    		}
-    	}
-
 		select {
 			font-size: 25px;
 			/*outline: 0 none;*/
@@ -159,6 +154,21 @@
 			width: 40vw;
 			height: 400px;
 		}
+
+		@media only screen and (max-width: 600px) {
+    		.collapsible {
+				width: 75vw;
+    		}
+    		.content {
+    			width: 75vw;
+    		}
+
+			hr {
+				width: 73vw;
+			}
+    	}
+
+		
 
 
 	</style>
@@ -298,6 +308,7 @@
 			<hr>
 			<br />
 			<!--https://www.addevent.com/add-to-calendar-button-->
+			<p>Make it so you select one of the available dates here before adding to calendar</p>
 			<div title="Add to Calendar" class="addeventatc">
 			    Add to Calendar
 			    <span class="start" id="add-to-calendar-start">10/15/2018 08:00 AM</span>
@@ -307,7 +318,8 @@
 			    <span class="description" id="add-to-calendar-description">Every vote matters!</span>
 			    <span class="location" id="add-to-calendar-location">Location</span>
 			</div>
-			<br>
+			<br />
+			<br />
 			<hr>
 			<br />
 			<h2 id="electioninfo-title">Candidates and Sample Ballots</h2>
@@ -739,21 +751,21 @@
 					if (voteSiteCount >= 3) {
 						console.log("At least 3 early vote sites found");
 
-						let site1 = new VotingSite(query.earlyVoteSites[0]);
-						let site2 = new VotingSite(query.earlyVoteSites[1]);
-						let site3 = new VotingSite(query.earlyVoteSites[2]);
+						let site1 = new EarlyVotingSite(query.earlyVoteSites[0]);
+						let site2 = new EarlyVotingSite(query.earlyVoteSites[1]);
+						let site3 = new EarlyVotingSite(query.earlyVoteSites[2]);
 
 						voteSiteHTML += site1.outputEarlyVoteSiteInfo() + site2.outputEarlyVoteSiteInfo() + site3.outputEarlyVoteSiteInfo();
 					} else if (voteSiteCount >= 2) {
 						console.log("2 early vote sites found ");
-						let site1 = new VotingSite(query.earlyVoteSites[0]);
-						let site2 = new VotingSite(query.earlyVoteSites[1]);
+						let site1 = new EarlyVotingSite(query.earlyVoteSites[0]);
+						let site2 = new EarlyVotingSite(query.earlyVoteSites[1]);
 
 						voteSiteHTML += site1.outputEarlyVoteSiteInfo() + site2.outputEarlyVoteSiteInfo();
 
 					} else if (voteSiteCount >= 1) {
 						console.log("Only 1 early vote site found");
-						let site1 = new VotingSite(query.earlyVoteSites[0]);
+						let site1 = new EarlyVotingSite(query.earlyVoteSites[0]);
 
 						voteSiteHTML += site1.outputEarlyVoteSiteInfo();
 
@@ -762,7 +774,7 @@
 					}
 
 					title.innerHTML = "Early Voting Locations and Times";
-					text.innerHTML = "<b>Election:</b> " + election + "<br /> <br />" + "<b>Early Voting Sites:</b><br /> <hr>" + voteSiteHTML + "<br />";
+					text.innerHTML = "<b>Election:</b> " + election + "<br /> <br />" + "<hr>" + voteSiteHTML + "<br />";
 					
 					activateSiteButtons();
 
@@ -828,21 +840,21 @@
 					if (voteSiteCount >= 3) {
 						console.log("At least 3 early vote sites found");
 
-						let site1 = new VotingSite(query.pollingLocations[0]);
-						let site2 = new VotingSite(query.pollingLocations[1]);
-						let site3 = new VotingSite(query.pollingLocations[2]);
+						let site1 = new RegularVotingSite(query, 0);
+						let site2 = new RegularVotingSite(query, 1);
+						let site3 = new RegularVotingSite(query, 2);
 
 						voteSiteHTML += site1.outputRegularVoteSiteInfo() + site2.outputRegularVoteSiteInfo() + site3.outputRegularVoteSiteInfo();
 					} else if (voteSiteCount >= 2) {
 						console.log("2 early vote sites found ");
-						let site1 = new VotingSite(query.pollingLocations[0]);
-						let site2 = new VotingSite(query.pollingLocations[1]);
+						let site1 = new RegularVotingSite(query, 0);
+						let site2 = new RegularVotingSite(query, 1);
 
 						voteSiteHTML += site1.outputRegularVoteSiteInfo() + site2.outputRegularVoteSiteInfo();
 
 					} else if (voteSiteCount >= 1) {
 						console.log("Only 1 early vote site found");
-						let site1 = new VotingSite(query.pollingLocations[0]);
+						let site1 = new RegularVotingSite(query, 0);
 
 						voteSiteHTML += site1.outputRegularVoteSiteInfo();
 
@@ -850,8 +862,8 @@
 						console.log("No Early Vote Sites");
 					}
 
-					title.innerHTML = "Regular voting";
-					text.innerHTML = "<b>Election:</b> " + election + "<br /> <b>Election Date:</b>" + date + "<br /> <br />" + "<b>Polling Locations:</b><br /> <hr>" + voteSiteHTML + "<br />";
+					title.innerHTML = "Regular Voting Locations";
+					text.innerHTML = "<b>Election:</b> " + election + "<br /> <b>Election Date: </b>" + date + "<br /> <br />" + "<hr>" + voteSiteHTML + "<br />";
 				
 					activateSiteButtons();
 
@@ -870,7 +882,7 @@
 			var apiKey = "AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
 			//var url = "https://www.googleapis.com/civicinfo/v2/elections?key=AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
 			var url = "https://www.googleapis.com/civicinfo/v2/voterinfo?address=" + street + "-" + city + "-" + state + "-" + zip + "&electionId=" + electionId + "&key=" + apiKey;
-			var testURL = "https://www.googleapis.com/civicinfo/v2/voterinfo?address=104-N-1st-St-Belen-NM-87002&electionId=6000&key=AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
+			var testURL = "https://www.googleapis.com/civicinfo/v2/voterinfo?address=4839-Adams-Walk-Dunwoody-GA-30338&electionId=6000&key=AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
 
 			var xmlHttp = new XMLHttpRequest();
 		    xmlHttp.open( "GET", url, false ); // false for synchronous request
@@ -930,7 +942,14 @@
 			}
 		}*/
 
-		class VotingSite {
+		function convertDate(date_str) {
+				let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+  				var temp_date = date_str.split("-");
+  				return  months[Number(temp_date[1]) - 1] + " " + temp_date[2] + ", " + temp_date[0];
+			}
+
+		class EarlyVotingSite {
 
 			//location.address, location.pollingHours, location.startDate, location.endDate, 
 			constructor(voteSiteObject) {
@@ -939,14 +958,6 @@
 				this.startDate = voteSiteObject.startDate;
 				this.endDate = voteSiteObject.endDate;
 				this.voteSiteObject = voteSiteObject;
-			}
-
-
-			convertDate(date_str) {
-				let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-  				var temp_date = date_str.split("-");
-  				return  months[Number(temp_date[1]) - 1] + " " + temp_date[2] + ", " + temp_date[0];
 			}
 
 			outputEarlyVoteSiteInfo() { //Compile vote site info together into an html snippet and return
@@ -986,8 +997,8 @@
 				}
 
 				//Convert start and end dates to more readable form
-				let startDateConverted = this.convertDate(this.startDate);
-				let endDateConverted = this.convertDate(this.endDate);
+				let startDateConverted = convertDate(this.startDate);
+				let endDateConverted = convertDate(this.endDate);
 
 				let datesString = "<br />" + daysString + "<br />" + actualHours[0] + " - " + actualHours[actualHours.length - 1] + "<br /> " + startDateConverted + " thru " + endDateConverted;
 				
@@ -1000,47 +1011,28 @@
 				return output;
 			}
 
+		}
+
+		class RegularVotingSite {
+
+			constructor(object, siteIndex) {
+				this.address = object.pollingLocations[siteIndex].address;
+				//this.hours = voteSiteObject.pollingHours;
+				this.date = object.election.electionDay;
+				//this.endDate = voteSiteObject.endDate;
+				this.voteSiteObject = object.pollingLocations[siteIndex];
+			}
+
 			outputRegularVoteSiteInfo() { //Compile vote site info together into an html snippet and return
 
 				let basicAddress = this.address.line1 + " " + this.address.city + " " + this.address.state + " " + this.address.zip;
 				let addressString = "<br /> <b>" + this.address.locationName + "</b> <br />" + this.address.line1 + "<br />" + this.address.city + ", " + this.address.state + " " + this.address.zip;
 
-				//Get which days the polls are open
-				let allDays = ["Sat", "Mon", "Tue", "Wed", "Thu", "Fri", "Sun"];
-				let actualDays = [];
-
-				for (var day of allDays) {
-					if (this.hours.includes(day)) {
-						actualDays.push(day);
-					}
-				}
-
-				var daysString = "";
-				var dayCounter = 0;
-				for (var day of actualDays) {
-					dayCounter++;
-					if (dayCounter < actualDays.length) {
-						daysString += day + ", ";
-					} else {
-						daysString += day;
-					}
-				}
-
-				//Get the hours the polls are open
-				let allHours = ["6 am", "7 am", "8 am", "9 am", "10 am", "11 am", "12 pm", "1 pm", "2 pm", "3 pm", "4 pm", "5 pm", "6 pm", "7 pm", "8 pm", "9 pm", "10 pm", "11 pm"];
-				let actualHours = [];
-
-				for (var hour of allHours) {
-					if (this.hours.includes(hour)) {
-						actualHours.push(hour);
-					}
-				}
-
 				//Convert start and end dates to more readable form
-				let startDateConverted = this.convertDate(this.startDate);
+				let startDateConverted = convertDate(this.date);
 
-				let datesString = "<br />" + daysString + ", " + actualHours[0] + " - " + actualHours[actualHours.length - 1] + "<br /> " + startDateConverted;
-				
+				let datesString = "<br />" + startDateConverted;
+
 				let buttonString = "<button class='button site-button' category='site' id='" + basicAddress + "' value='select'>Select This Site</button>";
 
 				//Combine the address and the dates/hours
@@ -1048,8 +1040,6 @@
 
 				return output;
 			}
-
-
 		}
 
 
