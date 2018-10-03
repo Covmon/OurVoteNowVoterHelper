@@ -641,7 +641,7 @@
 
 			let timezoneDis = document.getElementById("add-to-calendar-timezone");
 			var tz = jstz.determine();
-			timezoneDis.innerHTML = tz
+			timezoneDis.innerHTML = tz;
 
 			let buttonDiv = document.getElementById("add-to-calendar-location");
 			buttonDiv.innerHTML = address;
@@ -873,7 +873,7 @@
 			var testURL = "https://www.googleapis.com/civicinfo/v2/voterinfo?address=104-N-1st-St-Belen-NM-87002&electionId=6000&key=AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
 
 			var xmlHttp = new XMLHttpRequest();
-		    xmlHttp.open( "GET", URL, false ); // false for synchronous request
+		    xmlHttp.open( "GET", url, false ); // false for synchronous request
 		    xmlHttp.send( null );
 		    var responseText = xmlHttp.responseText;
 		    var responseObject = JSON.parse(responseText);
