@@ -8,8 +8,10 @@
 	function openCollapsable() {
 		var oldtz = document.getElementById("tz");
 		var tz = jstz.determine();
-   		oldtz = tz.name();
+   		oldtz.html = tz.name();
 	}
+
+	openCollapsable()
 
 	</script>
 
