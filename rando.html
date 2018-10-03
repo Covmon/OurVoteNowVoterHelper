@@ -1,17 +1,23 @@
 <html>
 
+<head>
+	<script type="text/javascript" src="jstz.min.js"></script>
+</head>
+
 <body>
 	<h1 id="tz">NA</h1>
 
 	<script type="text/javascript">
 
-	function openCollapsable() {
+	function test() {
+		console.log("do the test");
 		var oldtz = document.getElementById("tz");
 		var tz = jstz.determine();
-   		oldtz.html = tz.name();
+		console.log(tz.name());
+   		oldtz.innerHTML = tz.name();
 	}
 
-	openCollapsable()
+	test();
 
 	</script>
 
