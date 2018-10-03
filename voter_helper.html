@@ -166,6 +166,8 @@
 	<!-- AddEvent script -->
 	<script type="text/javascript" src="https://addevent.com/libs/atc/1.6.1/atc.min.js" async defer></script>
 
+	<script type="text/javascript" src="jstz.min.js"></script>
+
 </head>
 
 <body>
@@ -638,15 +640,11 @@
 			let state = responses["address"][2]
 
 			let timezoneDis = document.getElementById("add-to-calendar-timezone");
-			var userTimezone;
-
-			
-			timezoneDis.innerHTML = 
+			var tz = jstz.determine();
+			timezoneDis.innerHTML = tz
 
 			let buttonDiv = document.getElementById("add-to-calendar-location");
 			buttonDiv.innerHTML = address;
-
-
 
 		}
 
@@ -875,7 +873,7 @@
 			var testURL = "https://www.googleapis.com/civicinfo/v2/voterinfo?address=104-N-1st-St-Belen-NM-87002&electionId=6000&key=AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
 
 			var xmlHttp = new XMLHttpRequest();
-		    xmlHttp.open( "GET", testURL, false ); // false for synchronous request
+		    xmlHttp.open( "GET", URL, false ); // false for synchronous request
 		    xmlHttp.send( null );
 		    var responseText = xmlHttp.responseText;
 		    var responseObject = JSON.parse(responseText);
