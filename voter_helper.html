@@ -155,6 +155,24 @@
 			height: 400px;
 		}
 
+		.addeventatc {
+			background-color: white !important;
+			color: #ee3233 !important;
+			border: 2px solid #ee3233 !important;
+			border-radius: 1px !important;
+			-webkit-transition-duration: 0.3s; /*for safari*/
+			transition-duration: 0.3s;
+			box-shadow: none;
+			-moz-window-shadow: none;
+			-webkit-box-shadow: none;
+			text-shadow: none;
+		}
+
+		.addeventatc:hover {
+			background-color: #ee3233 !important;
+			color: white !important;
+		}
+
 		@media only screen and (max-width: 600px) {
     		.collapsible {
 				width: 75vw;
@@ -309,8 +327,8 @@
 			<br />
 			<!--https://www.addevent.com/add-to-calendar-button-->
 			<p>Make it so you select one of the available dates here before adding to calendar</p>
-			<div title="Add to Calendar" class="addeventatc">
-			    Add to Calendar
+			<div title="Add to Calendar" id="addeventbutton" class="addeventatc">
+			   	Add to Calendar
 			    <span class="start" id="add-to-calendar-start">10/15/2018 08:00 AM</span>
 			    <span class="end" id="add-to-calendar-end">10/15/2018 10:00 AM</span>
 			    <span class="timezone" id="add-to-calendar-timezone">America/Los_Angeles</span>
@@ -649,14 +667,14 @@
 			let mapDiv = document.getElementById("map");
 			mapDiv.innerHTML = mapsEmbed(address);
 
-			let state = responses["address"][2]
+			let state = responses["address"][2];
 
-			let timezoneDis = document.getElementById("add-to-calendar-timezone");
+			let timezoneSpan = document.getElementById("add-to-calendar-timezone");
 			var tz = jstz.determine();
-			timezoneDis.innerHTML = tz;
+			timezoneSpan.innerHTML = tz;
 
-			let buttonDiv = document.getElementById("add-to-calendar-location");
-			buttonDiv.innerHTML = address;
+			let locationSpan = document.getElementById("add-to-calendar-location");
+			locationSpan.innerHTML = address;
 
 		}
 
@@ -882,10 +900,11 @@
 			var apiKey = "AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
 			//var url = "https://www.googleapis.com/civicinfo/v2/elections?key=AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
 			var url = "https://www.googleapis.com/civicinfo/v2/voterinfo?address=" + street + "-" + city + "-" + state + "-" + zip + "&electionId=" + electionId + "&key=" + apiKey;
-			var testURL = "https://www.googleapis.com/civicinfo/v2/voterinfo?address=4839-Adams-Walk-Dunwoody-GA-30338&electionId=6000&key=AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
+			var testURLGA = "https://www.googleapis.com/civicinfo/v2/voterinfo?address=4839-Adams-Walk-Dunwoody-GA-30338&electionId=6000&key=AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
+			var testURLNC = "https://www.googleapis.com/civicinfo/v2/voterinfo?address=1133-Metropolitan-Ave-Charlotte-NC-28204&electionId=6000&key=AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
 
 			var xmlHttp = new XMLHttpRequest();
-		    xmlHttp.open( "GET", url, false ); // false for synchronous request
+		    xmlHttp.open( "GET", testURLNC, false ); // false for synchronous request
 		    xmlHttp.send( null );
 		    var responseText = xmlHttp.responseText;
 		    var responseObject = JSON.parse(responseText);
@@ -1021,6 +1040,13 @@
 				this.date = object.election.electionDay;
 				//this.endDate = voteSiteObject.endDate;
 				this.voteSiteObject = object.pollingLocations[siteIndex];
+
+				this.hours = "";
+
+				if ("pollingHours" in this.voteSiteObject) {
+					this.hours = object.pollingLocations[siteIndex].pollingHours;
+				}
+
 			}
 
 			outputRegularVoteSiteInfo() { //Compile vote site info together into an html snippet and return
@@ -1029,9 +1055,15 @@
 				let addressString = "<br /> <b>" + this.address.locationName + "</b> <br />" + this.address.line1 + "<br />" + this.address.city + ", " + this.address.state + " " + this.address.zip;
 
 				//Convert start and end dates to more readable form
-				let startDateConverted = convertDate(this.date);
+				let dateConverted = convertDate(this.date);
 
-				let datesString = "<br />" + startDateConverted;
+				var datesString;
+
+				if (this.hours == "") {
+					datesString = "<br />" + dateConverted;
+				} else {
+					datesString = "<br />" + this.hours;
+				}
 
 				let buttonString = "<button class='button site-button' category='site' id='" + basicAddress + "' value='select'>Select This Site</button>";
 
