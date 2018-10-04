@@ -162,6 +162,7 @@
 			border-radius: 1px !important;
 			-webkit-transition-duration: 0.4s; /*for safari*/
 			transition-duration: 0.4s;
+			z-index: 0 !important;
 		}
 
 		.addeventatc:hover {
@@ -179,6 +180,11 @@
 		#addeventatc1:hover {
 			color: white !important;
 		}
+
+		#datepicker {
+			text-align: center;
+		}
+
 
 		@media only screen and (max-width: 600px) {
     		.collapsible {
@@ -201,7 +207,13 @@
 	<!-- AddEvent script -->
 	<script type="text/javascript" src="https://addevent.com/libs/atc/1.6.1/atc.min.js" async defer></script>
 
+	<!--Time zone detector-->
 	<script type="text/javascript" src="jstz.min.js"></script>
+
+	<!--JQuery UI-->
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<link href="https://code.jquery.com/ui/1.11.4/themes/blitzer/jquery-ui.css" rel="stylesheet" type="text/css">
 
 </head>
 
@@ -333,11 +345,14 @@
 			<hr>
 			<br />
 			<!--https://www.addevent.com/add-to-calendar-button-->
-			<p>Make it so you select one of the available dates here before adding to calendar</p>
-			<div title="Add to Calendar" id="addeventbutton" class="addeventatc">
+			<p>Select a date to add a reminder to your calendar</p>
+			<input placeholder="Select date" class="input-text" type="text" id="datepicker">
+			<br />
+			<p id="info-hours">Show times here</p>
+			<div title="Add to Calendar" id="addeventbutton" class="addeventatc" style="display: none">
 			   	Add to Calendar
-			    <span class="start" id="add-to-calendar-start">10/15/2018 08:00 AM</span>
-			    <span class="end" id="add-to-calendar-end">10/15/2018 10:00 AM</span>
+			    <span class="start" id="add-to-calendar-start">11/06/2018 08:00 AM</span>
+			    <span class="end" id="add-to-calendar-end">11/06/2018 10:00 AM</span>
 			    <span class="timezone" id="add-to-calendar-timezone">America/Los_Angeles</span>
 			    <span class="title" id="add-to-calendar-summary">US Midterm Voting 2018</span>
 			    <span class="description" id="add-to-calendar-description">Every vote matters!</span>
@@ -362,6 +377,7 @@
 
 		var currentSelections = ["1-0", "2-0"];
 		var responses = {"registered": "", "age": "", "address": ["", "", "", ""], "votetype": ""};
+		var selectedSiteInfo = {"address": "", "startDate": "", "endDate" : "", "startTime": "", "endTime": ""};
 
 		setupButtonEvents();
 		setupCollapsibles();
@@ -474,9 +490,17 @@
 
 				submitRow(buttonCategory);
 
-			} else if (buttonValue == "select") {//this selects a choice but does not mark a row as answered
+			} else if (buttonValue == "votingsite") {//this selects a choice but does not mark a row as answered
 
-				submitRow(buttonCategory, id);
+				let address = id;
+				let startDate = buttonClicked.getAttribute("startdate");
+				let endDate = buttonClicked.getAttribute("enddate");
+				let hours = buttonClicked.getAttribute("hours");
+				let startTime = buttonClicked.getAttribute("starttime");
+				let endTime = buttonClicked.getAttribute("endtime");
+
+				let siteInfo = {"address": address, "startDate": startDate, "endDate": endDate, "hours": hours, "startTime": startTime, "endTime": endTime};
+				submitRow(buttonCategory, siteInfo);
 
 			} else { //this is a select button that's not already active
 				if (responses[buttonCategory] != "") { //Is there already another button in this category selected?
@@ -647,14 +671,15 @@
 			}
 		}
 
-		function submitSiteChoice(address) {
-			console.log("Submitted Voting Site Choice with address" + address);
+		function submitSiteChoice(siteInfo) {
+			console.log("Submitted Voting Site Choice with info");
+			console.log(siteInfo);
 
 			var currentCollapsible = document.getElementById("coll-instructions");
 			closeCollapsable(currentCollapsible);
 
 			openLocationPanel();
-			displayLocationPanel(address);
+			displayInfoPanel(siteInfo);
 		}
 
 		function openLocationPanel() {
@@ -666,22 +691,62 @@
 			openCollapsable(nextCollapsible);
 		}
 		
-		function displayLocationPanel(address) {
+		function displayInfoPanel(info) {
 
+			//Setup map
 			let title = document.getElementById("location-title");
 			title.innerHTML = "Map";
 
 			let mapDiv = document.getElementById("map");
-			mapDiv.innerHTML = mapsEmbed(address);
+			mapDiv.innerHTML = mapsEmbed(info["address"]);
 
 			let state = responses["address"][2];
 
+			//Disable calendar event button
+			let eventButton = document.getElementById("addeventatc1");
+
+			//Get current timezone of event
 			let timezoneSpan = document.getElementById("add-to-calendar-timezone");
 			var tz = jstz.determine();
 			timezoneSpan.innerHTML = tz;
 
+			//Set location of event
 			let locationSpan = document.getElementById("add-to-calendar-location");
-			locationSpan.innerHTML = address;
+			locationSpan.innerHTML = info["address"];
+
+			//Set start and end day options for datepicker
+			let hours = info["hours"];
+			document.getElementById("info-hours").innerHTML = "Polling Hours: " + hours;
+
+			let start = info["startDate"];
+			let end = info["endDate"];
+
+			//Example date 2018-11-06
+			let startYear = start.substring(0,4);
+			let startMonth = start.substring(5,7);
+			let startDay = start.substring(8,10);
+			let startDateObj = new Date(Number(startYear), Number(startMonth) - 1, Number(startDay));
+
+			let endYear = end.substring(0,4);
+			let endMonth = end.substring(5,7);
+			let endDay = end.substring(8,10);
+			let endDateObj = new Date(Number(endYear), Number(endMonth) - 1, Number(endDay));
+
+			console.log(info["startTime"]);
+			console.log(info["endTime"]);
+
+			//Set date and hours of event
+    		$( "#datepicker" ).datepicker(
+			{ 
+				showAnim: "slideDown",
+				minDate: startDateObj, maxDate: endDateObj,
+				onSelect: function(dateText, inst) {
+					console.log("changed date to " + dateText);
+					document.getElementById("add-to-calendar-start").innerHTML = dateText + " " + info["startTime"];
+					document.getElementById("add-to-calendar-end").innerHTML = dateText + " " + info["endTime"];
+					eventButton.style.display = "inline-block";
+				}
+			});
 
 		}
 
@@ -909,6 +974,8 @@
 			var url = "https://www.googleapis.com/civicinfo/v2/voterinfo?address=" + street + "-" + city + "-" + state + "-" + zip + "&electionId=" + electionId + "&key=" + apiKey;
 			var testURLGA = "https://www.googleapis.com/civicinfo/v2/voterinfo?address=4839-Adams-Walk-Dunwoody-GA-30338&electionId=6000&key=AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
 			var testURLNC = "https://www.googleapis.com/civicinfo/v2/voterinfo?address=1133-Metropolitan-Ave-Charlotte-NC-28204&electionId=6000&key=AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
+			var testURLLA = "https://www.googleapis.com/civicinfo/v2/voterinfo?address=6363-St-Charles-Ave-New-Orleans-LA-70118&electionId=6000&key=AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
+
 
 			var xmlHttp = new XMLHttpRequest();
 		    xmlHttp.open( "GET", testURLNC, false ); // false for synchronous request
@@ -1013,11 +1080,15 @@
 				}
 
 				//Get the hours the polls are open
-				let allHours = ["6 am", "7 am", "8 am", "9 am", "10 am", "11 am", "12 pm", "1 pm", "2 pm", "3 pm", "4 pm", "5 pm", "6 pm", "7 pm", "8 pm", "9 pm", "10 pm", "11 pm"];
+				let allHours = ["6 am", "6:30 am", "7 am", "7:30 am",  "8 am", "8:30 am",  "9 am", "9:30 am",  "10 am", "10:30 am",  "11 am", "11:30 am",  "12 pm", "12:30 pm",  "1 pm", "1:30 pm",  "2 pm", "2:30 pm",  "3 pm", "3:30 pm", "4 pm", "4:30 pm", "5 pm", "5:30 pm", "6 pm", "6:30 pm", "7 pm", "7:30 pm", "8 pm", "8:30 pm", "9 pm", "9:30 pm", "10 pm", "10:30 pm", "11 pm"];
+				let allHoursFormatted = ["06:00 AM", "06:30 AM", "07:00 AM", "07:30 AM",  "08:00 AM", "08:30 AM",  "09:00 AM", "09:30 AM",  "10:00 AM", "10:30 AM",  "11:00 AM", "11:30 AM",  "12:00 PM", "12:30 PM",  "01:00 PM", "1:30 PM",  "02:00 PM", "02:30 PM",  "03:00 PM", "03:30 PM", "04:00 PM", "4:30 PM", "05:00 PM", "5:30 PM", "06:00 PM", "06:30 PM", "07:00 PM", "7:30 PM", "08:00 PM", "8:30 PM", "09:00 PM", "9:30 PM", "10:00 PM", "10:30 PM", "11:00 PM"];
 				let actualHours = [];
+				let actualHoursFormatted = [];
 
 				for (var hour of allHours) {
 					if (this.hours.includes(hour)) {
+						let index = allHours.indexOf(hour);
+						actualHoursFormatted.push(allHoursFormatted[index]);
 						actualHours.push(hour);
 					}
 				}
@@ -1025,11 +1096,15 @@
 				//Convert start and end dates to more readable form
 				let startDateConverted = convertDate(this.startDate);
 				let endDateConverted = convertDate(this.endDate);
+				let hoursConverted = actualHours[0] + " - " + actualHours[actualHours.length - 1];
 
-				let datesString = "<br />" + daysString + "<br />" + actualHours[0] + " - " + actualHours[actualHours.length - 1] + "<br /> " + startDateConverted + " thru " + endDateConverted;
+				let startTime = actualHoursFormatted[0];
+				let endTime = actualHoursFormatted[actualHoursFormatted.length - 1];
+
+				let datesString = "<br />" + daysString + "<br />" + hoursConverted + "<br /> " + startDateConverted + " thru " + endDateConverted;
 				
 				console.log("creatin button with basic address " + basicAddress);
-				let buttonString = "<button class='button site-button' category='site' id='" + basicAddress + "' value='select'>Select This Site</button>";
+				let buttonString = "<button class='button site-button' category='site' id='" + basicAddress + "' startdate='" + this.startDate + "' enddate='" + this.endDate + "' hours='" + hoursConverted + "' starttime='" + startTime + "' endTime='" + endTime +  "' value='votingsite'>Select This Site</button>";
 
 				//Combine the address and the dates/hours
 				let output = addressString + "<br />" + datesString + "<br /> <br />" + buttonString + "<br /> <br /> <hr>";
@@ -1072,7 +1147,7 @@
 					datesString = "<br />" + this.hours;
 				}
 
-				let buttonString = "<button class='button site-button' category='site' id='" + basicAddress + "' value='select'>Select This Site</button>";
+				let buttonString = "<button class='button site-button' category='site' id='" + basicAddress + "' startdate='" + this.date + "' enddate='" + dateConverted + "' value='votingsite'>Select This Site</button>";
 
 				//Combine the address and the dates/hours
 				let output = addressString + "<br />" + datesString + "<br /> <br />" + buttonString + "<br /> <br /> <hr>";
@@ -1080,6 +1155,7 @@
 				return output;
 			}
 		}
+
 
 
 	</script>
