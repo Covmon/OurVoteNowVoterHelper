@@ -138,6 +138,7 @@
 
 		.input-text:hover {
 			border-bottom: 3px solid #222;
+			background-color: rgb(245,245,245);
 		}
 
 		.input-text:focus {
@@ -181,8 +182,14 @@
 			color: white !important;
 		}
 
+		#addeventatc1-home {
+			display: none !important;
+		}
+
 		#datepicker {
 			text-align: center;
+			cursor: pointer;
+			caret-color: transparent !important;
 		}
 
 
@@ -208,7 +215,7 @@
 	<script type="text/javascript" src="https://addevent.com/libs/atc/1.6.1/atc.min.js" async defer></script>
 
 	<!--Time zone detector-->
-	<script type="text/javascript" src="jstz.min.js"></script>
+	<script type="text/javascript" src="http://noahcovey.com/jstz.min.js"></script>
 
 	<!--JQuery UI-->
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -337,18 +344,11 @@
 	<div class="wrapper hidden" id="info">
 		<button class="collapsible locked" id="coll-info">More info</button>
 		<div class="content">
-			<h2 id="location-title">Thanks for using the OurVoteNow voter helper tool.</h1>
-			<p id="location-text">Put a map here, and candidate info</p>
-			<div id="map">
-			</div>
-			<br />
-			<hr>
-			<br />
 			<!--https://www.addevent.com/add-to-calendar-button-->
-			<p>Select a date to add a reminder to your calendar</p>
+			<h2>Select a date to add a reminder to your calendar</h2>
 			<input placeholder="Select date" class="input-text" type="text" id="datepicker">
 			<br />
-			<p id="info-hours">Show times here</p>
+			<p id="info-hours">Polling hours:</p>
 			<div title="Add to Calendar" id="addeventbutton" class="addeventatc" style="display: none">
 			   	Add to Calendar
 			    <span class="start" id="add-to-calendar-start">11/06/2018 08:00 AM</span>
@@ -359,6 +359,12 @@
 			    <span class="location" id="add-to-calendar-location">Location</span>
 			</div>
 			<br />
+			<hr>
+			<br />
+			<h2 id="location-title">Thanks for using the OurVoteNow voter helper tool.</h1>
+			<p id="location-text">Put a map here, and candidate info</p>
+			<div id="map">
+			</div>
 			<br />
 			<hr>
 			<br />
@@ -1141,13 +1147,37 @@
 
 				var datesString;
 
+				//Get the hours the polls are open
+				let allHours = ["6 am", "6:30 am", "7 am", "7:30 am",  "8 am", "8:30 am",  "9 am", "9:30 am",  "10 am", "10:30 am",  "11 am", "11:30 am",  "12 pm", "12:30 pm",  "1 pm", "1:30 pm",  "2 pm", "2:30 pm",  "3 pm", "3:30 pm", "4 pm", "4:30 pm", "5 pm", "5:30 pm", "6 pm", "6:30 pm", "7 pm", "7:30 pm", "8 pm", "8:30 pm", "9 pm", "9:30 pm", "10 pm", "10:30 pm", "11 pm"];
+				let allHoursFormatted = ["06:00 AM", "06:30 AM", "07:00 AM", "07:30 AM",  "08:00 AM", "08:30 AM",  "09:00 AM", "09:30 AM",  "10:00 AM", "10:30 AM",  "11:00 AM", "11:30 AM",  "12:00 PM", "12:30 PM",  "01:00 PM", "1:30 PM",  "02:00 PM", "02:30 PM",  "03:00 PM", "03:30 PM", "04:00 PM", "4:30 PM", "05:00 PM", "5:30 PM", "06:00 PM", "06:30 PM", "07:00 PM", "7:30 PM", "08:00 PM", "8:30 PM", "09:00 PM", "9:30 PM", "10:00 PM", "10:30 PM", "11:00 PM"];
+				let actualHours = [];
+				let actualHoursFormatted = [];
+				let startTime = "08:00 AM";
+				let endTime = "09:00 PM";
+				let hoursConverted = "8 am - 9 pm";
+
 				if (this.hours == "") {
 					datesString = "<br />" + dateConverted;
 				} else {
 					datesString = "<br />" + this.hours;
-				}
 
-				let buttonString = "<button class='button site-button' category='site' id='" + basicAddress + "' startdate='" + this.date + "' enddate='" + dateConverted + "' value='votingsite'>Select This Site</button>";
+					for (var hour of allHours) {
+						if (this.hours.includes(hour)) {
+							let index = allHours.indexOf(hour);
+							actualHoursFormatted.push(allHoursFormatted[index]);
+							actualHours.push(hour);
+						}
+					}
+					startTime = actualHoursFormatted[0];
+					endTime = actualHoursFormatted[actualHoursFormatted.length - 1];
+					hoursConverted = actualHours[0] + " - " + actualHours[actualHours.length - 1];
+
+				}
+				
+			
+				
+
+				let buttonString = "<button class='button site-button' category='site' id='" + basicAddress + "' startdate='" + this.date + "' enddate='" + this.date + "' hours='" + hoursConverted + "' starttime='" + startTime + "' endTime='" + endTime +  "' value='votingsite'>Select This Site</button>";
 
 				//Combine the address and the dates/hours
 				let output = addressString + "<br />" + datesString + "<br /> <br />" + buttonString + "<br /> <br /> <hr>";
