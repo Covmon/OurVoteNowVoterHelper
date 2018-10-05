@@ -345,9 +345,8 @@
 		<button class="collapsible locked" id="coll-info">More info</button>
 		<div class="content">
 			<!--https://www.addevent.com/add-to-calendar-button-->
-			<h2>Select a date to add a reminder to your calendar</h2>
+			<h2 id="info-title">Select a date to add a reminder to your calendar</h2>
 			<input placeholder="Select date" class="input-text" type="text" id="datepicker">
-			<br />
 			<p id="info-hours">Polling hours:</p>
 			<div title="Add to Calendar" id="addeventbutton" class="addeventatc" style="display: none">
 			   	Add to Calendar
@@ -362,7 +361,6 @@
 			<hr>
 			<br />
 			<h2 id="location-title">Thanks for using the OurVoteNow voter helper tool.</h1>
-			<p id="location-text">Put a map here, and candidate info</p>
 			<div id="map">
 			</div>
 			<br />
@@ -504,8 +502,12 @@
 				let hours = buttonClicked.getAttribute("hours");
 				let startTime = buttonClicked.getAttribute("starttime");
 				let endTime = buttonClicked.getAttribute("endtime");
+				var days = "";
+				if (buttonClicked.hasAttribute("days")) {
+					days = buttonClicked.getAttribute("days");
+				}
 
-				let siteInfo = {"address": address, "startDate": startDate, "endDate": endDate, "hours": hours, "startTime": startTime, "endTime": endTime};
+				let siteInfo = {"address": address, "startDate": startDate, "endDate": endDate, "hours": hours, "startTime": startTime, "endTime": endTime, "days": days};
 				submitRow(buttonCategory, siteInfo);
 
 			} else { //this is a select button that's not already active
@@ -738,10 +740,58 @@
 			let endDay = end.substring(8,10);
 			let endDateObj = new Date(Number(endYear), Number(endMonth) - 1, Number(endDay));
 
-			console.log(info["startTime"]);
-			console.log(info["endTime"]);
+			//Exclude certain days
+			var daysToInclude = [];
+			let days = info["days"];
+			if (days != "") {
+				if (days.includes("Mon")) {
+					daysToInclude.push(1);
+				}
+				if (days.includes("Tue")) {
+					daysToInclude.push(2);
+				}
+				if (days.includes("Wed")) {
+					daysToInclude.push(3);
+				}
+				if (days.includes("Thu")) {
+					daysToInclude.push(4);
+				}
+				if (days.includes("Fri")) {
+					daysToInclude.push(5);
+				}
+				if (days.includes("Sat")) {
+					daysToInclude.push(6);
+				}
+				if (days.includes("Sun")) {
+					daysToInclude.push(0);
+				}
+			} else {
+				daysToInclude = [0,1,2,3,4,5,6];
+			}
 
-			//Set date and hours of event
+			function checkIfExcluded(day) {
+				for (var d of daysToInclude) {
+					if (d == day) {
+						return true;
+					}
+				}
+				return false;
+			}
+
+			//If only one day to vote on...
+			if (startDateObj.getFullYear() == endDateObj.getFullYear() && startDateObj.getMonth() == endDateObj.getMonth() && startDateObj.getDate() == endDateObj.getDate()) {
+				console.log("Only one day");
+				let datepicker = document.getElementById("datepicker");
+				datepicker.value = startMonth + "/" + startDay + "/" + startYear;
+				document.getElementById("add-to-calendar-start").innerHTML = datepicker.value + " " + info["startTime"];
+				document.getElementById("add-to-calendar-end").innerHTML = datepicker.value + " " + info["endTime"];
+				document.getElementById("info-title").innerHTML = "Add a reminder to your calendar";
+				eventButton.style.display = "inline-block";
+			} else {
+				console.log('diff days');
+			}
+
+			//Setup datepicker and when clicked, set date and hours of calendar event to add
     		$( "#datepicker" ).datepicker(
 			{ 
 				showAnim: "slideDown",
@@ -751,7 +801,11 @@
 					document.getElementById("add-to-calendar-start").innerHTML = dateText + " " + info["startTime"];
 					document.getElementById("add-to-calendar-end").innerHTML = dateText + " " + info["endTime"];
 					eventButton.style.display = "inline-block";
-				}
+				},
+				beforeShowDay: function(date) {
+					var day = date.getDay();
+        			return [checkIfExcluded(day)]; //1 is monday, 2 is tuesday, etc.
+  				  }
 			});
 
 		}
@@ -841,7 +895,6 @@
 
 				if ("earlyVoteSites" in query) {
 					var voteSiteCount = query.earlyVoteSites.length;
-					console.log(voteSiteCount);
 					var voteSiteHTML = "";
 
 					if (voteSiteCount >= 3) {
@@ -970,8 +1023,6 @@
 
 			}
 
-
-
 		}
 
 		function voterInfoQuery(street, city, state, zip, electionId) {
@@ -981,6 +1032,7 @@
 			var testURLGA = "https://www.googleapis.com/civicinfo/v2/voterinfo?address=4839-Adams-Walk-Dunwoody-GA-30338&electionId=6000&key=AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
 			var testURLNC = "https://www.googleapis.com/civicinfo/v2/voterinfo?address=1133-Metropolitan-Ave-Charlotte-NC-28204&electionId=6000&key=AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
 			var testURLLA = "https://www.googleapis.com/civicinfo/v2/voterinfo?address=6363-St-Charles-Ave-New-Orleans-LA-70118&electionId=6000&key=AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
+			var testURLNM = "https://www.googleapis.com/civicinfo/v2/voterinfo?address=1352-Rufina-Cir-Santa-Fe-NM-87507&electionId=6000&key=AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
 
 
 			var xmlHttp = new XMLHttpRequest();
@@ -1110,7 +1162,7 @@
 				let datesString = "<br />" + daysString + "<br />" + hoursConverted + "<br /> " + startDateConverted + " thru " + endDateConverted;
 				
 				console.log("creatin button with basic address " + basicAddress);
-				let buttonString = "<button class='button site-button' category='site' id='" + basicAddress + "' startdate='" + this.startDate + "' enddate='" + this.endDate + "' hours='" + hoursConverted + "' starttime='" + startTime + "' endTime='" + endTime +  "' value='votingsite'>Select This Site</button>";
+				let buttonString = "<button class='button site-button' category='site' id='" + basicAddress + "' startdate='" + this.startDate + "' enddate='" + this.endDate + "' hours='" + hoursConverted + "' starttime='" + startTime + "' endTime='" + endTime + "' days='" + daysString + "' value='votingsite'>Select This Site</button>";
 
 				//Combine the address and the dates/hours
 				let output = addressString + "<br />" + datesString + "<br /> <br />" + buttonString + "<br /> <br /> <hr>";
