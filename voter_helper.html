@@ -15,7 +15,7 @@
 			color: black;
 		}
 
-		h2 {
+		.h2  {
 			margin-top: 20px;
 			color: black;
 		}
@@ -226,7 +226,7 @@
 
 <body>
 
-	<h1 style="color:white; text-align: center; margin: 20px;">Our Vote Now Voter Helper Tool</h1>
+	<!--<h1 style="color:white; text-align: center; margin: 20px;">Our Vote Now Voter Helper Tool</h1>-->
 
 	<!--Category: "registered"-->
 	<div class="wrapper" id="registered">
@@ -330,12 +330,13 @@
 	<div class="wrapper" id="instructions">
 		<button class="collapsible locked" id="coll-instructions">Your next steps...</button>
 		<div class="content">
-			<h2 id="instructions-title">Thanks for using the OurVoteNow voter helper tool.</h1>
-			<p id="instructions-text">Here are those instructions</p>
-
+			<h2 class="h2" id="instructions-title">Thanks for using the OurVoteNow voter helper tool.</h2>
 			<a href="#" id="instructions-link" target="_self">
 				<button class="button 4" id="instructions-button" category="instructions" value="link">Go</button>
 			</a>
+			<p id="instructions-text">Here are those instructions</p>
+
+			
 
 		</div>
 	</div>
@@ -345,7 +346,7 @@
 		<button class="collapsible locked" id="coll-info">More info</button>
 		<div class="content">
 			<!--https://www.addevent.com/add-to-calendar-button-->
-			<h2 id="info-title">Select a date to add a reminder to your calendar</h2>
+			<h2 class="h2" id="info-title">Select a date to add a reminder to your calendar</h2>
 			<input placeholder="Select date" class="input-text" type="text" id="datepicker">
 			<p id="info-hours">Polling hours:</p>
 			<div title="Add to Calendar" id="addeventbutton" class="addeventatc" style="display: none">
@@ -360,13 +361,13 @@
 			<br />
 			<hr>
 			<br />
-			<h2 id="location-title">Thanks for using the OurVoteNow voter helper tool.</h1>
+			<h2 class="h2" id="location-title">Thanks for using the OurVoteNow voter helper tool.</h1>
 			<div id="map">
 			</div>
 			<br />
 			<hr>
 			<br />
-			<h2 id="electioninfo-title">Candidates and Sample Ballots</h2>
+			<h2 class="h2" id="electioninfo-title">Candidates and Sample Ballots</h2>
 			<p>Coming soon...</p>
 
 			<a href="#" id="location-link" target="_self">
@@ -868,14 +869,16 @@
 			var button = document.getElementById("instructions-button");
 			var link = document.getElementById("instructions-link");
 
-			link.setAttribute("href", "https://www.mvp.sos.ga.gov/MVP/mvp.do");
-			link.setAttribute("target", "_blank");
-			button.innerHTML = "More Early Voting Info";
-
 			let street = responses["address"][0]; //First element of the "address" array in responses[] is street
 			let city = responses["address"][1]; //Second element is city
 			let state = responses["address"][2]; //Etc.
 			let zip = responses["address"][3];
+
+			let url = "https://www.usvotefoundation.org/vote/us/state-voting-information/" + state  + "?submission=true&stateName=" + state;
+
+			link.setAttribute("href", url);
+			link.setAttribute("target", "_blank");
+			button.innerHTML = "Voting Requirements for your State";
 
 			let query = voterInfoQuery(street, city, state, zip, 6000);
 
@@ -947,7 +950,7 @@
 			button.innerHTML = "Get your absentee ballot";
 
 			title.innerHTML = "Absentee voting";
-			text.innerHTML = "Awesome! The General Election takes place November 6th, but you can vote absentee from XX/XX until XX/XX. Use this link to learn how to request an absentee ballot:";
+			text.innerHTML = "Awesome! The General Election takes place November 6th, and you can vote absentee until the polls close on the 6th. Apply for a Georgia absentee ballot by November 2nd using this link:";
 		}
 
 		function displayInstructionsRegularVoting() {
@@ -956,14 +959,18 @@
 			var button = document.getElementById("instructions-button");
 			var link = document.getElementById("instructions-link");
 
-			link.setAttribute("href", "https://www.mvp.sos.ga.gov/MVP/mvp.do");
-			link.setAttribute("target", "_blank");
-			button.innerHTML = "More voting information";
-
 			let street = responses["address"][0];
 			let city = responses["address"][1];
 			let state = responses["address"][2];
 			let zip = responses["address"][3];
+
+			//https://www.usvotefoundation.org/vote/sviddomestic.htm?submission=true&stateId=4
+			//https://www.usvotefoundation.org/vote/us/state-voting-information/AZ?submission=true&stateName=AZ
+
+			let url = "https://www.usvotefoundation.org/vote/us/state-voting-information/" + state  + "?submission=true&stateName=" + state;
+			link.setAttribute("href", url);
+			link.setAttribute("target", "_blank");
+			button.innerHTML = "Voting Requirements for your State";
 
 			let query = voterInfoQuery(street, city, state, zip, 6000);
 
@@ -1011,7 +1018,7 @@
 						console.log("No Early Vote Sites");
 					}
 
-					title.innerHTML = "Regular Voting Locations";
+					title.innerHTML = "Regular Voting & Locations";
 					text.innerHTML = "<b>Election:</b> " + election + "<br /> <b>Election Date: </b>" + date + "<br /> <br />" + "<hr>" + voteSiteHTML + "<br />";
 				
 					activateSiteButtons();
@@ -1036,7 +1043,7 @@
 
 
 			var xmlHttp = new XMLHttpRequest();
-		    xmlHttp.open( "GET", testURLNC, false ); // false for synchronous request
+		    xmlHttp.open( "GET", url, false ); // false for synchronous request
 		    xmlHttp.send( null );
 		    var responseText = xmlHttp.responseText;
 		    var responseObject = JSON.parse(responseText);
