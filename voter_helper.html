@@ -334,7 +334,7 @@
 			<a href="#" id="instructions-link" target="_self">
 				<button class="button 4" id="instructions-button" category="instructions" value="link">Go</button>
 			</a>
-			<p id="instructions-text">Here are those instructions</p>
+			<p id="instructions-text"></p>
 
 			
 
@@ -383,9 +383,16 @@
 		var currentSelections = ["1-0", "2-0"];
 		var responses = {"registered": "", "age": "", "address": ["", "", "", ""], "votetype": ""};
 		var selectedSiteInfo = {"address": "", "startDate": "", "endDate" : "", "startTime": "", "endTime": ""};
+		var electionID = 0;
 
 		setupButtonEvents();
 		setupCollapsibles();
+
+		let electionsResponse = electionsQuery();
+		let lastID = parseInt(electionsResponse.elections[electionsResponse.elections.length - 1].id);
+		electionID = lastID;
+		console.log("Election ID: " + electionID);
+
 		
 		//Add collapse and expand events to all collapsibles
 		function setupCollapsibles() {
@@ -880,7 +887,7 @@
 			link.setAttribute("target", "_blank");
 			button.innerHTML = "Voting Requirements for your State";
 
-			let query = voterInfoQuery(street, city, state, zip, 6000);
+			let query = voterInfoQuery(street, city, state, zip, electionID);
 
 			if ("error" in query) { //Was there an error returned instead of voting info?
 				console.log("Error");
@@ -964,15 +971,12 @@
 			let state = responses["address"][2];
 			let zip = responses["address"][3];
 
-			//https://www.usvotefoundation.org/vote/sviddomestic.htm?submission=true&stateId=4
-			//https://www.usvotefoundation.org/vote/us/state-voting-information/AZ?submission=true&stateName=AZ
-
 			let url = "https://www.usvotefoundation.org/vote/us/state-voting-information/" + state  + "?submission=true&stateName=" + state;
 			link.setAttribute("href", url);
 			link.setAttribute("target", "_blank");
 			button.innerHTML = "Voting Requirements for your State";
 
-			let query = voterInfoQuery(street, city, state, zip, 6000);
+			let query = voterInfoQuery(street, city, state, zip, electionID);
 
 			if ("error" in query) {
 				console.log("Error");
@@ -1056,6 +1060,24 @@
 		    return responseObject;
 		}
 
+		function electionsQuery() {
+			var apiKey = "AIzaSyAhC1y0Vc09spgiF1KYdUJwag71TGitZgc";
+
+			var url = "https://www.googleapis.com/civicinfo/v2/elections?key=" + apiKey;
+
+			var xmlHttp = new XMLHttpRequest();
+		    xmlHttp.open( "GET", url, false ); // false for synchronous request
+		    xmlHttp.send( null );
+		    var responseText = xmlHttp.responseText;
+		    var responseObject = JSON.parse(responseText);
+
+		    console.log("Here is the response object from the Google Elections Query:");
+			console.log(responseObject);
+			
+			return responseObject;
+
+		}
+
 		function mapsEmbed(address) {
 			let key = "AIzaSyDK3ZSMvwY6jtfrrJyzuTEmEmr3PLwHePU";
 			var addressPlus = address.split(' ').join('+');
@@ -1063,42 +1085,6 @@
 
 			return code;
 		}
-
-	    /*function displayUserElections  ()  {
-		  	var title = document.getElementById("instructions-title");
-			var text = document.getElementById("instructions-text");
-			var button = document.getElementById("instructions-button");
-			var link = document.getElementById("instructions-link");
-
-			link.setAttribute("href", "https://www.mvp.sos.ga.gov/MVP/mvp.do");
-			link.setAttribute("target", "_blank");
-			button.innerHTML = "More voting information";
-
-			let street = responses["address"][0];
-			let city = responses["address"][1];
-			let state = responses["address"][2];
-			let zip = responses["address"][3];
-
-			let query = voterInfoQuery(street, city, state, zip, 6000);
-
-			if ("error" in query) {
-				console.log("Error");
-
-				title.innerHTML = "Error";
-
-				if (query.error.errors[0].reason == "parseError") {
-					text.innerHTML = "Please enter a valid address and try again.";
-				}
-
-			} else {
-
-				let contests = query.election.contests
-
-				for (i = 0; i < contests.length; i++)
-					window.alert(i + ". " + array[i]);
-
-			}
-		}*/
 
 		function convertDate(date_str) {
 				let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -1244,8 +1230,6 @@
 				return output;
 			}
 		}
-
-
 
 	</script>
 
