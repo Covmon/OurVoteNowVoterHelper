@@ -1,175 +1,317 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
    <style type="text/css">
       
-        table, th, td {
-          border: 1px solid black;
-          border-collapse: collapse;
-        }
+    body {
+        text-align: center;
+        margin: 0px;
+        padding: 0px;
+    }
+    
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
 
-        div { margin: 20px; }
+    .nav {
+        background-color: rgb(250,250,250);
+        width: 100%;
+        position: fixed;
+        border-bottom: 2px solid #ee3233;
+        z-index: 1000;
+        margin: 0px;
+        padding: 0px;
+    }
 
-        .button {
-            background: url(http://i62.tinypic.com/15xvbd5.png) no-repeat 96% 0;
-            height: 29px;
-            overflow: hidden;
-            width: 240px;
-            border-radius: 5px;
-            background-color: green;
-        }
+    .data {
+        padding-top: 225px;
+    }
 
-        .button select {
-           background: transparent;
-           border: none;
-           font-size: 14px;
-           height: 29px;
-           padding: 5px; /* If you add too much padding here, the options won't show in IE */
-           width: 268px;
-        }
+    h1 {
+        color: #ee3233;
+    }
+
+    .select-style select {
+        font-size: 15px;
+        cursor: pointer;
+        padding: 5px 8px;
+        width: 110%;
+        border: none;
+        box-shadow: none;
+        background: transparent;
+        background-image: none;
+        -webkit-appearance: none;
+    }
+
+    .select-style {
+        cursor: pointer;
+        width: 200px;
+        font-family: "Roboto", sans-serif;
+        border-radius: 2px;
+        padding: 0;
+        display: inline-block;
+        margin-bottom: 5px;
+        margin: 5px;
+        background-color: white;
+        background: #fff url("icon-select.svg") no-repeat 90% 50%;
+        background-size: 10px 20px;
+        border-bottom: 3px solid rgb(220, 220, 220);
+        transition-duration: 0.2s;
+    }
+
+    .select-style:hover {
+        border-color: #ee3233;
+        background-color: rgb(240,240,240);
+    }
+
+    .select-style-selected {
+        border-color: #ee3233;
+        background-color: rgb(240,240,240);
+    }
+
+    .select-style select:focus {
+        outline: none;
+    }
+
+    .button {
+        width: 200px;
+        display: inline-block;
+        background-color: white;
+        border-radius: 1px;
+        font-size: 15px;
+        padding: 8px 16px;
+        margin: 15px 5px;
+        -webkit-transition-duration: 0.2s; /*for safari*/
+        transition-duration: 0.2s;
+        cursor: pointer;
+    }
+    
+    .disabled {
+        color: black;
+        border: 2px solid rgb(220, 220, 220);
+        cursor: not-allowed;
+    }
+
+    .disabled:hover {
+        background-color: rgb(220, 220, 220);
+    }
+
+    .enabled {
+        color: #ee3233;
+        border: 2px solid #ee3233;
+        cursor: pointer;
+    }
+
+    .enabled:hover {
+        color: #fff;
+        background-color: #ee3233;
+    }
 
    </style>
+
 </head>
+
 <body> 
-<div class='buttons'>    
-    <div class='x-axis button'>
-        <select name="state" id="x-axis">
-            <option value="" disabled selected>X-Axis</option>
-            <option value="Age">Age</option>
-            <option value="Gender">Gender</option>  
-            <option value="Race">Race</option>
-            <option value="Statewide">Statewide</option>
-            <option value="Congressional District">Congressional District</option>
-            <option value="County">County</option>  
-            <option value="Precinct">Precinct</option>
-        </select>  
+
+    <div class='nav'>
+        <h1>OurVoteNow Voter Stats GA</h1>
+
+        Show me
+        <div class='x-axis select-style'>
+            <select name="state" id="x-axis">
+                <option value="" disabled selected>Choose X-Axis</option>
+                <option id="Age" value="Age">Age</option>
+                <option id="Gender" value="Gender">Gender</option>  
+                <option id="Race" value="Race">Race</option>
+                <option id="Statewide" value="Statewide">Statewide</option>
+                <option id="CongressionalDistrict" value="CongressionalDistrict">Congressional District</option>
+                <option id="County" value="County">County</option>  
+                <option id="Precinct" value="Precinct">Precinct</option>
+            </select>  
+        </div>
+        vs
+        <div class='y-axis select-style'>
+            <select name="state" id="y-axis">
+                <option value="" disabled selected>Choose Y-Axis</option>
+                <option id="Age" value="Age">Age</option>
+                <option id="Gender" value="Gender">Gender</option>  
+                <option id="Race" value="Race">Race</option>
+                <option id="Statewide" value="Statewide">Statewide</option>
+                <option id="CongressionalDistrict" value="CongressionalDistrict">Congressional District</option>
+                <option id="County" value="County">County</option>  
+                <option id="Precinct" value="Precinct">Precinct</option>
+            </select>  
+        </div>
+        at a
+        <div class='z-axis select-style'>
+            <select name="state" id="region">
+                <option value="" disabled selected>Choose Region</option>
+                <option value="Statewide">Statewide</option>
+                <option value="CongressionalDistrict">Congressional District</option>
+                <option value="County">County</option>  
+                <option value="Precinct">Precinct</option>
+                <option value="N/A">N/A</option>
+            </select>  
+        </div>
+        level.
+        <br/>
+        <div class="button disabled" id="go-button">Go</div>
     </div>
-    <div class='y-axis button'>
-    <select name="state" id="y-axis">
-        <option value="" disabled selected>Y-Axis</option>
-        <option value="Age">Age</option>
-        <option value="Gender">Gender</option>  
-        <option value="Race">Race</option>
-        <option value="Statewide">Statewide</option>
-        <option value="Congressional District">Congressional District</option>
-        <option value="County">County</option>  
-        <option value="Precinct">Precinct</option>
-    </select>  
+    
+    <div class="data">
+        <table>
+            <tr>
+                <th>COUNTY NAME</th>
+                <th>BRANTLEY</th>
+            </tr>
+            <tr>
+                <td>TOTAL VOTERS</td>
+                <td>53.26</td>
+            </tr>
+            <tr>
+                <td>UNKNOWN</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>UNKNOWN FEMALE</td>
+                <td>23.44</td>
+            </tr>
+            <tr>
+                <td>UNKNOWN MALE</td>
+                <td>25.6</td>
+            </tr>
+            <tr>
+                <td>OTHER UNKNOWN</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>OTHER FEMALE</td>
+                <td>40.74</td>
+            </tr>
+            <tr>
+                <td>OTHER MALE</td>
+                <td>26.67</td>
+            </tr>
+            <tr>
+                <td>NATIVE-AM UNKNOWN</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>NATIVE-AM FEMALE</td>
+                <td>25</td>
+            </tr>
+            <tr>
+                <td>NATIVE-AM MALE</td>
+                <td>66.67</td>
+            </tr>
+            <tr>
+                <td>HISP-LT UNKNOWN</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>HISP-LT FEMALE</td>
+                <td>23.33</td>
+            </tr>
+            <tr>
+                <td>HISP-LT MALE</td>
+                <td>29.17</td>
+            </tr>
+            <tr>
+                <td>ASIA-PI UNKNOWN</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>ASIA-PI FEMALE</td>
+                <td>44.44</td>
+            </tr>
+            <tr>
+                <td>ASIA-PI MALE</td>
+                <td>66.67</td>
+            </tr>
+            <tr>
+                <td>WHITE UNKNOWN</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>WHITE FEMALE</td>
+                <td>54.88</td>
+            </tr>
+            <tr>
+                <td>WHITE MALE</td>
+                <td>55.59</td>
+            </tr>
+            <tr>
+                <td>BLACK UNKNOWN</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>BLACK FEMALE</td>
+                <td>64.29</td>
+            </tr>
+            <tr>
+                <td>BLACK MALE</td>
+                <td>41.60</td>
+            </tr>
+            <tr>
+                <td>Unnamed: 1<br></td>
+                <td>013<br></td>
+            </tr>
+        </table>
     </div>
-    <div class='z-axis button'>
-    <select name="state" id="z-axis">
-        <option value="" disabled selected>Region</option>
-        <option value="AL">Statewide</option>
-        <option value="AK">Congressional District</option>
-        <option value="AR">County</option>  
-        <option value="AZ">Precinct</option>
-        <option value="AZ">N/A</option>
-    </select>  
-    </div>
-    <button>GO</button>
-</div>
-<table>
-    <tr>
-        <th>COUNTY NAME</th>
-        <th>BRANTLEY</th>
-    </tr>
-    <tr>
-        <td>TOTAL VOTERS</td>
-        <td>53.26</td>
-    </tr>
-    <tr>
-        <td>UNKNOWN</td>
-        <td>0</td>
-    </tr>
-    <tr>
-        <td>UNKNOWN FEMALE</td>
-        <td>23.44</td>
-    </tr>
-    <tr>
-        <td>UNKNOWN MALE</td>
-        <td>25.6</td>
-    </tr>
-    <tr>
-        <td>OTHER UNKNOWN</td>
-        <td>0</td>
-    </tr>
-    <tr>
-        <td>OTHER FEMALE</td>
-        <td>40.74</td>
-    </tr>
-    <tr>
-        <td>OTHER MALE</td>
-        <td>26.67</td>
-    </tr>
-    <tr>
-        <td>NATIVE-AM UNKNOWN</td>
-        <td>0</td>
-    </tr>
-    <tr>
-        <td>NATIVE-AM FEMALE</td>
-        <td>25</td>
-    </tr>
-    <tr>
-        <td>NATIVE-AM MALE</td>
-        <td>66.67</td>
-    </tr>
-    <tr>
-        <td>HISP-LT UNKNOWN</td>
-        <td>0</td>
-    </tr>
-    <tr>
-        <td>HISP-LT FEMALE</td>
-        <td>23.33</td>
-    </tr>
-    <tr>
-        <td>HISP-LT MALE</td>
-        <td>29.17</td>
-    </tr>
-    <tr>
-        <td>ASIA-PI UNKNOWN</td>
-        <td>0</td>
-    </tr>
-    <tr>
-        <td>ASIA-PI FEMALE</td>
-        <td>44.44</td>
-    </tr>
-    <tr>
-        <td>ASIA-PI MALE</td>
-        <td>66.67</td>
-    </tr>
-    <tr>
-        <td>WHITE UNKNOWN</td>
-        <td>0</td>
-    </tr>
-    <tr>
-        <td>WHITE FEMALE</td>
-        <td>54.88</td>
-    </tr>
-    <tr>
-        <td>WHITE MALE</td>
-        <td>55.59</td>
-    </tr>
-    <tr>
-        <td>BLACK UNKNOWN</td>
-        <td>0</td>
-    </tr>
-    <tr>
-        <td>BLACK FEMALE</td>
-        <td>64.29</td>
-    </tr>
-    <tr>
-        <td>BLACK MALE</td>
-        <td>41.60</td>
-    </tr>
-    <tr>
-        <td>Unnamed: 1<br></td>
-        <td>013<br></td>
-    </tr>
-</table>
+
+
+    
 
  <script type="text/javascript">
 
     var responses = {"x-axis": "", "y-axis": "", "region": "", "region-identifier": ""};
+    var x_selected = false;
+    var y_selected = false;
+    var region_selected = false;
+
+    $("select").change(function() {
+        var value = $(this).val();
+        if (value != "") {
+            var selectID = $(this).attr("id");  
+            console.log(selectID);
+            
+
+            if (selectID == "x-axis") {
+                $(".x-axis").addClass("select-style-selected");
+                $(".y-axis").find("#" + value).prop("disabled", true);
+                if (x_selected) {
+                    $(".y-axis").find("#" + responses["x-axis"]).prop("disabled", false);
+                }
+                x_selected = true;
+            } else if (selectID == "y-axis") { 
+                $(".y-axis").addClass("select-style-selected");
+                $(".x-axis").find("#" + value).prop("disabled", true);
+                if (y_selected) {
+                    $(".x-axis").find("#" + responses["y-axis"]).prop("disabled", false);
+                }
+                y_selected = true;
+            } else {
+                region_selected = true;
+                $(".z-axis").addClass("select-style-selected");
+            }
+
+            responses[selectID] = $(this).val();
+            console.log(responses);
+        } 
+
+        if (x_selected && y_selected && region_selected) {
+            $("#go-button").addClass("enabled").removeClass("disabled");
+        }
+
+    });
 
     function setupButtonEvents() {
         var buttons = document.getElementsByClassName("button");
@@ -188,7 +330,7 @@
 
         console.log("Button clicked of category: " + buttonCategory + ", value: " + buttonValue);
 
-        if (id == 'x-axis') {
+        if (buttonClicked == 'x-axis') {
             responses["x-axis"] = buttonValue;
             document.getElementById("y-axis").buttonValue.disabled = true;
         }
@@ -245,6 +387,3 @@
 
 </body>
 </html> 
-
-
-
