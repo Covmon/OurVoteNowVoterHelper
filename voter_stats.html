@@ -28,11 +28,14 @@
         border-bottom: 2px solid #ee3233;
         z-index: 1000;
         margin: 0px;
-        padding: 0px;
+        padding-top: 20px;
+        padding-bottom: 10px;
     }
 
     .data {
-        padding-top: 225px;
+        padding-top: 200px;
+        width: 40vw;
+        margin-left: 30vw;
     }
 
     h1 {
@@ -122,8 +125,6 @@
 <body> 
 
     <div class='nav'>
-        <h1>OurVoteNow Voter Stats GA</h1>
-
         Show me
         <div class='x-axis select-style'>
             <select name="state" id="x-axis">
@@ -137,7 +138,7 @@
                 <option id="Precinct" value="Precinct">Precinct</option>
             </select>  
         </div>
-        vs
+        vs.
         <div class='y-axis select-style'>
             <select name="state" id="y-axis">
                 <option value="" disabled selected>Choose Y-Axis</option>
@@ -167,103 +168,108 @@
     </div>
     
     <div class="data">
-        <table>
-            <tr>
-                <th>COUNTY NAME</th>
-                <th>BRANTLEY</th>
-            </tr>
-            <tr>
-                <td>TOTAL VOTERS</td>
-                <td>53.26</td>
-            </tr>
-            <tr>
-                <td>UNKNOWN</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <td>UNKNOWN FEMALE</td>
-                <td>23.44</td>
-            </tr>
-            <tr>
-                <td>UNKNOWN MALE</td>
-                <td>25.6</td>
-            </tr>
-            <tr>
-                <td>OTHER UNKNOWN</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <td>OTHER FEMALE</td>
-                <td>40.74</td>
-            </tr>
-            <tr>
-                <td>OTHER MALE</td>
-                <td>26.67</td>
-            </tr>
-            <tr>
-                <td>NATIVE-AM UNKNOWN</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <td>NATIVE-AM FEMALE</td>
-                <td>25</td>
-            </tr>
-            <tr>
-                <td>NATIVE-AM MALE</td>
-                <td>66.67</td>
-            </tr>
-            <tr>
-                <td>HISP-LT UNKNOWN</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <td>HISP-LT FEMALE</td>
-                <td>23.33</td>
-            </tr>
-            <tr>
-                <td>HISP-LT MALE</td>
-                <td>29.17</td>
-            </tr>
-            <tr>
-                <td>ASIA-PI UNKNOWN</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <td>ASIA-PI FEMALE</td>
-                <td>44.44</td>
-            </tr>
-            <tr>
-                <td>ASIA-PI MALE</td>
-                <td>66.67</td>
-            </tr>
-            <tr>
-                <td>WHITE UNKNOWN</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <td>WHITE FEMALE</td>
-                <td>54.88</td>
-            </tr>
-            <tr>
-                <td>WHITE MALE</td>
-                <td>55.59</td>
-            </tr>
-            <tr>
-                <td>BLACK UNKNOWN</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <td>BLACK FEMALE</td>
-                <td>64.29</td>
-            </tr>
-            <tr>
-                <td>BLACK MALE</td>
-                <td>41.60</td>
-            </tr>
-            <tr>
-                <td>Unnamed: 1<br></td>
-                <td>013<br></td>
-            </tr>
+        <table id="data-table" class="row-border hover compact">
+            <thead>
+                <tr>
+                    <th>COUNTY NAME</th>
+                    <th>BRANTLEY</th>
+                </tr>
+            </thead>
+            
+            <tbody>
+                <tr>
+                    <td>TOTAL VOTERS</td>
+                    <td>53.26</td>
+                </tr>
+                <tr>
+                    <td>UNKNOWN</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>UNKNOWN FEMALE</td>
+                    <td>23.44</td>
+                </tr>
+                <tr>
+                    <td>UNKNOWN MALE</td>
+                    <td>25.6</td>
+                </tr>
+                <tr>
+                    <td>OTHER UNKNOWN</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>OTHER FEMALE</td>
+                    <td>40.74</td>
+                </tr>
+                <tr>
+                    <td>OTHER MALE</td>
+                    <td>26.67</td>
+                </tr>
+                <tr>
+                    <td>NATIVE-AM UNKNOWN</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>NATIVE-AM FEMALE</td>
+                    <td>25</td>
+                </tr>
+                <tr>
+                    <td>NATIVE-AM MALE</td>
+                    <td>66.67</td>
+                </tr>
+                <tr>
+                    <td>HISP-LT UNKNOWN</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>HISP-LT FEMALE</td>
+                    <td>23.33</td>
+                </tr>
+                <tr>
+                    <td>HISP-LT MALE</td>
+                    <td>29.17</td>
+                </tr>
+                <tr>
+                    <td>ASIA-PI UNKNOWN</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>ASIA-PI FEMALE</td>
+                    <td>44.44</td>
+                </tr>
+                <tr>
+                    <td>ASIA-PI MALE</td>
+                    <td>66.67</td>
+                </tr>
+                <tr>
+                    <td>WHITE UNKNOWN</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>WHITE FEMALE</td>
+                    <td>54.88</td>
+                </tr>
+                <tr>
+                    <td>WHITE MALE</td>
+                    <td>55.59</td>
+                </tr>
+                <tr>
+                    <td>BLACK UNKNOWN</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>BLACK FEMALE</td>
+                    <td>64.29</td>
+                </tr>
+                <tr>
+                    <td>BLACK MALE</td>
+                    <td>41.60</td>
+                </tr>
+                <tr>
+                    <td>Unnamed: 1<br></td>
+                    <td>013<br></td>
+                </tr>
+            </tbody>
         </table>
     </div>
 
@@ -312,6 +318,23 @@
         }
 
     });
+
+    $("#data-table").DataTable({
+            scrollX: scroll,
+            paging: false,
+            ordering: true,
+            language: {
+                searchPlaceholder: "State, race, candidate, or rating",
+                info: "Showing _START_ to _END_ of _TOTAL_ races",
+                infoFiltered: " - filtered from _MAX_ total races",
+                search: "Search:",
+                emptyTable:  "No races found"
+            },
+            columns: [
+                {},
+                {}
+            ]
+        });
 
     function setupButtonEvents() {
         var buttons = document.getElementsByClassName("button");
