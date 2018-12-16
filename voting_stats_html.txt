@@ -1,0 +1,26 @@
+<table>
+    <tr>
+        <th></th>
+        <th>0</th>
+    </tr>
+    <tr>
+        <td>CONGRESSIONAL DISTRICT</td>
+        <td>District 1</td>
+    </tr>
+    <tr>
+        <td>MALE</td>
+        <td>49.29</td>
+    </tr>
+    <tr>
+        <td>FEMALE</td>
+        <td>53.22</td>
+    </tr>
+    <tr>
+        <td>UNKNOWN</td>
+        <td>38.64</td>
+    </tr>
+    <tr>
+        <td>TOTAL VOTERS<br></td>
+        <td>51.4<br></td>
+    </tr>
+</table>

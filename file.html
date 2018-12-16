@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+   <style type="text/css">
+      
+    body {
+<table>
+    <tr>
+        <th>COUNTY NAME</th>
+        <th>BRANTLEY</th>
+    </tr>
+    <tr>
+        <td>TOTAL VOTERS</td>
+        <td>53.26</td>
+    </tr>
+    <tr>
+        <td>UNKNOWN</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>UNKNOWN FEMALE</td>
+        <td>23.44</td>
+    </tr>
+    <tr>
+        <td>UNKNOWN MALE</td>
+        <td>25.6</td>
+    </tr>
+    <tr>
+        <td>OTHER UNKNOWN</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>OTHER FEMALE</td>
+        <td>40.74</td>
+    </tr>
+    <tr>
+        <td>OTHER MALE</td>
+        <td>26.67</td>
+    </tr>
+    <tr>
+        <td>NATIVE-AM UNKNOWN</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>NATIVE-AM FEMALE</td>
+        <td>25</td>
+    </tr>
+    <tr>
+        <td>NATIVE-AM MALE</td>
+        <td>66.67</td>
+    </tr>
+    <tr>
+        <td>HISP-LT UNKNOWN</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>HISP-LT FEMALE</td>
+        <td>23.33</td>
+    </tr>
+    <tr>
+        <td>HISP-LT MALE</td>
+        <td>29.17</td>
+    </tr>
+    <tr>
+        <td>ASIA-PI UNKNOWN</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>ASIA-PI FEMALE</td>
+        <td>44.44</td>
+    </tr>
+    <tr>
+        <td>ASIA-PI MALE</td>
+        <td>66.67</td>
+    </tr>
+    <tr>
+        <td>WHITE UNKNOWN</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>WHITE FEMALE</td>
+        <td>54.88</td>
+    </tr>
+    <tr>
+        <td>WHITE MALE</td>
+        <td>55.59</td>
+    </tr>
+    <tr>
+        <td>BLACK UNKNOWN</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>BLACK FEMALE</td>
+        <td>64.29</td>
+    </tr>
+    <tr>
+        <td>BLACK MALE</td>
+        <td>41.60</td>
+    </tr>
+    <tr>
+        <td>Unnamed: 1<br></td>
+        <td>013<br></td>
+    </tr>
+</table>        text-align: center;
+        margin: 0px;
+        padding: 0px;
+        background-color: white;
+    }
+    
+    table, th, td {
+    }
+
+    .nav {
+        background-color: rgb(250,250,250);
+        width: 100%;
+        position: fixed;
+        border-bottom: 2px solid #ee3233;
+        z-index: 1000;
+        margin: 0px;
+        padding-top: 20px;
+        padding-bottom: 10px;
+    }
+
+    .data {
+        padding-top: 200px;
+        width: 40vw;
+        margin-left: 30vw;
+    }
+
+    h1 {
+        color: #ee3233;
+    }
+
+    .select-style select {
+        font-size: 15px;
+        cursor: pointer;
+        padding: 5px 8px;
+        width: 110%;
+        border: none;
+        box-shadow: none;
+        background: transparent;
+        background-image: none;
+        -webkit-appearance: none;
+    }
+
+    .select-style {
+        cursor: pointer;
+        width: 200px;
+        font-family: "Roboto", sans-serif;
+        border-radius: 2px;
+        padding: 0;
+        display: inline-block;
+        margin-bottom: 5px;
+        margin: 5px;
+        background-color: white;
+        background: #fff url("icon-select.svg") no-repeat 90% 50%;
+        background-size: 10px 20px;
+        border-bottom: 3px solid rgb(220, 220, 220);
+        transition-duration: 0.2s;
+    }
+
+    .select-style:hover {
+        border-color: #ee3233;
+        background-color: rgb(240,240,240);
+    }
+
+    .select-style-selected {
+        border-color: #ee3233;
+        background-color: rgb(240,240,240);
+    }
+
+    .select-style select:focus {
+        outline: none;
+    }
+
+    .button {
+        width: 200px;
+        display: inline-block;
+        background-color: white;
+        border-radius: 1px;
+        font-size: 15px;
+        padding: 8px 16px;
+        margin: 15px 5px;
+        -webkit-transition-duration: 0.2s; /*for safari*/
+        transition-duration: 0.2s;
+        cursor: pointer;
+    }
+    
+    .disabled {
+        color: black;
+        border: 2px solid rgb(220, 220, 220);
+        cursor: not-allowed;
+    }
+
+    .disabled:hover {
+        background-color: rgb(220, 220, 220);
+    }
+
+    .enabled {
+        color: #ee3233;
+        border: 2px solid #ee3233;
+        cursor: pointer;
+    }
+
+    .enabled:hover {
+        color: #fff;
+        background-color: #ee3233;
+    }
+
+   </style>
+
+</head>
+
+<body> 
+
+    <div class='nav'>
+        Show me
+        <div class='x-axis select-style'>
+            <select name="state" id="x-axis">
+                <option value="" disabled selected>Choose X-Axis</option>
+                <option id="Age" value="Age">Age</option>
+                <option id="Gender" value="Gender">Gender</option>  
+                <option id="Race" value="Race">Race</option>
+                <option id="Statewide" value="Statewide">Statewide</option>
+                <option id="CongressionalDistrict" value="CongressionalDistrict">Congressional District</option>
+                <option id="County" value="County">County</option>  
+                <option id="Precinct" value="Precinct">Precinct</option>
+            </select>  
+        </div>
+        vs.
+        <div class='y-axis select-style'>
+            <select name="state" id="y-axis">
+                <option value="" disabled selected>Choose Y-Axis</option>
+                <option id="Age" value="Age">Age</option>
+                <option id="Gender" value="Gender">Gender</option>  
+                <option id="Race" value="Race">Race</option>
+                <option id="Statewide" value="Statewide">Statewide</option>
+                <option id="CongressionalDistrict" value="CongressionalDistrict">Congressional District</option>
+                <option id="County" value="County">County</option>  
+                <option id="Precinct" value="Precinct">Precinct</option>
+            </select>  
+        </div>
+        at a
+        <div class='z-axis select-style'>
+            <select name="state" id="region">
+                <option value="" disabled selected>Choose Region</option>
+                <option value="Statewide">Statewide</option>
+                <option value="CongressionalDistrict">Congressional District</option>
+                <option value="County">County</option>  
+                <option value="Precinct">Precinct</option>
+                <option value="N/A">N/A</option>
+            </select>  
+        </div>
+        level.
+        <br/>
+        <div class="button disabled" id="go-button">Go</div>
+    </div>
+    
+    <div class="data">
+        <table id="data-table" class="cell-border hover compact">
+            <thead>
+                <tr>
+                    <th>COUNTY NAME</th>
+                    <th>BRANTLEY</th>
+                </tr>
+            </thead>
+            
+            <tbody>
+                <tr>
+                    <td>TOTAL VOTERS</td>
+                    <td>53.26</td>
+                </tr>
+                <tr>
+                    <td>UNKNOWN</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>UNKNOWN FEMALE</td>
+                    <td>23.44</td>
+                </tr>
+                <tr>
+                    <td>UNKNOWN MALE</td>
+                    <td>25.6</td>
+                </tr>
+                <tr>
+                    <td>OTHER UNKNOWN</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>OTHER FEMALE</td>
+                    <td>40.74</td>
+                </tr>
+                <tr>
+                    <td>OTHER MALE</td>
+                    <td>26.67</td>
+                </tr>
+                <tr>
+                    <td>NATIVE-AM UNKNOWN</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>NATIVE-AM FEMALE</td>
+                    <td>25</td>
+                </tr>
+                <tr>
+                    <td>NATIVE-AM MALE</td>
+                    <td>66.67</td>
+                </tr>
+                <tr>
+                    <td>HISP-LT UNKNOWN</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>HISP-LT FEMALE</td>
+                    <td>23.33</td>
+                </tr>
+                <tr>
+                    <td>HISP-LT MALE</td>
+                    <td>29.17</td>
+                </tr>
+                <tr>
+                    <td>ASIA-PI UNKNOWN</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>ASIA-PI FEMALE</td>
+                    <td>44.44</td>
+                </tr>
+                <tr>
+                    <td>ASIA-PI MALE</td>
+                    <td>66.67</td>
+                </tr>
+                <tr>
+                    <td>WHITE UNKNOWN</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>WHITE FEMALE</td>
+                    <td>54.88</td>
+                </tr>
+                <tr>
+                    <td>WHITE MALE</td>
+                    <td>55.59</td>
+                </tr>
+                <tr>
+                    <td>BLACK UNKNOWN</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>BLACK FEMALE</td>
+                    <td>64.29</td>
+                </tr>
+                <tr>
+                    <td>BLACK MALE</td>
+                    <td>41.60</td>
+                </tr>
+                <tr>
+                    <td>Unnamed: 1<br></td>
+                    <td>013<br></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    
+
+ <script type="text/javascript">
+
+    var responses = {"x-axis": "", "y-axis": "", "region": "", "region-identifier": ""};
+    var x_selected = false;
+    var y_selected = false;
+    var region_selected = false;
+
+    $("select").change(function() {
+        var value = $(this).val();
+        if (value != "") {
+            var selectID = $(this).attr("id");  
+            console.log(selectID);
+            
+
+            if (selectID == "x-axis") {
+                $(".x-axis").addClass("select-style-selected");
+                $(".y-axis").find("#" + value).prop("disabled", true);
+                if (x_selected) {
+                    $(".y-axis").find("#" + responses["x-axis"]).prop("disabled", false);
+                }
+                x_selected = true;
+            } else if (selectID == "y-axis") { 
+                $(".y-axis").addClass("select-style-selected");
+                $(".x-axis").find("#" + value).prop("disabled", true);
+                if (y_selected) {
+                    $(".x-axis").find("#" + responses["y-axis"]).prop("disabled", false);
+                }
+                y_selected = true;
+            } else {
+                region_selected = true;
+                $(".z-axis").addClass("select-style-selected");
+            }
+
+            responses[selectID] = $(this).val();
+            console.log(responses);
+        } 
+
+        if (x_selected && y_selected && region_selected) {
+            $("#go-button").addClass("enabled").removeClass("disabled");
+        }
+
+    });
+
+    $("#data-table").DataTable({
+            scrollX: scroll,
+            paging: false,
+            ordering: true,
+            language: {
+                searchPlaceholder: "State, race, candidate, or rating",
+                info: "Showing _START_ to _END_ of _TOTAL_ races",
+                infoFiltered: " - filtered from _MAX_ total races",
+                search: "Search:",
+                emptyTable:  "No races found"
+            },
+            columns: [
+                {},
+                {}
+            ]
+        });
+
+    function setupButtonEvents() {
+        var buttons = document.getElementsByClassName("button");
+        for (i = 0; i < buttons.length; i++) {
+            buttons[i].addEventListener("click", function() {
+                clickButton(this.id)
+            });
+        }
+    }
+
+    function clickButton(id) {
+
+        var buttonClicked = document.getElementById(id);
+        var buttonValue = buttonClicked.value;
+        var buttonCategory = buttonClicked.getAttribute("category");
+
+        console.log("Button clicked of category: " + buttonCategory + ", value: " + buttonValue);
+
+        if (buttonClicked == 'x-axis') {
+            responses["x-axis"] = buttonValue;
+            document.getElementById("y-axis").buttonValue.disabled = true;
+        }
+
+        if (buttonValue == responses[buttonCategory]) { //we clicked a select button that's already active, unfill it
+            buttonClicked.classList.remove("button-active");
+            collapsibleSection.classList.remove("answered");
+
+            responses[buttonCategory] = "";
+
+        } else if (buttonValue == "submit") { //this is a submit button, mark the row as answered but don't fill in the button
+
+            submitRow(buttonCategory);
+            collapsibleSection.classList.add("answered");
+
+        } else if (buttonValue == "link") { //this is a link to another page
+
+            submitRow(buttonCategory);
+
+        } else if (buttonValue == "votingsite") {//this selects a choice but does not mark a row as answered
+
+            let address = id;
+            let startDate = buttonClicked.getAttribute("startdate");
+            let endDate = buttonClicked.getAttribute("enddate");
+            let hours = buttonClicked.getAttribute("hours");
+            let startTime = buttonClicked.getAttribute("starttime");
+            let endTime = buttonClicked.getAttribute("endtime");
+            var days = "";
+            if (buttonClicked.hasAttribute("days")) {
+                days = buttonClicked.getAttribute("days");
+            }
+
+            let siteInfo = {"address": address, "startDate": startDate, "endDate": endDate, "hours": hours, "startTime": startTime, "endTime": endTime, "days": days};
+            submitRow(buttonCategory, siteInfo);
+
+        } else { //this is a select button that's not already active
+            if (responses[buttonCategory] != "") { //Is there already another button in this category selected?
+
+                var otherID = "" + buttonCategory + "-" + responses[buttonCategory]; //eg "age" + "younger" = "age-younger"
+                console.log("other id " + otherID);
+                document.getElementById(otherID).classList.remove("button-active");
+            }
+
+            responses[buttonCategory] = buttonValue;
+            buttonClicked.classList.add("button-active");
+            collapsibleSection.classList.add("answered");
+
+            submitRow(buttonCategory);
+
+        }
+    }
+
+</script>
+
+</body>
+</html> 
