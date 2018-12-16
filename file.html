@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <style type="text/css">
+      
+        table, th, td {
+          border: 1px solid black;
+          border-collapse: collapse;
+        }
+
+        div { margin: 20px; }
+
+        .button {
+            background: url(http://i62.tinypic.com/15xvbd5.png) no-repeat 96% 0;
+            height: 29px;
+            overflow: hidden;
+            width: 240px;
+            border-radius: 5px;
+            background-color: green;
+        }
+
+        .button select {
+           background: transparent;
+           border: none;
+           font-size: 14px;
+           height: 29px;
+           padding: 5px; /* If you add too much padding here, the options won't show in IE */
+           width: 268px;
+        }
+
+   </style>
+</head>
+<body> 
+<div class='buttons'>    
+    <div class='x-axis button'>
+        <select name="state" id="x-axis">
+            <option value="" disabled selected>X-Axis</option>
+            <option value="Age">Age</option>
+            <option value="Gender">Gender</option>  
+            <option value="Race">Race</option>
+            <option value="Statewide">Statewide</option>
+            <option value="Congressional District">Congressional District</option>
+            <option value="County">County</option>  
+            <option value="Precinct">Precinct</option>
+        </select>  
+    </div>
+    <div class='y-axis button'>
+    <select name="state" id="y-axis">
+        <option value="" disabled selected>Y-Axis</option>
+        <option value="Age">Age</option>
+        <option value="Gender">Gender</option>  
+        <option value="Race">Race</option>
+        <option value="Statewide">Statewide</option>
+        <option value="Congressional District">Congressional District</option>
+        <option value="County">County</option>  
+        <option value="Precinct">Precinct</option>
+    </select>  
+    </div>
+    <div class='z-axis button'>
+    <select name="state" id="z-axis">
+        <option value="" disabled selected>Region</option>
+        <option value="AL">Statewide</option>
+        <option value="AK">Congressional District</option>
+        <option value="AR">County</option>  
+        <option value="AZ">Precinct</option>
+        <option value="AZ">N/A</option>
+    </select>  
+    </div>
+    <button>GO</button>
+</div>
+<table>
+    <tr>
+        <th>COUNTY NAME</th>
+        <th>BRANTLEY</th>
+    </tr>
+    <tr>
+        <td>TOTAL VOTERS</td>
+        <td>53.26</td>
+    </tr>
+    <tr>
+        <td>UNKNOWN</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>UNKNOWN FEMALE</td>
+        <td>23.44</td>
+    </tr>
+    <tr>
+        <td>UNKNOWN MALE</td>
+        <td>25.6</td>
+    </tr>
+    <tr>
+        <td>OTHER UNKNOWN</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>OTHER FEMALE</td>
+        <td>40.74</td>
+    </tr>
+    <tr>
+        <td>OTHER MALE</td>
+        <td>26.67</td>
+    </tr>
+    <tr>
+        <td>NATIVE-AM UNKNOWN</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>NATIVE-AM FEMALE</td>
+        <td>25</td>
+    </tr>
+    <tr>
+        <td>NATIVE-AM MALE</td>
+        <td>66.67</td>
+    </tr>
+    <tr>
+        <td>HISP-LT UNKNOWN</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>HISP-LT FEMALE</td>
+        <td>23.33</td>
+    </tr>
+    <tr>
+        <td>HISP-LT MALE</td>
+        <td>29.17</td>
+    </tr>
+    <tr>
+        <td>ASIA-PI UNKNOWN</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>ASIA-PI FEMALE</td>
+        <td>44.44</td>
+    </tr>
+    <tr>
+        <td>ASIA-PI MALE</td>
+        <td>66.67</td>
+    </tr>
+    <tr>
+        <td>WHITE UNKNOWN</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>WHITE FEMALE</td>
+        <td>54.88</td>
+    </tr>
+    <tr>
+        <td>WHITE MALE</td>
+        <td>55.59</td>
+    </tr>
+    <tr>
+        <td>BLACK UNKNOWN</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>BLACK FEMALE</td>
+        <td>64.29</td>
+    </tr>
+    <tr>
+        <td>BLACK MALE</td>
+        <td>41.60</td>
+    </tr>
+    <tr>
+        <td>Unnamed: 1<br></td>
+        <td>013<br></td>
+    </tr>
+</table>
+
+ <script type="text/javascript">
+
+    var responses = {"x-axis": "", "y-axis": "", "region": "", "region-identifier": ""};
+
+    function setupButtonEvents() {
+        var buttons = document.getElementsByClassName("button");
+        for (i = 0; i < buttons.length; i++) {
+            buttons[i].addEventListener("click", function() {
+                clickButton(this.id)
+            });
+        }
+    }
+
+    function clickButton(id) {
+
+        var buttonClicked = document.getElementById(id);
+        var buttonValue = buttonClicked.value;
+        var buttonCategory = buttonClicked.getAttribute("category");
+
+        console.log("Button clicked of category: " + buttonCategory + ", value: " + buttonValue);
+
+        if (buttonClicked == 'x-axis') {
+            responses["x-axis"] = buttonValue;
+            document.getElementById("y-axis").buttonValue.disabled = true;
+        }
+
+        if (buttonValue == responses[buttonCategory]) { //we clicked a select button that's already active, unfill it
+            buttonClicked.classList.remove("button-active");
+            collapsibleSection.classList.remove("answered");
+
+            responses[buttonCategory] = "";
+
+        } else if (buttonValue == "submit") { //this is a submit button, mark the row as answered but don't fill in the button
+
+            submitRow(buttonCategory);
+            collapsibleSection.classList.add("answered");
+
+        } else if (buttonValue == "link") { //this is a link to another page
+
+            submitRow(buttonCategory);
+
+        } else if (buttonValue == "votingsite") {//this selects a choice but does not mark a row as answered
+
+            let address = id;
+            let startDate = buttonClicked.getAttribute("startdate");
+            let endDate = buttonClicked.getAttribute("enddate");
+            let hours = buttonClicked.getAttribute("hours");
+            let startTime = buttonClicked.getAttribute("starttime");
+            let endTime = buttonClicked.getAttribute("endtime");
+            var days = "";
+            if (buttonClicked.hasAttribute("days")) {
+                days = buttonClicked.getAttribute("days");
+            }
+
+            let siteInfo = {"address": address, "startDate": startDate, "endDate": endDate, "hours": hours, "startTime": startTime, "endTime": endTime, "days": days};
+            submitRow(buttonCategory, siteInfo);
+
+        } else { //this is a select button that's not already active
+            if (responses[buttonCategory] != "") { //Is there already another button in this category selected?
+
+                var otherID = "" + buttonCategory + "-" + responses[buttonCategory]; //eg "age" + "younger" = "age-younger"
+                console.log("other id " + otherID);
+                document.getElementById(otherID).classList.remove("button-active");
+            }
+
+            responses[buttonCategory] = buttonValue;
+            buttonClicked.classList.add("button-active");
+            collapsibleSection.classList.add("answered");
+
+            submitRow(buttonCategory);
+
+        }
+    }
+
+</script>
+
+</body>
+</html> 
+
+
+
