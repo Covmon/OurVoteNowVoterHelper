@@ -17,11 +17,11 @@
         background-color: white;
     }
     
-    table, th, td {
+    table {
     }
 
     .nav {
-        background-color: rgb(250,250,250);
+        background-color: rgb(240,240,240);
         width: 100%;
         position: fixed;
         border-bottom: 2px solid #ee3233;
@@ -31,8 +31,31 @@
         padding-bottom: 10px;
     }
 
+    .title-container {
+        width: 100vw;
+        background-color: rgb(220,220,220);
+    }
+
+    .title {
+        width: 80vw;
+        margin-left: 10vw;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+    }
+
+    #logo {
+        display: inline-flex;
+        width: 100px;
+        height: auto;
+    }
+
+    .nav h1 {
+        display: inline-flex;
+    }
+
     .data {
-        padding-top: 200px;
+        padding-top: 250px;
         width: 40vw;
         margin-left: 30vw;
     }
@@ -124,6 +147,13 @@
 <body> 
 
     <div class='nav'>
+        <div class='title-container'>
+            <div class='title'>
+                <img id="logo" src="ourvotenowlogo.jpeg" />
+                <h1>2018 Election Stats</h1>
+            </div>
+        </div>
+        <br />
         Show me
         <div class='x-axis select-style'>
             <select name="state" id="x-axis">
@@ -273,7 +303,6 @@
     </div>
 
 
-    
 
  <script type="text/javascript">
 
@@ -284,9 +313,8 @@
 
     $("select").change(function() {
         var value = $(this).val();
+        var selectID = $(this).attr("id");  
         if (value != "") {
-            var selectID = $(this).attr("id");  
-            console.log(selectID);
             
 
             if (selectID == "x-axis") {
@@ -311,6 +339,11 @@
             responses[selectID] = $(this).val();
             console.log(responses);
         } 
+
+        if ((value == "CongressionalDistrict" || value == "Statewide" || value == "County" || value == "Precinct") && (selectID == "x-axis" || selectID == "y-axis")) {
+            $(".z-axis select").val("N/A");
+            region_selected = true;
+        }
 
         if (x_selected && y_selected && region_selected) {
             $("#go-button").addClass("enabled").removeClass("disabled");
@@ -347,62 +380,8 @@
     function clickButton(id) {
 
         var buttonClicked = document.getElementById(id);
-        var buttonValue = buttonClicked.value;
-        var buttonCategory = buttonClicked.getAttribute("category");
+        console.log("Button clicked with id: " + id);
 
-        console.log("Button clicked of category: " + buttonCategory + ", value: " + buttonValue);
-
-        if (buttonClicked == 'x-axis') {
-            responses["x-axis"] = buttonValue;
-            document.getElementById("y-axis").buttonValue.disabled = true;
-        }
-
-        if (buttonValue == responses[buttonCategory]) { //we clicked a select button that's already active, unfill it
-            buttonClicked.classList.remove("button-active");
-            collapsibleSection.classList.remove("answered");
-
-            responses[buttonCategory] = "";
-
-        } else if (buttonValue == "submit") { //this is a submit button, mark the row as answered but don't fill in the button
-
-            submitRow(buttonCategory);
-            collapsibleSection.classList.add("answered");
-
-        } else if (buttonValue == "link") { //this is a link to another page
-
-            submitRow(buttonCategory);
-
-        } else if (buttonValue == "votingsite") {//this selects a choice but does not mark a row as answered
-
-            let address = id;
-            let startDate = buttonClicked.getAttribute("startdate");
-            let endDate = buttonClicked.getAttribute("enddate");
-            let hours = buttonClicked.getAttribute("hours");
-            let startTime = buttonClicked.getAttribute("starttime");
-            let endTime = buttonClicked.getAttribute("endtime");
-            var days = "";
-            if (buttonClicked.hasAttribute("days")) {
-                days = buttonClicked.getAttribute("days");
-            }
-
-            let siteInfo = {"address": address, "startDate": startDate, "endDate": endDate, "hours": hours, "startTime": startTime, "endTime": endTime, "days": days};
-            submitRow(buttonCategory, siteInfo);
-
-        } else { //this is a select button that's not already active
-            if (responses[buttonCategory] != "") { //Is there already another button in this category selected?
-
-                var otherID = "" + buttonCategory + "-" + responses[buttonCategory]; //eg "age" + "younger" = "age-younger"
-                console.log("other id " + otherID);
-                document.getElementById(otherID).classList.remove("button-active");
-            }
-
-            responses[buttonCategory] = buttonValue;
-            buttonClicked.classList.add("button-active");
-            collapsibleSection.classList.add("answered");
-
-            submitRow(buttonCategory);
-
-        }
     }
 
 </script>
