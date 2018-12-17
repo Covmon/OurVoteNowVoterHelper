@@ -9,22 +9,29 @@
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
    <style type="text/css">
+
+   @import url('https://fonts.googleapis.com/css?family=Oswald|Roboto+Mono:300,400|Roboto|Montserrat:400,700|PT+Serif');
       
     body {
         text-align: center;
         margin: 0px;
         padding: 0px;
         background-color: white;
+        font-family: "Roboto";
     }
     
     table {
+    }
+
+    h1 {
+        font-family: "Oswald";
     }
 
     .nav {
         background-color: rgb(240,240,240);
         width: 100%;
         position: fixed;
-        border-bottom: 2px solid #ee3233;
+        border-bottom: 3px solid rgb(15,95,130);
         z-index: 1000;
         margin: 0px;
         padding-top: 20px;
@@ -34,6 +41,7 @@
     .title-container {
         width: 100vw;
         background-color: rgb(220,220,220);
+        margin-top: -20px;
     }
 
     .title {
@@ -41,13 +49,19 @@
         margin-left: 10vw;
         display: flex;
         justify-content: space-between;
-        align-items: baseline;
+        align-items: center;
+        height: 70px;
     }
 
     #logo {
         display: inline-flex;
         width: 100px;
         height: auto;
+    }
+
+    #logo:hover {
+        opacity: 0.7;
+        transition-duration: 0.3s;
     }
 
     .nav h1 {
@@ -58,6 +72,7 @@
         padding-top: 250px;
         width: 40vw;
         margin-left: 30vw;
+        padding-bottom: 50px;
     }
 
     h1 {
@@ -117,6 +132,7 @@
         -webkit-transition-duration: 0.2s; /*for safari*/
         transition-duration: 0.2s;
         cursor: pointer;
+        font-weight: bold;
     }
     
     .disabled {
@@ -140,6 +156,13 @@
         background-color: #ee3233;
     }
 
+    .footer {
+        padding: 25px;
+        width: 100vw;
+        background-color: rgb(240,240,240);
+        color: rgb(160,160,160);
+    }
+
    </style>
 
 </head>
@@ -149,7 +172,7 @@
     <div class='nav'>
         <div class='title-container'>
             <div class='title'>
-                <img id="logo" src="ourvotenowlogo.jpeg" />
+                <a href="http://ourvotenow.org"><img id="logo" src="ourvotenowlogo.jpeg" /></a>
                 <h1>2018 Election Stats</h1>
             </div>
         </div>
@@ -300,6 +323,10 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+
+    <div class='footer'>
+    <p>&copy 2018 OurVoteNow. Made by Noah Covey and Sam Mahle.</p>
     </div>
 
 
