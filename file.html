@@ -9,133 +9,74 @@
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
    <style type="text/css">
+
+   @import url('https://fonts.googleapis.com/css?family=Oswald|Roboto+Mono:300,400|Roboto|Montserrat:400,700|PT+Serif');
       
     body {
-<table>
-    <tr>
-        <th>COUNTY NAME</th>
-        <th>BRANTLEY</th>
-    </tr>
-    <tr>
-        <td>TOTAL VOTERS</td>
-        <td>53.26</td>
-    </tr>
-    <tr>
-        <td>UNKNOWN</td>
-        <td>0</td>
-    </tr>
-    <tr>
-        <td>UNKNOWN FEMALE</td>
-        <td>23.44</td>
-    </tr>
-    <tr>
-        <td>UNKNOWN MALE</td>
-        <td>25.6</td>
-    </tr>
-    <tr>
-        <td>OTHER UNKNOWN</td>
-        <td>0</td>
-    </tr>
-    <tr>
-        <td>OTHER FEMALE</td>
-        <td>40.74</td>
-    </tr>
-    <tr>
-        <td>OTHER MALE</td>
-        <td>26.67</td>
-    </tr>
-    <tr>
-        <td>NATIVE-AM UNKNOWN</td>
-        <td>0</td>
-    </tr>
-    <tr>
-        <td>NATIVE-AM FEMALE</td>
-        <td>25</td>
-    </tr>
-    <tr>
-        <td>NATIVE-AM MALE</td>
-        <td>66.67</td>
-    </tr>
-    <tr>
-        <td>HISP-LT UNKNOWN</td>
-        <td>0</td>
-    </tr>
-    <tr>
-        <td>HISP-LT FEMALE</td>
-        <td>23.33</td>
-    </tr>
-    <tr>
-        <td>HISP-LT MALE</td>
-        <td>29.17</td>
-    </tr>
-    <tr>
-        <td>ASIA-PI UNKNOWN</td>
-        <td>0</td>
-    </tr>
-    <tr>
-        <td>ASIA-PI FEMALE</td>
-        <td>44.44</td>
-    </tr>
-    <tr>
-        <td>ASIA-PI MALE</td>
-        <td>66.67</td>
-    </tr>
-    <tr>
-        <td>WHITE UNKNOWN</td>
-        <td>0</td>
-    </tr>
-    <tr>
-        <td>WHITE FEMALE</td>
-        <td>54.88</td>
-    </tr>
-    <tr>
-        <td>WHITE MALE</td>
-        <td>55.59</td>
-    </tr>
-    <tr>
-        <td>BLACK UNKNOWN</td>
-        <td>0</td>
-    </tr>
-    <tr>
-        <td>BLACK FEMALE</td>
-        <td>64.29</td>
-    </tr>
-    <tr>
-        <td>BLACK MALE</td>
-        <td>41.60</td>
-    </tr>
-    <tr>
-        <td>Unnamed: 1<br></td>
-        <td>013<br></td>
-    </tr>
-</table>        text-align: center;
+        text-align: center;
         margin: 0px;
         padding: 0px;
         background-color: white;
+        font-family: "Roboto";
     }
     
-    table, th, td {
+    table {
+    }
+
+    h1 {
+        font-family: "Oswald";
     }
 
     .nav {
-        background-color: rgb(250,250,250);
+        background-color: rgb(240,240,240);
         width: 100%;
         position: fixed;
-        border-bottom: 2px solid #ee3233;
+        border-bottom: 3px solid rgb(15,95,130);
         z-index: 1000;
         margin: 0px;
         padding-top: 20px;
         padding-bottom: 10px;
     }
 
+    .title-container {
+        width: 100vw;
+        background-color: rgb(220,220,220);
+        margin-top: -20px;
+    }
+
+    .title {
+        width: 80vw;
+        margin-left: 10vw;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 70px;
+    }
+
+    #logo {
+        display: inline-flex;
+        width: 100px;
+        height: auto;
+    }
+
+    #logo:hover {
+        opacity: 0.7;
+        transition-duration: 0.3s;
+    }
+
+    .nav h1 {
+        display: inline-flex;
+    }
+
     .data {
-        padding-top: 200px;
+        padding-top: 250px;
         width: 40vw;
         margin-left: 30vw;
+        padding-bottom: 50px;
     }
 
     h1 {
-        color: #ee3233;
+        color: rgb(200,67,41);
     }
 
     .select-style select {
@@ -167,12 +108,12 @@
     }
 
     .select-style:hover {
-        border-color: #ee3233;
+        border-color: rgb(200,67,41);
         background-color: rgb(240,240,240);
     }
 
     .select-style-selected {
-        border-color: #ee3233;
+        border-color: rgb(200,67,41);
         background-color: rgb(240,240,240);
     }
 
@@ -191,6 +132,7 @@
         -webkit-transition-duration: 0.2s; /*for safari*/
         transition-duration: 0.2s;
         cursor: pointer;
+        font-weight: bold;
     }
     
     .disabled {
@@ -204,14 +146,21 @@
     }
 
     .enabled {
-        color: #ee3233;
-        border: 2px solid #ee3233;
+        color: rgb(200,67,41);
+        border: 2px solid rgb(200,67,41);
         cursor: pointer;
     }
 
     .enabled:hover {
         color: #fff;
-        background-color: #ee3233;
+        background-color: rgb(200,67,41);
+    }
+
+    .footer {
+        padding: 25px;
+        width: 100vw;
+        background-color: rgb(240,240,240);
+        color: rgb(160,160,160);
     }
 
    </style>
@@ -221,6 +170,13 @@
 <body> 
 
     <div class='nav'>
+        <div class='title-container'>
+            <div class='title'>
+                <a href="http://ourvotenow.org"><img id="logo" src="ourvotenowlogo.jpeg" /></a>
+                <h1>2018 Election Stats</h1>
+            </div>
+        </div>
+        <br />
         Show me
         <div class='x-axis select-style'>
             <select name="state" id="x-axis">
@@ -265,112 +221,80 @@
     
     <div class="data">
         <table id="data-table" class="cell-border hover compact">
-            <thead>
-                <tr>
-                    <th>COUNTY NAME</th>
-                    <th>BRANTLEY</th>
-                </tr>
-            </thead>
-            
-            <tbody>
-                <tr>
-                    <td>TOTAL VOTERS</td>
-                    <td>53.26</td>
-                </tr>
-                <tr>
-                    <td>UNKNOWN</td>
-                    <td>0</td>
-                </tr>
-                <tr>
-                    <td>UNKNOWN FEMALE</td>
-                    <td>23.44</td>
-                </tr>
-                <tr>
-                    <td>UNKNOWN MALE</td>
-                    <td>25.6</td>
-                </tr>
-                <tr>
-                    <td>OTHER UNKNOWN</td>
-                    <td>0</td>
-                </tr>
-                <tr>
-                    <td>OTHER FEMALE</td>
-                    <td>40.74</td>
-                </tr>
-                <tr>
-                    <td>OTHER MALE</td>
-                    <td>26.67</td>
-                </tr>
-                <tr>
-                    <td>NATIVE-AM UNKNOWN</td>
-                    <td>0</td>
-                </tr>
-                <tr>
-                    <td>NATIVE-AM FEMALE</td>
-                    <td>25</td>
-                </tr>
-                <tr>
-                    <td>NATIVE-AM MALE</td>
-                    <td>66.67</td>
-                </tr>
-                <tr>
-                    <td>HISP-LT UNKNOWN</td>
-                    <td>0</td>
-                </tr>
-                <tr>
-                    <td>HISP-LT FEMALE</td>
-                    <td>23.33</td>
-                </tr>
-                <tr>
-                    <td>HISP-LT MALE</td>
-                    <td>29.17</td>
-                </tr>
-                <tr>
-                    <td>ASIA-PI UNKNOWN</td>
-                    <td>0</td>
-                </tr>
-                <tr>
-                    <td>ASIA-PI FEMALE</td>
-                    <td>44.44</td>
-                </tr>
-                <tr>
-                    <td>ASIA-PI MALE</td>
-                    <td>66.67</td>
-                </tr>
-                <tr>
-                    <td>WHITE UNKNOWN</td>
-                    <td>0</td>
-                </tr>
-                <tr>
-                    <td>WHITE FEMALE</td>
-                    <td>54.88</td>
-                </tr>
-                <tr>
-                    <td>WHITE MALE</td>
-                    <td>55.59</td>
-                </tr>
-                <tr>
-                    <td>BLACK UNKNOWN</td>
-                    <td>0</td>
-                </tr>
-                <tr>
-                    <td>BLACK FEMALE</td>
-                    <td>64.29</td>
-                </tr>
-                <tr>
-                    <td>BLACK MALE</td>
-                    <td>41.60</td>
-                </tr>
-                <tr>
-                    <td>Unnamed: 1<br></td>
-                    <td>013<br></td>
-                </tr>
-            </tbody>
+<table>
+    <tr>
+        <th>AGE GROUP</th>
+        <th>25-29</th>
+        <th>30-34</th>
+        <th>35-39</th>
+        <th>40-44</th>
+        <th>45-49</th>
+        <th>50-54</th>
+        <th>55-59</th>
+        <th>60-64</th>
+        <th>65-OVER</th>
+        <th>TOTAL</th>
+    </tr>
+    <tr>
+        <td>MALE</td>
+        <td>35.3</td>
+        <td>42.73</td>
+        <td>47.58</td>
+        <td>53.15</td>
+        <td>58.88</td>
+        <td>61.9</td>
+        <td>63.95</td>
+        <td>67.38</td>
+        <td>70.32</td>
+        <td>55.03</td>
+    </tr>
+    <tr>
+        <td>FEMALE</td>
+        <td>46.23</td>
+        <td>52.09</td>
+        <td>57.83</td>
+        <td>63.61</td>
+        <td>67.77</td>
+        <td>69.89</td>
+        <td>72.11</td>
+        <td>73.88</td>
+        <td>71.12</td>
+        <td>63.28</td>
+    </tr>
+    <tr>
+        <td>UNKNOWN</td>
+        <td>20.59</td>
+        <td>22.73</td>
+        <td>30.77</td>
+        <td>33.33</td>
+        <td>7.14</td>
+        <td>22.22</td>
+        <td>14.29</td>
+        <td>20.0</td>
+        <td>6.19</td>
+        <td>14.15</td>
+    </tr>
+    <tr>
+        <td>TOTAL VOTERS<br></td>
+        <td>41.2<br></td>
+        <td>47.77<br></td>
+        <td>53.1<br></td>
+        <td>58.78<br></td>
+        <td>63.57<br></td>
+        <td>66.16<br></td>
+        <td>68.41<br></td>
+        <td>71.04<br></td>
+        <td>70.72<br></td>
+        <td>59.54<br></td>
+    </tr>
         </table>
     </div>
 
+    <div class='footer'>
+    <p>&copy 2018 OurVoteNow. Made by Noah Covey and Sam Mahle.</p>
+    </div>
 
-    
+
 
  <script type="text/javascript">
 
@@ -381,9 +305,8 @@
 
     $("select").change(function() {
         var value = $(this).val();
+        var selectID = $(this).attr("id");  
         if (value != "") {
-            var selectID = $(this).attr("id");  
-            console.log(selectID);
             
 
             if (selectID == "x-axis") {
@@ -408,6 +331,11 @@
             responses[selectID] = $(this).val();
             console.log(responses);
         } 
+
+        if ((value == "CongressionalDistrict" || value == "Statewide" || value == "County" || value == "Precinct") && (selectID == "x-axis" || selectID == "y-axis")) {
+            $(".z-axis select").val("N/A");
+            region_selected = true;
+        }
 
         if (x_selected && y_selected && region_selected) {
             $("#go-button").addClass("enabled").removeClass("disabled");
@@ -444,63 +372,17 @@
     function clickButton(id) {
 
         var buttonClicked = document.getElementById(id);
-        var buttonValue = buttonClicked.value;
-        var buttonCategory = buttonClicked.getAttribute("category");
+        console.log("Button clicked with id: " + id);
 
-        console.log("Button clicked of category: " + buttonCategory + ", value: " + buttonValue);
-
-        if (buttonClicked == 'x-axis') {
-            responses["x-axis"] = buttonValue;
-            document.getElementById("y-axis").buttonValue.disabled = true;
-        }
-
-        if (buttonValue == responses[buttonCategory]) { //we clicked a select button that's already active, unfill it
-            buttonClicked.classList.remove("button-active");
-            collapsibleSection.classList.remove("answered");
-
-            responses[buttonCategory] = "";
-
-        } else if (buttonValue == "submit") { //this is a submit button, mark the row as answered but don't fill in the button
-
-            submitRow(buttonCategory);
-            collapsibleSection.classList.add("answered");
-
-        } else if (buttonValue == "link") { //this is a link to another page
-
-            submitRow(buttonCategory);
-
-        } else if (buttonValue == "votingsite") {//this selects a choice but does not mark a row as answered
-
-            let address = id;
-            let startDate = buttonClicked.getAttribute("startdate");
-            let endDate = buttonClicked.getAttribute("enddate");
-            let hours = buttonClicked.getAttribute("hours");
-            let startTime = buttonClicked.getAttribute("starttime");
-            let endTime = buttonClicked.getAttribute("endtime");
-            var days = "";
-            if (buttonClicked.hasAttribute("days")) {
-                days = buttonClicked.getAttribute("days");
-            }
-
-            let siteInfo = {"address": address, "startDate": startDate, "endDate": endDate, "hours": hours, "startTime": startTime, "endTime": endTime, "days": days};
-            submitRow(buttonCategory, siteInfo);
-
-        } else { //this is a select button that's not already active
-            if (responses[buttonCategory] != "") { //Is there already another button in this category selected?
-
-                var otherID = "" + buttonCategory + "-" + responses[buttonCategory]; //eg "age" + "younger" = "age-younger"
-                console.log("other id " + otherID);
-                document.getElementById(otherID).classList.remove("button-active");
-            }
-
-            responses[buttonCategory] = buttonValue;
-            buttonClicked.classList.add("button-active");
-            collapsibleSection.classList.add("answered");
-
-            submitRow(buttonCategory);
-
-        }
     }
+
+    function postData(input) {
+    $.ajax({
+        type: "POST",
+        url: "/csv_to_html.py",
+        data: {x_axis=responses['x-axis'],y_axis=responses['y-axis'],z_axis=responses['z-axis'],region=responses['region-identifier']}
+    });
+}  
 
 </script>
 

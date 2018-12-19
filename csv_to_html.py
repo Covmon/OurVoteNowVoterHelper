@@ -284,6 +284,32 @@ def age_vs_inter_year_county(county,years={'2016':['General'],'2018':['General']
 	df_combined.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/Inter_Year/{}_inter_year_vs_age_percent_voted.csv'.format(county))		
 	df_combined = df_combined[['-','ASIAN-PACIFIC','BLACK','LATINO','NATIVE-AMERICAN','OTHER','WHITE','UNKNOWN','TOTAL']]
 
+def race_vs_inter_year_congressional(congressional_district,years={'2016':['General'],'2018':['General']}):
+		
+	df_combined = pd.DataFrame(columns=['-','ASIAN-PACIFIC','BLACK','LATINO','NATIVE-AMERICAN','OTHER','WHITE','UNKNOWN','TOTAL'])#race names])
+	for year in years.keys():
+		if any(years[year]):
+			for election_type in years[year]:
+				df_year = pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Congressional/{}_race_vs_age_percent_voted_race.csv'.format(year,election_type,county))		
+				df_combined = df_combined.append(df_year.loc[df_year['-']=='TOTAL'],ignore_index=True)
+				df_combined['-'][len(df_combined)-1] = '{} {}'.format(year,election_type)
+
+	df_combined.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/Inter_Year/{}_inter_year_vs_race_percent_voted.csv'.format(county))		
+	df_combined = df_combined[['-','ASIAN-PACIFIC','BLACK','LATINO','NATIVE-AMERICAN','OTHER','WHITE','UNKNOWN','TOTAL']]
+
+def gender_vs_inter_year_congressional(congressional_district,years={'2016':['General'],'2018':['General']}):
+		
+	df_combined = pd.DataFrame(columns=['-','MALE','FEMALE','UNKNOWN','TOTAL'])#race names])
+	for year in years.keys():
+		if any(years[year]):
+			for election_type in years[year]:
+				df_year = pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Congressional/{}_gender_vs_age_percent_voted.csv'.format(year,election_type,county))		
+				df_combined = df_combined.append(df_year.loc[df_year['-']=='TOTAL'],ignore_index=True)
+				df_combined['-'][len(df_combined)-1] = '{} {}'.format(year,election_type)
+
+	df_combined.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/Inter_Year/{}_inter_year_vs_gender_percent_voted.csv'.format(county))		
+	df_combined = df_combined[['-','ASIAN-PACIFIC','BLACK','LATINO','NATIVE-AMERICAN','OTHER','WHITE','UNKNOWN','TOTAL']]
+
 def region_vs_inter_year_county(county,years={'2016':['General'],'2018':['General']}):
 		
 	df_combined = pd.DataFrame(columns=['-','ASIAN-PACIFIC','BLACK','LATINO','NATIVE-AMERICAN','OTHER','WHITE','UNKNOWN','TOTAL'])#race names])
@@ -331,8 +357,8 @@ def which_table_to_display(x_axis,y_axis,z_axis,district1,district2,election_dat
 		#race_combiner_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_registered.csv'.format(year,election_type,county)),county,'general')
 		#gender_combiner_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_registered.csv'.format(year,election_type,county)),county,'general')
 		#gender_vs_age_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_registered.csv'.format(year,election_type,county)),county,'general')
-		race_vs_age_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_registered.csv'.format(year,election_type,county)),county,'general')
-		race_vs_inter_year_county(county)
+		#race_vs_age_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_registered.csv'.format(year,election_type,county)),county,'general')
+		#race_vs_inter_year_county(county)
 
 	if x_axis == 'Statewide' or y_axis == 'Statewide':
 		pass
@@ -377,6 +403,7 @@ def which_table_to_display(x_axis,y_axis,z_axis,district1,district2,election_dat
 				pass
 				#gender by race
 		if z_axis == 'County':
+			county = district1 
 			#add gender and race vs age
 			if 'Gender' in list_of_axis and 'Race' in list_of_axis:
 				csv_file = open('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_gender_vs_race_percent_voted.csv'.format(year,election_type,county),'r')
@@ -423,8 +450,7 @@ def which_table_to_display(x_axis,y_axis,z_axis,district1,district2,election_dat
 				open('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/Inter_Year/Inter_year_vs_precinct_percent_voted.csv')
 
 	csv_file = csv_file.readlines()
-	print csv_file
-	"""list_of_lines = []
+	list_of_lines = []
 	x = 0
 	for line in csv_file:
 		list_of_lines.append(csv_file[x].split(','))
@@ -439,29 +465,31 @@ def which_table_to_display(x_axis,y_axis,z_axis,district1,district2,election_dat
 		certain_element_in_list_of_lines = list(listt[a] for listt in list_of_lines)
 		pt.add_row(certain_element_in_list_of_lines)
 
-	html_code = x.get_html_string()
+	html_code = pt.get_html_string()
 	html_file = open('/Users/sammahle/Desktop/OurVoteNowVoterHelper/voting_stats_html.txt','w')
 	html_file = html_file.write(html_code)	
 
-
-	with open("html.txt", "r") as f1:
+	with open("voting_stats_html.txt", "r") as f1:
 	    t1 = f1.readlines()
 	with open("voter_stats.html", "r") as f2:
 	    t2 = f2.readlines()
 
+	line_to_insert = t2.index('        <table id="data-table" class="cell-border hover compact">\n')
+	line_that_ends = t2.index('        </table>\n')
 
-	#make sure voter html isn't all of them
+	t2 = t2[:line_to_insert+1] + t2[line_that_ends:]
 
-	line_to_insert = 13
 	for line in t1:
-		t2.insert(line_to_insert, line)
-		line_to_insert += 1
-	 
+		if line.strip() == '<table>' or line.strip() == '</table>':
+			pass
+		else:	
+			t2.insert(line_to_insert+1, '        {}'.format(line))
+			line_to_insert += 1
 
-	with open("file.html", "w") as f2:
-	    f2.writelines(t2)"""
+	with open("voter_stats.html", "w") as f2:
+	    f2.writelines(t2)
 
-which_table_to_display('Gender','Precinct','Appling','-','-')
+which_table_to_display('Gender','Age','County','DeKalb','-')
 
 #county always vertical 
 #then age 
