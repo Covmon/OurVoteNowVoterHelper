@@ -2,6 +2,7 @@ import pandas as pd
 import os
 from prettytable import PrettyTable
 import cgi
+import json
 parameters = cgi.FieldStorage()
 
 def gender_combiner(year,election_type,df_voted,df_registered,primary):
@@ -492,7 +493,12 @@ def which_table_to_display(x_axis,y_axis,z_axis,region_1,region_2,election_type,
 	with open("voter_stats.html", "w") as f2:
 	    f2.writelines(t2)"""
 
-which_table_to_display(parameters.getvalue("x-axis"),parameters.getvalue("y-axis"),parameters.getvalue("z-axis"),parameters.getvalue("region"))
+codeString = which_table_to_display(parameters.getvalue("x-axis"),parameters.getvalue("y-axis"),parameters.getvalue("z-axis"),parameters.getvalue("region"))
+
+returnData = {
+	"data": codeString
+}
+self.response.out.write(json.dumps(returnData))
 
 #county always vertical 
 #then age 

@@ -248,7 +248,7 @@
         <br />
         <div class='region 1 select-style'>
             <select name="state" id="region">
-                <option value="" disabled selected>Choose County/Congressional District</option>
+                <option value="" disabled selected>Choose County/District</option>
                 <option id="Age" value="Age">Age</option>
                 <option id="Gender" value="Gender">Gender</option>  
                 <option id="Race" value="Race">Race</option>
@@ -276,6 +276,7 @@
     
     <div class="data">
         <table id="data-table" class="cell-border hover compact">
+        <thead>
             <tr>
                 <th>AGE GROUP</th>
                 <th>25-29</th>
@@ -289,6 +290,8 @@
                 <th>65-OVER</th>
                 <th>TOTAL</th>
             </tr>
+        </thead>
+        <tbody>
             <tr>
                 <td>MALE</td>
                 <td>35.3</td>
@@ -341,6 +344,7 @@
                 <td>70.72<br></td>
                 <td>59.54<br></td>
             </tr>
+        </tbody>
         </table>
     </div>
 
@@ -430,16 +434,25 @@
         var buttonClicked = document.getElementById(id);
         console.log("Button clicked with id: " + id);
 
+        postData();
+
     }
 
-    function postData(input) {
-    $.ajax({
-        type: "POST",
-        url: "/csv_to_html.py",
-        data: {'x_axis'=responses['x-axis'],'y_axis'=responses['y-axis'],'z_axis'=responses['z-axis'],'region_1'=responses['region-identifier'],'region_2'=responses['region-identifier'],'election_type'=responses['election-type'],'election_year'=responses['election-year']}
-    }).done(function( o ) {
-   // call insertHtmlTable
-});
+    function postData() {
+        $.ajax({
+            type: "POST",
+            url: "/csv_to_html.py",
+            data: {'x_axis'=responses['x-axis'],'y_axis'=responses['y-axis'],'z_axis'=responses['z-axis'],'region_1'=responses['region-identifier'],'region_2'=responses['region-identifier'],'election_type'=responses['election-type'],'election_year'=responses['election-year']},
+            dataType: 'jsonp'
+            success: function(response) {
+                console.log("SUCCESS GETTING PYTHON RESPONSE");
+                output = repsonse;
+                console.log(output);
+            }
+       }).done(function(data){
+            console.log("DONE WITH PYTHON");
+        });
+    }
 
     function insertHtmlTable {
         // Noah tell this function to insert the table
