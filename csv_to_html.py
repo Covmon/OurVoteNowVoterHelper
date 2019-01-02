@@ -339,10 +339,11 @@ def race_vs_inter_year_precinct(years=['2016','2018']):
 
 def which_table_to_display(x_axis,y_axis,z_axis,region_1,region_2,election_type,election_year):
 
-	year = election_date[len(election_date)-4:]
-	month = str(election_date.split('_')[0])[:len(str(election_date.split('_')[0]))-1]
+	#year = election_date[len(election_date)-4:]
+	#month = str(election_date.split('_')[0])[:len(str(election_date.split('_')[0]))-1]
 	month_to_election_type_dict = {'March':'Presidential_Primary','May':'Primary','July':'Primary_Runoff','November':'General'}
-	election_type = month_to_election_type_dict[month]
+	election_type_to_month_dict = {'Presidential_Primary':'March','Primary':'May','Primary_Runoff':'July','General':'November'}
+	month = election_type_to_month_dict[election_type]
 
 	list_of_axis = [x_axis,y_axis]
 
@@ -369,29 +370,29 @@ def which_table_to_display(x_axis,y_axis,z_axis,region_1,region_2,election_type,
 
 	if x_axis == 'Congressional' or y_axis == 'Congressional':
 		if x_axis == 'Gender and Race' or y_axis == 'Gender and Race':
-			csv_file = open('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Congressional/Congressional_percent_voted.csv'.format(year,election_type),'r')
+			csv_file = open('Georgia_Election_Data_CSVs/{}/{}/Congressional/Congressional_percent_voted.csv'.format(election_year,election_type),'r')
 		elif x_axis == 'Gender' or y_axis == 'Gender':
-			csv_file = open('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Congressional/Congressional_percent_voted_gender.csv'.format(year,election_type),'r')
+			csv_file = open('Georgia_Election_Data_CSVs/{}/{}/Congressional/Congressional_percent_voted_gender.csv'.format(election_year,election_type),'r')
 		elif x_axis == 'Race' or y_axis == 'Race':
-			csv_file = open('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Congressional/Congressional_percent_voted_race.csv'.format(year,election_type),'r')
+			csv_file = open('Georgia_Election_Data_CSVs/{}/{}/Congressional/Congressional_percent_voted_race.csv'.format(election_year,election_type),'r')
 
 	if x_axis == 'County' or y_axis == 'County':
 		if x_axis == 'Gender and Race' or y_axis == 'Gender and Race':
-			csv_file = open('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Statewide_percent_voted.csv'.format(year,election_type),'r')
+			csv_file = open('Georgia_Election_Data_CSVs/{}/{}/Statewide/Statewide_percent_voted.csv'.format(election_year,election_type),'r')
 		elif x_axis == 'Gender' or y_axis == 'Gender':
-			csv_file = open('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Statewide_percent_voted_gender.csv'.format(year,election_type),'r')
+			csv_file = open('Georgia_Election_Data_CSVs/{}/{}/Statewide/Statewide_percent_voted_gender.csv'.format(election_year,election_type),'r')
 		elif x_axis == 'Race' or y_axis == 'Race':
-			csv_file = open('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Statewide_percent_voted_race.csv'.format(year,election_type),'r')
+			csv_file = open('Georgia_Election_Data_CSVs/{}/{}/Statewide/Statewide_percent_voted_race.csv'.format(election_year,election_type),'r')
 		#within congressional districts or all
 
 	if x_axis == 'Precinct' or y_axis == 'Precinct':
 		county = z_axis 
 		if x_axis == 'Gender and Race' or y_axis == 'Gender and Race':
-			csv_file = open('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_percent_voted.csv'.format(year,election_type,county),'r')
+			csv_file = open('Georgia_Election_Data_CSVs/{}/{}/County/{}_percent_voted.csv'.format(election_year,election_type,county),'r')
 		elif x_axis == 'Gender' or y_axis == 'Gender':
-			csv_file = open('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_percent_voted_gender.csv'.format(year,election_type,county),'r')
+			csv_file = open('Georgia_Election_Data_CSVs/{}/{}/County/{}_percent_voted_gender.csv'.format(election_year,election_type,county),'r')
 		elif x_axis == 'Race' or y_axis == 'Race':
-			csv_file = open('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_percent_voted_race.csv'.format(year,election_type,county),'r')
+			csv_file = open('Georgia_Election_Data_CSVs/{}/{}/County/{}_percent_voted_race.csv'.format(election_year,election_type,county),'r')
 
 	if 'Precinct' not in list_of_axis and 'County' not in list_of_axis and 'County' not in list_of_axis and 'Statewide' not in list_of_axis:
 		if z_axis == 'Statewide':
@@ -406,51 +407,51 @@ def which_table_to_display(x_axis,y_axis,z_axis,region_1,region_2,election_type,
 				pass
 				#gender by race
 		if z_axis == 'County':
-			county = district1 
+			county = region_1 
 			#add gender and race vs age
 			if 'Gender' in list_of_axis and 'Race' in list_of_axis:
-				csv_file = open('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_gender_vs_race_percent_voted.csv'.format(year,election_type,county),'r')
+				csv_file = open('Georgia_Election_Data_CSVs/{}/{}/County/{}_gender_vs_race_percent_voted.csv'.format(election_year,election_type,county),'r')
 			elif 'Age 'in list_of_axis and 'Race' in list_of_axis:
-				csv_file = open('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_race_vs_age_percent_voted'.format(year,election_type,county),'r')
+				csv_file = open('Georgia_Election_Data_CSVs/{}/{}/County/{}_race_vs_age_percent_voted'.format(election_year,election_type,county),'r')
 			elif 'Gender' in list_of_axis and 'Age' in list_of_axis:
-				csv_file = open('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_gender_vs_age_percent_voted.csv'.format(year,election_type,county),'r')	
+				csv_file = open('Georgia_Election_Data_CSVs/{}/{}/County/{}_gender_vs_age_percent_voted.csv'.format(election_year,election_type,county.upper()),'r')	
 		if z_axis == 'Precinct':
 			if 'Gender' in list_of_axis and 'Race' in list_of_axis:
-				csv_file = open('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Precinct/{}_{}_percent_voted_race.csv'.format(year,election_type,county,precinct),'r')
+				csv_file = open('Georgia_Election_Data_CSVs/{}/{}/Precinct/{}_{}_percent_voted_race.csv'.format(election_year,election_type,county,precinct),'r')
 		
 	if 'Year' in list_of_axis:
 		if z_axis == 'Statewide':
 			if 'Gender' in list_of_axis:
-				csv_file = open('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/Inter_Year/Statewide_inter_year_vs_gender_percent_voted.csv')
+				csv_file = open('Georgia_Election_Data_CSVs/Inter_Year/Statewide_inter_year_vs_gender_percent_voted.csv')
 			elif 'Race' in list_of_axis:
-				csv_file = open('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/Inter_Year/Statewide_inter_year_vs_race_percent_voted.csv')
+				csv_file = open('Georgia_Election_Data_CSVs/Inter_Year/Statewide_inter_year_vs_race_percent_voted.csv')
 		elif z_axis == 'Congressional':
 			congressional_district = z_axis
 			if 'Gender' in list_of_axis:
-				csv_file = open('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/Inter_Year/{}_inter_year_vs_gender_percent_voted.csv'.format(congressional_district))
+				csv_file = open('Georgia_Election_Data_CSVs/Inter_Year/{}_inter_year_vs_gender_percent_voted.csv'.format(congressional_district))
 			elif 'Race' in list_of_axis:
-				csv_file = open('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/Inter_Year/{}_inter_year_vs_race_percent_voted.csv'.format(congressional_district))
+				csv_file = open('Georgia_Election_Data_CSVs/Inter_Year/{}_inter_year_vs_race_percent_voted.csv'.format(congressional_district))
 		elif z_axis == 'County':
 			county = z_axis
 			if 'Gender' in list_of_axis:
-				csv_file = open('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/Inter_Year/{}_inter_year_vs_gender_percent_voted.csv'.format(county))
+				csv_file = open('Georgia_Election_Data_CSVs/Inter_Year/{}_inter_year_vs_gender_percent_voted.csv'.format(county))
 			elif 'Race' in list_of_axis:
-				csv_file = open('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/Inter_Year/{}_inter_year_vs_race_percent_voted.csv'.format(county))
+				csv_file = open('Georgia_Election_Data_CSVs/Inter_Year/{}_inter_year_vs_race_percent_voted.csv'.format(county))
 			elif 'Age' in list_of_axis:
-				csv_file = open('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/Inter_Year/{}_inter_year_vs_age_percent_voted.csv'.format(county))
+				csv_file = open('Georgia_Election_Data_CSVs/Inter_Year/{}_inter_year_vs_age_percent_voted.csv'.format(county))
 		elif z_axis == 'Precinct':
 			precinct = z_axis
 			if 'Gender' in list_of_axis:
-				csv_file = open('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/Inter_Year/{}/{}_inter_year_vs_gender_percent_voted.csv'.format(precinct))
+				csv_file = open('Georgia_Election_Data_CSVs/Inter_Year/{}/{}_inter_year_vs_gender_percent_voted.csv'.format(precinct))
 			elif 'Race' in list_of_axis:
-				csv_file = open('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/Inter_Year/{}/{}_inter_year_vs_race_percent_voted.csv'.format(precinct))
+				csv_file = open('Georgia_Election_Data_CSVs/Inter_Year/{}/{}_inter_year_vs_race_percent_voted.csv'.format(precinct))
 		else:
 			if 'Congressional' in list_of_axis:
-				csv_file = open('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/Inter_Year/Inter_year_vs_congressional_percent_voted.csv')
+				csv_file = open('Georgia_Election_Data_CSVs/Inter_Year/Inter_year_vs_congressional_percent_voted.csv')
 			elif 'County' in list_of_axis:
-				csv_file = open('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/Inter_Year/Inter_year_vs_county_percent_voted.csv')
+				csv_file = open('Georgia_Election_Data_CSVs/Inter_Year/Inter_year_vs_county_percent_voted.csv')
 			elif 'Precinct' in list_of_axis:
-				csv_file = open('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/Inter_Year/Inter_year_vs_precinct_percent_voted.csv')
+				csv_file = open('Georgia_Election_Data_CSVs/Inter_Year/Inter_year_vs_precinct_percent_voted.csv')
 
 	csv_file = csv_file.readlines()
 	list_of_lines = []
@@ -469,7 +470,9 @@ def which_table_to_display(x_axis,y_axis,z_axis,region_1,region_2,election_type,
 		pt.add_row(certain_element_in_list_of_lines)
 
 	html_code = pt.get_html_string()
+	print html_code
 	return html_code
+
 	"""html_file = open('/Users/sammahle/Desktop/OurVoteNowVoterHelper/voting_stats_html.txt','w')
 	html_file = html_file.write(html_code)	
 
@@ -493,7 +496,8 @@ def which_table_to_display(x_axis,y_axis,z_axis,region_1,region_2,election_type,
 	with open("voter_stats.html", "w") as f2:
 	    f2.writelines(t2)"""
 
-codeString = which_table_to_display(parameters.getvalue("x-axis"),parameters.getvalue("y-axis"),parameters.getvalue("z-axis"),parameters.getvalue("region"))
+which_table_to_display('Age','Gender','County','Fulton','-','General','2018')
+#codeString = which_table_to_display(parameters.getvalue("x-axis"),parameters.getvalue("y-axis"),parameters.getvalue("z-axis"),parameters.getvalue("region_1"),parameters.getvalue("region_2"),parameters.getvalue("election_type"),parameters.getvalue("election_year"))
 
 returnData = {
 	"data": codeString
