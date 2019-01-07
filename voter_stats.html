@@ -189,7 +189,7 @@
         <div class='select-container'>
             Show me
             <div class="x-axis select-style">
-                <select name="state" id="x-axis">
+                <select name="x-axis" id="x-axis">
                     <option value="" disabled selected>Choose X-Axis</option>
                     <option id="Age" value="Age">Age</option>
                     <option id="Gender" value="Gender">Gender</option>  
@@ -202,7 +202,7 @@
             </div>
             vs.
             <div class="y-axis select-style">
-                <select name="state" id="y-axis">
+                <select name="y-axis" id="y-axis">
                     <option value="" disabled selected>Choose Y-Axis</option>
                     <option id="Age" value="Age">Age</option>
                     <option id="Gender" value="Gender">Gender</option>  
@@ -215,7 +215,7 @@
             </div>
             at a
             <div class="z-axis select-style">
-                <select name="state" id="z-axis">
+                <select name="z-axis" id="z-axis">
                     <option value="" disabled selected>Choose Region</option>
                     <option value="Statewide">Statewide</option>
                     <option value="CongressionalDistrict">Congressional District</option>
@@ -229,7 +229,7 @@
             <br />
             for the 
             <div class='date election-type select-style'>
-                <select name="state" id="election-type">
+                <select name="election-type" id="election-type">
                     <option value="" disabled selected>Choose Election Type</option>
                     <option id="Presidential Primary" Presidential Primary="Age">Presidential Primary</option>
                     <option id="Primary" value="Primary">Primary</option>  
@@ -239,7 +239,7 @@
             </div>
             Election during
             <div class='date year select-style'>
-                <select name="state" id="election-year">
+                <select name="election-year" id="election-year">
                     <option value="" disabled selected>Choose Year</option>
                     <option value="2010">2010</option>
                     <option value="2012">2012</option>
@@ -253,7 +253,7 @@
             <br/>
             <br />
             <div class='region 1 select-style'>
-                <select name="state" id="region-2">
+                <select name="region-2" id="region-2">
                     <option value="" disabled selected>Choose County/District</option>
                     <option id="Age" value="Age">Age</option>
                     <option id="Gender" value="Gender">Gender</option>  
@@ -262,11 +262,12 @@
                     <option id="CongressionalDistrict" value="CongressionalDistrict">Congressional District</option>
                     <option id="County" value="County">County</option>  
                     <option id="Precinct" value="Precinct">Precinct</option>
+                    <option id="N/A" value="N/A">N/A</option>
                 </select>  
             </div>
             County
             <div class='region 2 select-style'>
-                <select name="state" id="region-3">
+                <select name="region-3" id="region-3">
                     <option value="" disabled selected>Choose Precinct</option>
                     <option value="Statewide">Statewide</option>
                     <option value="CongressionalDistrict">Congressional District</option>
@@ -333,14 +334,17 @@
 
         if ((value == "CongressionalDistrict" || value == "Statewide" || value == "County" || value == "Precinct") && (selectID == "x-axis" || selectID == "y-axis")) {
             $(".z-axis select").val("N/A");
+            var option = document.getElementsByTagName("z-axis");
+            for (var i = 0; i < option.length; i++) {
+                if (option[i] != "N/A") {
+                $(".z-axis").find(option[i]).prop("disabled", false);
+                }
             region_selected = true;
         }
 
         if (x_selected && y_selected && region_selected) {
             $("#go-button").addClass("enabled").removeClass("disabled");
         }
-
-    });
 
     $("#data-table").DataTable({
             scrollX: scroll,
@@ -382,41 +386,41 @@
         console.log(responses);
         var URL = "";
 
-        if (repsonses['x-axis'] == 'Statewide' || repsonses['y-axis'] == 'Statewide') {
+        if (responses['x-axis'] == 'Statewide' || responses['y-axis'] == 'Statewide') {
 
         }
 
-        else if (repsonses['x-axis'] == 'Congressional' || repsonses['y-axis'] == 'Congressional') {
+        else if (responses['x-axis'] == 'Congressional' || responses['y-axis'] == 'Congressional') {
            
-            if (repsonses['x-axis'] == 'Gender and Race' || repsonses['y-axis'] == 'Gender and Race') {
+            if (responses['x-axis'] == 'Gender and Race' || responses['y-axis'] == 'Gender and Race') {
 
                 URL = responses['election-year'] + "/" + responses['election-year'].replace(' ','_') + "/Congressional/Congressional_percent_voted.csv" 
 
             }
         
-           if (repsonses['x-axis'] == 'Gender' || repsonses['y-axis'] == 'Gender') {
+           if (responses['x-axis'] == 'Gender' || responses['y-axis'] == 'Gender') {
 
                 URL = responses['election-year'] + "/" + responses['election-year'].replace(' ','_') + "/Congressional/Congressional_percent_voted_gender.csv" 
                 
             }
         
-           if (repsonses['x-axis'] == 'Race' || repsonses['y-axis'] == 'Race') {
+           if (responses['x-axis'] == 'Race' || responses['y-axis'] == 'Race') {
                
                 URL = responses['election-year'] + "/" + responses['election-year'].replace(' ','_') + "/Congressional/Congressional_percent_voted_race.csv" 
         
             }
         }
 
-        else if (repsonses['x-axis'] == 'County' || repsonses['y-axis'] == 'County') {
+        else if (responses['x-axis'] == 'County' || responses['y-axis'] == 'County') {
             
         }
 
-        else if (repsonses['x-axis'] == 'Precinct' || repsonses['y-axis'] == 'Precinct') {
+        else if (responses['x-axis'] == 'Precinct' || responses['y-axis'] == 'Precinct') {
             
         }
 
 
-        else if (repsonses['x-axis'] == 'Year' || repsonses['y-axis'] == 'Year') {
+        else if (responses['x-axis'] == 'Year' || responses['y-axis'] == 'Year') {
             
         }
 
@@ -483,7 +487,7 @@
             dataType: 'jsonp',
             success: function(response) {
                 console.log("SUCCESS GETTING PYTHON RESPONSE");
-                output = repsonse;
+                output = response;
                 console.log(output);
             }
        }).done(function(data){
