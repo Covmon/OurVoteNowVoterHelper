@@ -13,6 +13,7 @@
    @import url('https://fonts.googleapis.com/css?family=Oswald|Roboto+Mono:300,400|Roboto|Montserrat:400,700|PT+Serif');
       
     body {
+        width: 100vw;
         text-align: center;
         margin: 0px;
         padding: 0px;
@@ -20,10 +21,6 @@
         font-family: "Roboto";
     }
     
-    table {
-        
-    }
-
     h1 {
         font-family: "Oswald";
     }
@@ -47,6 +44,7 @@
         background-color: rgb(220,220,220);
         margin-top: -20px;
         position: fixed;
+
     }
 
     .title {
@@ -75,9 +73,9 @@
 
     .data {
         padding-top: 50px;
-        width: 40vw;
-        margin-left: 30vw;
         padding-bottom: 50px;
+        width: 100vw;
+        margin: 0 auto;
     }
 
     h1 {
@@ -162,7 +160,8 @@
     }
 
     .footer {
-        padding: 25px;
+        padding-top: 25px;
+        padding-bottom: 25px;
         width: 100vw;
         background-color: rgb(240,240,240);
         color: rgb(160,160,160);
@@ -170,7 +169,23 @@
 
     .region {
         display: 'none';
-    }    
+    }   
+    /*
+    #data-table {
+        display: inline-block;
+        width: 100vw !important;
+    }
+
+    #data-table table {
+        width: 100% !important;
+    }
+
+    #data-table td,
+    #data-table th {
+        width: auto !important;
+        white-space: normal;
+        overflow: hidden;
+    }*/
 
    </style>
 
@@ -283,7 +298,7 @@
         <div class="button disabled" id="go-button">Go</div>
     </div>
     
-    <div class="data" id="data-table">
+    <div class="data">
     </div>
 
     <div class='footer'>
@@ -424,17 +439,10 @@
     }
 
     function dataTable(id) {
-        $("#" + id + " table").DataTable({
-            scrollX: scroll,
+        $("#" + id).DataTable({
+            "scrollX": true,
             paging: false,
             ordering: true,
-            language: {
-                searchPlaceholder: "Blah blah blah",
-                info: "Showing _START_ to _END_ of _TOTAL_ races",
-                infoFiltered: " - filtered from _MAX_ total races",
-                search: "Search:",
-                emptyTable:  "No races found"
-            },
             columns: [
                 {},
                 {}
@@ -460,7 +468,7 @@
                     console.log("successfully got csv!");
                     console.log(data);
                     var employee_data = data.split(/\r?\n|\r/);
-                    var table_data = '<table class="table table-bordered table-striped">';
+                    var table_data = '<table id="data-table" class="display nowrap" style="width:100%"><thead>';
                     for(var count = 0; count<employee_data.length; count++)
                     {
                         var cell_data = employee_data[count].split(",");
@@ -470,16 +478,22 @@
                             if(count === 0)
                             {
                               table_data += '<th>'+cell_data[cell_count]+'</th>';
+
+                                if (cell_count == cell_data.length - 1) {
+                                    table_data += "</thead>";
+                                }
                             }
                             else
                             {
                                 table_data += '<td>'+cell_data[cell_count]+'</td>';
                             }
+
+                            
                         }
                         table_data += '</tr>';
                     }
                     table_data += '</table>';
-                    $('#data-table').html(table_data);
+                    $('.data').html(table_data);
                     dataTable("data-table");
                 }
             });
