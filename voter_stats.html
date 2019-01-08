@@ -207,6 +207,7 @@
                     <option id="Age" value="Age">Age</option>
                     <option id="Gender" value="Gender">Gender</option>  
                     <option id="Race" value="Race">Race</option>
+                    <option id="GenderandRace" value="GenderAndRace">Gender and Race</option>
                     <option id="Statewide" value="Statewide">Statewide</option>
                     <option id="CongressionalDistrict" value="CongressionalDistrict">Congressional District</option>
                     <option id="County" value="County">County</option>  
@@ -334,6 +335,7 @@
 
         if ((value == "CongressionalDistrict" || value == "Statewide" || value == "County" || value == "Precinct") && (selectID == "x-axis" || selectID == "y-axis")) {
             $(".z-axis select").val("N/A");
+            $(".z-axis").addClass("select-style-selected");
             region_selected = true;
             
             $("#z-axis option").each(function() {
@@ -343,11 +345,13 @@
             })
         }
 
-    });
-
         if (x_selected && y_selected && region_selected) {
+            console.log("ready to hit go");
             $("#go-button").addClass("enabled").removeClass("disabled");
         }
+
+    });
+        
 
     function setupButtonEvents() {
         var buttons = document.getElementsByClassName("button");
@@ -361,38 +365,38 @@
     function clickButton(id) {
 
         var buttonClicked = document.getElementById(id);
-        console.log("Button clicked with id: " + id);
-
-        postData();
 
     }
 
     function displayTableURL() {
 
+        console.log("Get Table CSV URL!");
         console.log(responses);
         var URL = "";
 
         if (responses['x-axis'] == 'Statewide' || responses['y-axis'] == 'Statewide') {
+            console.log("statewide sel");
 
-        }
-
-        else if (responses['x-axis'] == 'Congressional' || responses['y-axis'] == 'Congressional') {
+        } else if (responses['x-axis'] == 'CongressionalDistrict' || responses['y-axis'] == 'CongressionalDistrict') {
+            console.log("congressional sel");
            
-            if (responses['x-axis'] == 'Gender and Race' || responses['y-axis'] == 'Gender and Race') {
+            if (responses['x-axis'] == 'GenderAndRace' || responses['y-axis'] == 'GenderAndRace') {
+                console.log("gender + race sel");
 
-                URL = responses['election-year'] + "/" + responses['election-year'].replace(' ','_') + "/Congressional/Congressional_percent_voted.csv" 
+                URL = responses['election-year'] + "/General/Congressional/Congressional_percent_voted.csv" 
 
             }
         
            if (responses['x-axis'] == 'Gender' || responses['y-axis'] == 'Gender') {
+               console.log("gender sel");
 
-                URL = responses['election-year'] + "/" + responses['election-year'].replace(' ','_') + "/Congressional/Congressional_percent_voted_gender.csv" 
+                URL = responses['election-year'] + "/General/Congressional/Congressional_percent_voted_gender.csv" 
                 
             }
         
            if (responses['x-axis'] == 'Race' || responses['y-axis'] == 'Race') {
                
-                URL = responses['election-year'] + "/" + responses['election-year'].replace(' ','_') + "/Congressional/Congressional_percent_voted_race.csv" 
+                URL = responses['election-year'] + "/" + responses['election-year'].replace(' ','_') + "/General/Congressional/Congressional_percent_voted_race.csv" 
         
             }
         }
@@ -420,7 +424,7 @@
     }
 
     function dataTable(id) {
-        $("#" + id).DataTable({
+        $("#" + id + " table").DataTable({
             scrollX: scroll,
             paging: false,
             ordering: true,
@@ -440,12 +444,21 @@
 
     $(document).ready(function(){
         $('#go-button').click(function(){
-            var table_url = "https://www.noahcovey.com/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs" + displayTableURL();
+
+            if ($(this).hasClass("disabled")) {
+                return false;
+            }
+
+            console.log("Clicked an enabled go button");
+
+            var table_url = "https://www.noahcovey.com/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/" + displayTableURL();
             $.ajax({
                 url:table_url,
                 dataType:"text",
                 success:function(data)
                 {
+                    console.log("successfully got csv!");
+                    console.log(data);
                     var employee_data = data.split(/\r?\n|\r/);
                     var table_data = '<table class="table table-bordered table-striped">';
                     for(var count = 0; count<employee_data.length; count++)
@@ -466,7 +479,8 @@
                         table_data += '</tr>';
                     }
                     table_data += '</table>';
-                    $('#data_table').html(table_data);
+                    $('#data-table').html(table_data);
+                    dataTable("data-table");
                 }
             });
         });
