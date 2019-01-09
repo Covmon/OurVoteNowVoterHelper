@@ -256,20 +256,14 @@
             .
             <br/>
             <br />
+            County:
             <div class='region 1 select-style'>
                 <select name="region-2" id="region-2">
-                    <option value="" disabled selected>Choose County/District</option>
-                    <option id="Age" value="Age">Age</option>
-                    <option id="Gender" value="Gender">Gender</option>  
-                    <option id="Race" value="Race">Race</option>
-                    <option id="Statewide" value="Statewide">Statewide</option>
-                    <option id="CongressionalDistrict" value="CongressionalDistrict">Congressional District</option>
-                    <option id="County" value="County">County</option>  
-                    <option id="Precinct" value="Precinct">Precinct</option>
-                    <option id="N/A" value="N/A">N/A</option>
+                    <option id="county-first" value="" disabled selected>Choose County/District</option>
+                    <option id="county-NA" value="N/A">N/A</option>
                 </select>  
             </div>
-            County
+            Precinct:
             <div class='region 2 select-style'>
                 <select name="region-3" id="region-3">
                     <option value="" disabled selected>Choose Precinct</option>
@@ -280,7 +274,6 @@
                     <option value="N/A">N/A</option>
                 </select>  
             </div>
-            Precinct
         </div>
         <br/>
         <div class="button disabled" id="go-button">Go</div>
@@ -304,7 +297,18 @@
     var y_selected = false;
     var region_selected = false;
 
-    //document.getElementById("region").hidden = true;
+    let ga_counties = ["Appling","Atkinson","Bacon","Baker","Baldwin","Banks","Bartow","Ben Hill","Berrien","Bibb","Bleckley","Brantley","Brooks","Bryan","Bulloch","Burke","Calhoun","Camden","Candler","Carroll","Catoosa","Charlton","Chatham","Chattahoochee","Chattooga","Cherokee","Clarke","Clay","Clayton","Clinch",
+    "Cobb","Coffee","Colquitt","Columbia","Cook","Coweta","Crawford","Crisp","Dade","Dawson","DeKalb","Decatur","Dodge","Dooly","Dougherty","Douglas","Early","Echols","Effingham","Elbert","Emanuel","Evans","Fannin","Fayette","Floyd","Forsyth","Franklin","Fulton","Gilmer","Glascock","Glynn","Gordon","Grady","Greene",
+    "Gwinnett","Habersham","Hall","Hancock","Haralson","Harris","Hart","Heard","Henry","Houston","Irwin","Jackson","Jasper","Jeff Davis","Jefferson","Jenkins","Johnson","Jones","Lamar","Lanier","Laurens","Lee","Liberty","Lincoln","Long","Lowndes","Lumpkin","Macon","Madison","Marion","McDuffie","McIntosh","Meriwether",
+    "Miller","Mitchell","Monroe","Montgomery","Morgan","Murray","Muscogee","Newton","Oconee","Oglethorpe","Paulding","Peach","Pickens","Pierce","Pike","Polk","Pulaski","Putnam","Quitman","Rabun","Randolph","Richmond","Rockdale","Schley","Screven","Seminole","Spalding","Stephens","Stewart","Sumter","Talbot","Taliaferro",
+    "Tattnall","Taylor","Telfair","Terrell","Thomas","Tift","Toombs","Towns","Treutlen","Troup","Turner","Twiggs","Union","Upson","Walker","Walton","Ware","Warren","Washington","Wayne","Webster","Wheeler","White","Whitfield","Wilcox","Wilkes","Wilkinson","Worth"];
+
+    for (var i=0;i<ga_counties.length;i++) {
+        let countyName = ga_counties[i];
+        let newOption = "<option value='" + countyName + "'>" + countyName + "</option>";
+        $("#county-NA").before(newOption);
+
+    }
 
     $("select").change(function() {
         var value = $(this).val();
@@ -327,9 +331,6 @@
                     $(".x-axis").find("#" + responses["y-axis"]).prop("disabled", false);
                 }
                 y_selected = true;
-            } else {
-                region_selected = true;
-                $(".z-axis").addClass("select-style-selected");
             }
 
             responses[selectID] = $(this).val();
