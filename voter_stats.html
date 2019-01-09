@@ -36,14 +36,12 @@
     }
 
     .select-container {
-        padding-top: 50px;
     }
 
     .title-container {
         width: 100vw;
         background-color: rgb(220,220,220);
         margin-top: -20px;
-        position: fixed;
         border-bottom: 3px solid rgb(15,95,130);
 
     }
@@ -171,22 +169,11 @@
     .region {
         display: 'none';
     }   
-    /*
-    #data-table {
-        display: inline-block;
-        width: 100vw !important;
+   
+    div.dataTables_wrapper {
+        width: 80vw;
+        margin: 0 auto;
     }
-
-    #data-table table {
-        width: 100% !important;
-    }
-
-    #data-table td,
-    #data-table th {
-        width: auto !important;
-        white-space: normal;
-        overflow: hidden;
-    }*/
 
    </style>
 
@@ -462,6 +449,7 @@
 
             var table_url = "https://www.noahcovey.com/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/" + displayTableURL();
             console.log(table_url);
+
             $.ajax({
                 url:table_url,
                 dataType:"text",
@@ -471,7 +459,7 @@
                     console.log(data);
                     var employee_data = data.split(/\r?\n|\r/);
                     var table_data = '<table id="data-table" class="display nowrap" style="width:100%"><thead>';
-                    for(var count = 0; count<employee_data.length; count++)
+                    for(var count = 0; count<employee_data.length - 1; count++)
                     {
                         var cell_data = employee_data[count].split(",");
                         table_data += '<tr>';
@@ -484,7 +472,7 @@
 
                                 if (cell_count == cell_data.length - 1) {
                                     dontAddTR = true;
-                                    table_data += "</tr></thead><tbody>";
+                                    table_data += '</tr></thead><tbody>';
                                 }
                             }
                             else
@@ -501,15 +489,15 @@
                     table_data += '</tbody></table>';
 
                     console.log(table_data);
-                    //$('.data').html(table_data);
-                    let test = "<table id='data-table' class='display nowrap' style='width:100%'><thead><tr><th>Bob</th><th>Sally</th><th>Joe</th></tr></thead><tbody><tr><td>1</td><td>2</td><td>3</td></tr></tbody></table";
-                    $('.data').html(test);
+                    $('.data').html(table_data);
+                                        
+                    $('.data').html(table_data);
                     $("#data-table").DataTable({
-                        scrollX: true
+                        scrollX: true,
+                        paging: false,
+                        searching: false,
+                        ordering: false
                     });
-                    /*$("#data-table").DataTable({
-                        scrollX: true
-                    });*/
                 }
             });
         });
