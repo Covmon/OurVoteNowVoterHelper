@@ -36,6 +36,7 @@
     }
 
     .select-container {
+        padding-top: 10px;
     }
 
     .title-container {
@@ -190,6 +191,8 @@
         </div>
         <br />
         <div class='select-container'>
+        <b>Choose which data to display:</b>
+        <br />
             Show me
             <div class="x-axis select-style">
                 <select name="x-axis" id="x-axis">
@@ -217,18 +220,6 @@
                     <option id="Precinct" value="Precinct">Precinct</option>
                 </select>  
             </div>
-            at a
-            <div class="z-axis select-style">
-                <select name="z-axis" id="z-axis">
-                    <option value="" disabled selected>Choose Region</option>
-                    <option value="Statewide">Statewide</option>
-                    <option value="CongressionalDistrict">Congressional District</option>
-                    <option value="County">County</option>  
-                    <option value="Precinct">Precinct</option>
-                    <option value="N/A">N/A</option>
-                </select>  
-            </div>
-            level
             <br/>
             <br />
             for the 
@@ -253,18 +244,27 @@
                 </select> 
             
             </div>
-            .
             <br/>
             <br />
+            <br />
+            <b>Choose one region, or don't select any for statewide data:</b>
+            <br />
             County:
-            <div class='region 1 select-style'>
-                <select name="region-2" id="region-2">
-                    <option id="county-first" value="" disabled selected>Choose County/District</option>
+            <div class='county select-style'>
+                <select name="county" id="county">
+                    <option id="county-first" value="" disabled selected>Choose County</option>
                     <option id="county-NA" value="N/A">N/A</option>
                 </select>  
             </div>
+            Congressional District:
+            <div class='congressional-district select-style'>
+                <select name="congressional-district" id="congressional-district">
+                    <option id="congressional-district-first" value="" disabled selected>Choose District</option>
+                    <option id="congressional-district-NA" value="N/A">N/A</option>
+                </select>  
+            </div>
             Precinct:
-            <div class='region 2 select-style'>
+            <div class='region select-style'>
                 <select name="region-3" id="region-3">
                     <option value="" disabled selected>Choose Precinct</option>
                     <option value="Statewide">Statewide</option>
@@ -292,10 +292,10 @@
 
     setupButtonEvents();
 
-    var responses = {"x-axis": "", "y-axis": "", "region": "", "region-identifier": ""};
+    var responses = {"x-axis": "", "y-axis": "", "region": "statewide", "county": "", "congressional-district", "precinct": ""};
     var x_selected = false;
     var y_selected = false;
-    var region_selected = false;
+    var county_selected = false;
 
     let ga_counties = ["Appling","Atkinson","Bacon","Baker","Baldwin","Banks","Bartow","Ben Hill","Berrien","Bibb","Bleckley","Brantley","Brooks","Bryan","Bulloch","Burke","Calhoun","Camden","Candler","Carroll","Catoosa","Charlton","Chatham","Chattahoochee","Chattooga","Cherokee","Clarke","Clay","Clayton","Clinch",
     "Cobb","Coffee","Colquitt","Columbia","Cook","Coweta","Crawford","Crisp","Dade","Dawson","DeKalb","Decatur","Dodge","Dooly","Dougherty","Douglas","Early","Echols","Effingham","Elbert","Emanuel","Evans","Fannin","Fayette","Floyd","Forsyth","Franklin","Fulton","Gilmer","Glascock","Glynn","Gordon","Grady","Greene",
@@ -307,7 +307,6 @@
         let countyName = ga_counties[i];
         let newOption = "<option value='" + countyName + "'>" + countyName + "</option>";
         $("#county-NA").before(newOption);
-
     }
 
     $("select").change(function() {
@@ -331,6 +330,14 @@
                     $(".x-axis").find("#" + responses["y-axis"]).prop("disabled", false);
                 }
                 y_selected = true;
+            } else if (selectID == "county") {
+                $(".county").addClass("select-style-selected");
+                $(".county").find("#" + value).prop("disabled", true);
+                responses["region"] = "county"; 
+            } else if (selectID == "congressional-district") {
+                $(".congressional-district").addClass("select-style-selected");
+                $(".congressional-district").find("#" + value).prop("disabled", true);  
+                responses["region"] = "congressional-district";
             }
 
             responses[selectID] = $(this).val();
@@ -338,11 +345,11 @@
         } 
 
         if ((value == "CongressionalDistrict" || value == "Statewide" || value == "County" || value == "Precinct") && (selectID == "x-axis" || selectID == "y-axis")) {
-            $(".z-axis select").val("N/A");
-            $(".z-axis").addClass("select-style-selected");
+            $(".region select").val("N/A");
+            $(".region").addClass("select-style-selected");
             region_selected = true;
             
-            $("#z-axis option").each(function() {
+            $("#region option").each(function() {
                 if ($(this).prop("value") != "N/A") {
                     $(this).prop("disabled", true);
                 }
@@ -515,7 +522,7 @@
             data: {
                 'x_axis': responses['x-axis'],
                 'y_axis': responses['y-axis'],
-                'z_axis': responses['z-axis'],
+                'z_axis': responses['region'],
                 'region_1': responses['region-identifier'],
                 'region_2': responses['region-identifier'],
                 'election_type': responses['election-type'],
