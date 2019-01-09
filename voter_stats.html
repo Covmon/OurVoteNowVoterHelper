@@ -7,6 +7,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedcolumns/3.2.6/js/dataTables.fixedColumns.min.js"></script>
 
    <style type="text/css">
 
@@ -23,6 +24,12 @@
     
     h1 {
         font-family: "Oswald";
+    }
+
+    th, td { white-space: nowrap; }
+
+    th {
+        background-color: white;
     }
 
     .nav {
@@ -74,7 +81,7 @@
     .data {
         padding-top: 50px;
         padding-bottom: 50px;
-        width: 100vw;
+        width: 80vw;
         margin: 0 auto;
     }
 
@@ -176,6 +183,11 @@
         margin: 0 auto;
     }
 
+    #scroll-for-more {
+        float: right;
+        color: gray;
+    }
+
    </style>
 
 </head>
@@ -186,7 +198,7 @@
         <div class='title-container'>
             <div class='title'>
                 <a href="http://ourvotenow.org"><img id="logo" src="ourvotenowlogo.jpeg" /></a>
-                <h1>2018 Election Stats</h1>
+                <h1>OVN Election Stats Tool</h1>
             </div>
         </div>
         <br />
@@ -197,27 +209,26 @@
             <div class="x-axis select-style">
                 <select name="x-axis" id="x-axis">
                     <option value="" disabled selected>Choose X-Axis</option>
-                    <option id="Age" value="Age">Age</option>
-                    <option id="Gender" value="Gender">Gender</option>  
-                    <option id="Race" value="Race">Race</option>
-                    <option id="Statewide" value="Statewide">Statewide</option>
-                    <option id="CongressionalDistrict" value="CongressionalDistrict">Congressional District</option>
-                    <option id="County" value="County">County</option>  
-                    <option id="Precinct" value="Precinct">Precinct</option>
+                    <option id="age" value="age">Age</option>
+                    <option id="gender" value="gender">Gender</option>  
+                    <option id="race" value="race">Race</option>
+                    <option id="statewide" value="statewide">Statewide</option>
+                    <option id="congressional-district" value="congressional-district">Congressional District</option>
+                    <option id="county" value="county">County</option>  
+                    <option id="precinct" value="precinct">Precinct</option>
                 </select>  
             </div>
             vs.
             <div class="y-axis select-style">
                 <select name="y-axis" id="y-axis">
                     <option value="" disabled selected>Choose Y-Axis</option>
-                    <option id="Age" value="Age">Age</option>
-                    <option id="Gender" value="Gender">Gender</option>  
-                    <option id="Race" value="Race">Race</option>
-                    <option id="GenderandRace" value="GenderAndRace">Gender and Race</option>
-                    <option id="Statewide" value="Statewide">Statewide</option>
-                    <option id="CongressionalDistrict" value="CongressionalDistrict">Congressional District</option>
-                    <option id="County" value="County">County</option>  
-                    <option id="Precinct" value="Precinct">Precinct</option>
+                    <option id="age" value="age">Age</option>
+                    <option id="gender" value="gender">Gender</option>  
+                    <option id="race" value="race">Race</option>
+                    <option id="statewide" value="statewide">Statewide</option>
+                    <option id="congressional-district" value="congressional-district">Congressional District</option>
+                    <option id="county" value="county">County</option>  
+                    <option id="precinct" value="precinct">Precinct</option>
                 </select>  
             </div>
             <br/>
@@ -226,14 +237,14 @@
             <div class='date election-type select-style'>
                 <select name="election-type" id="election-type">
                     <option value="" disabled selected>Choose Election Type</option>
-                    <option id="Presidential Primary" Presidential Primary="Age">Presidential Primary</option>
-                    <option id="Primary" value="Primary">Primary</option>  
-                    <option id="Primary Runoff" value="Primary Runoff">Primary Runoff</option>
-                    <option id="General" value="General">General</option>
+                    <option id="presidential-primary" value="presidential-primary">Presidential Primary</option>
+                    <option id="primary" value="primary">Primary</option>  
+                    <option id="primary-runoff" value="primary-runoff">Primary Runoff</option>
+                    <option id="general" value="general">General</option>
                 </select>  
             </div>
             Election during
-            <div class='date year select-style'>
+            <div class='date election-year select-style'>
                 <select name="election-year" id="election-year">
                     <option value="" disabled selected>Choose Year</option>
                     <option value="2010">2010</option>
@@ -250,22 +261,22 @@
             <b>Choose one region, or don't select any for statewide data:</b>
             <br />
             County:
-            <div class='county select-style'>
-                <select name="county" id="county">
+            <div class='county-select select-style'>
+                <select name="county-select" id="county-select">
                     <option id="county-first" value="" disabled selected>Choose County</option>
                     <option id="county-NA" value="N/A">N/A</option>
                 </select>  
             </div>
             Congressional District:
-            <div class='congressional-district select-style'>
-                <select name="congressional-district" id="congressional-district">
+            <div class='congressional-district-select select-style'>
+                <select name="congressional-district-select" id="congressional-district-select">
                     <option id="congressional-district-first" value="" disabled selected>Choose District</option>
                     <option id="congressional-district-NA" value="N/A">N/A</option>
                 </select>  
             </div>
             Precinct:
-            <div class='region select-style'>
-                <select name="region-3" id="region-3">
+            <div class='precinct-select select-style'>
+                <select name="precinct-select" id="precinct-select">
                     <option value="" disabled selected>Choose Precinct</option>
                     <option value="Statewide">Statewide</option>
                     <option value="CongressionalDistrict">Congressional District</option>
@@ -292,10 +303,11 @@
 
     setupButtonEvents();
 
-    var responses = {"x-axis": "", "y-axis": "", "region": "statewide", "county": "", "congressional-district", "precinct": ""};
+    var responses = {"x-axis": "", "y-axis": "", "election-type": "", "election-year": "", "region": "statewide", "county": "", "congressional-district": "", "precinct": ""};
     var x_selected = false;
     var y_selected = false;
-    var county_selected = false;
+    var type_selected = false;
+    var year_selected = false;
 
     let ga_counties = ["Appling","Atkinson","Bacon","Baker","Baldwin","Banks","Bartow","Ben Hill","Berrien","Bibb","Bleckley","Brantley","Brooks","Bryan","Bulloch","Burke","Calhoun","Camden","Candler","Carroll","Catoosa","Charlton","Chatham","Chattahoochee","Chattooga","Cherokee","Clarke","Clay","Clayton","Clinch",
     "Cobb","Coffee","Colquitt","Columbia","Cook","Coweta","Crawford","Crisp","Dade","Dawson","DeKalb","Decatur","Dodge","Dooly","Dougherty","Douglas","Early","Echols","Effingham","Elbert","Emanuel","Evans","Fannin","Fayette","Floyd","Forsyth","Franklin","Fulton","Gilmer","Glascock","Glynn","Gordon","Grady","Greene",
@@ -323,6 +335,7 @@
                     $(".y-axis").find("#" + responses["x-axis"]).prop("disabled", false);
                 }
                 x_selected = true;
+
             } else if (selectID == "y-axis") { 
                 $(".y-axis").addClass("select-style-selected");
                 $(".x-axis").find("#" + value).prop("disabled", true);
@@ -330,34 +343,35 @@
                     $(".x-axis").find("#" + responses["y-axis"]).prop("disabled", false);
                 }
                 y_selected = true;
-            } else if (selectID == "county") {
-                $(".county").addClass("select-style-selected");
-                $(".county").find("#" + value).prop("disabled", true);
+
+            } else if (selectID == "election-type") {
+                $(".election-type").addClass("select-style-selected");
+                type_selected = true;
+
+            } else if (selectID == "election-year") {
+                $(".election-year").addClass("select-style-selected");
+                year_selected = true;
+
+            } else if (selectID == "county-select") {
+                $(".county-select").addClass("select-style-selected");
                 responses["region"] = "county"; 
-            } else if (selectID == "congressional-district") {
-                $(".congressional-district").addClass("select-style-selected");
-                $(".congressional-district").find("#" + value).prop("disabled", true);  
+
+            } else if (selectID == "congressional-district-select") {
+                $(".congressional-district-select").addClass("select-style-selected");
                 responses["region"] = "congressional-district";
+
+            } else if (selectID == "precinct-select") {
+                $(".precinct-select").addClass("select-style-selected");
+                responses["region"] = "precinct";
+
             }
 
             responses[selectID] = $(this).val();
             console.log(responses);
         } 
 
-        if ((value == "CongressionalDistrict" || value == "Statewide" || value == "County" || value == "Precinct") && (selectID == "x-axis" || selectID == "y-axis")) {
-            $(".region select").val("N/A");
-            $(".region").addClass("select-style-selected");
-            region_selected = true;
-            
-            $("#region option").each(function() {
-                if ($(this).prop("value") != "N/A") {
-                    $(this).prop("disabled", true);
-                }
-            })
-        }
-
-        if (x_selected && y_selected && region_selected) {
-            console.log("ready to hit go");
+        if (x_selected && y_selected && type_selected && year_selected) {
+            console.log("Ready to hit go");
             $("#go-button").addClass("enabled").removeClass("disabled");
         }
 
@@ -379,71 +393,67 @@
 
     }
 
+    function isEitherSelected(string, x_axis, y_axis) {
+        if (x_axis == string || y_axis == string) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function areBothSelected(string1, string2, x_axis, y_axis) {
+        if ((x_axis == string1 && y_axis == string2) || (x_axis == string2 && y_axis == string1)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     function displayTableURL() {
 
         console.log("Get Table CSV URL!");
         console.log(responses);
         var URL = "";
 
-        if (responses['x-axis'] == 'Statewide' || responses['y-axis'] == 'Statewide') {
-            console.log("statewide sel");
+        let x_axis = responses["x-axis"];
+        let y_axis = responses["y-axis"];
+        let regionLevel = responses["region"];
+        let year = responses["election-year"];
+        let type = responses["election-type"];
+        let county = responses["county"];
+        let congressional_district = responses["congressional-district"];
+        let precinct = responses["precinct"];
 
-        } else if (responses['x-axis'] == 'CongressionalDistrict' || responses['y-axis'] == 'CongressionalDistrict') {
-            console.log("congressional sel");
-           
-            if (responses['x-axis'] == 'GenderAndRace' || responses['y-axis'] == 'GenderAndRace') {
-                console.log("gender + race sel");
+        switch (type) {
+            case "general":
+                type = "General";
+                break;
+            case "primary":
+                type = "Primary";
+                break;
+            default:
+                break;
+        }
 
-                URL = responses['election-year'] + "/General/Congressional/Congressional_percent_voted.csv" 
-
+        if (regionLevel == "statewide") {
+            if (areBothSelected("gender", "race", x_axis, y_axis)) {
+                URL = year + "/" + type + "/Congressional/Congressional_percent_voted.csv" 
+            } else if (isSelected("gender", x_axis, y_axis)) {
+                URL = year + "/" + type + "/Congressional/Congressional_percent_voted_gender.csv" 
+            } else if (isSelected("race", x_axis, y_axis)) {
+                URL = year + "/" + type + "/Congressional/Congressional_percent_voted_race.csv"
             }
-        
-           if (responses['x-axis'] == 'Gender' || responses['y-axis'] == 'Gender') {
-               console.log("gender sel");
 
-                URL = responses['election-year'] + "/General/Congressional/Congressional_percent_voted_gender.csv" 
-                
-            }
-        
-           if (responses['x-axis'] == 'Race' || responses['y-axis'] == 'Race') {
-               
-                URL = responses['election-year'] + "/" + responses['election-year'].replace(' ','_') + "/General/Congressional/Congressional_percent_voted_race.csv" 
-        
-            }
-        }
+        } else if (regionLevel == "county") {
 
-        else if (responses['x-axis'] == 'County' || responses['y-axis'] == 'County') {
-            
-        }
+        } else if (regionLevel == "congressional-district") {
 
-        else if (responses['x-axis'] == 'Precinct' || responses['y-axis'] == 'Precinct') {
-            
-        }
+        } else if (regionLevel == "precinct") {
 
-
-        else if (responses['x-axis'] == 'Year' || responses['y-axis'] == 'Year') {
-            
-        }
-
-
-        else  {
-            
         }
 
     return URL
 
-    }
-
-    function dataTable(id) {
-        $("#" + id).DataTable({
-            "scrollX": true,
-            paging: false,
-            ordering: true,
-            columns: [
-                {},
-                {}
-            ]
-    });
     }
 
     $(document).ready(function(){
@@ -464,9 +474,9 @@
                 success:function(data)
                 {
                     console.log("successfully got csv!");
-                    console.log(data);
+                    //console.log(data);
                     var employee_data = data.split(/\r?\n|\r/);
-                    var table_data = '<table id="data-table" class="display nowrap" style="width:100%"><thead>';
+                    var table_data = '<p id="scroll-for-more">Scroll for more &#x25B8;</p><br/><table id="data-table" class="display nowrap" style="width:100%"><thead>';
                     for(var count = 0; count<employee_data.length - 1; count++)
                     {
                         var cell_data = employee_data[count].split(",");
@@ -496,7 +506,6 @@
                     }
                     table_data += '</tbody></table>';
 
-                    console.log(table_data);
                     $('.data').html(table_data);
                                         
                     $('.data').html(table_data);
@@ -504,44 +513,14 @@
                         scrollX: true,
                         paging: false,
                         searching: false,
-                        ordering: false
+                        ordering: false,
+                        fixedColumns: true
                     });
                 }
             });
         });
 
     });
-
-    /*function postData() {
-        console.log("POST DATA");
-        console.log(responses);
-
-        $.ajax({
-            type: "POST",
-            url: "/csv_to_html.py",
-            data: {
-                'x_axis': responses['x-axis'],
-                'y_axis': responses['y-axis'],
-                'z_axis': responses['region'],
-                'region_1': responses['region-identifier'],
-                'region_2': responses['region-identifier'],
-                'election_type': responses['election-type'],
-                'election_year': responses['election-year']
-            },
-            dataType: 'jsonp',
-            success: function(response) {
-                console.log("SUCCESS GETTING PYTHON RESPONSE");
-                output = response;
-                console.log(output);
-            }
-       }).done(function(data){
-            console.log("DONE WITH PYTHON");
-        });
-    }
-
-    function insertHtmlTable() {
-        // Noah tell this function to insert the table
-    }*/
 
 </script>
 
