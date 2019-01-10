@@ -333,18 +333,18 @@
         } 
 
         if ((value == "CongressionalDistrict" || value == "Statewide" || value == "County" || value == "Precinct") && (selectID == "x-axis" || selectID == "y-axis")) {
-
             $(".z-axis select").val("N/A");
+            var option = document.getElementsByTagName("z-axis");
+            for (var i = 0; i < option.length; i++) {
+                if (option[i] != "N/A") {
+                $(".z-axis").find(option[i]).prop("disabled", false);
+                }
             region_selected = true;
         }
-
-        });
-
 
         if (x_selected && y_selected && region_selected) {
             $("#go-button").addClass("enabled").removeClass("disabled");
         }
-
 
     $("#data-table").DataTable({
             scrollX: scroll,
