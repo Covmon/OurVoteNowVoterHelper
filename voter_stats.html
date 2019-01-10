@@ -188,6 +188,15 @@
         color: gray;
     }
 
+    #table-title {
+        width: 60vw;
+        margin-left: 10vw;
+    }
+
+    #table-title-span {
+        background-color: rgba(255, 251, 28, 0.658);
+    }
+
    </style>
 
 </head>
@@ -198,7 +207,7 @@
         <div class='title-container'>
             <div class='title'>
                 <a href="http://ourvotenow.org"><img id="logo" src="ourvotenowlogo.jpeg" /></a>
-                <h1>OVN Election Stats Tool</h1>
+                <h1>GA Election Turnout Tool</h1>
             </div>
         </div>
         <br />
@@ -263,22 +272,21 @@
             County:
             <div class='county-select select-style'>
                 <select name="county-select" id="county-select">
-                    <option id="county-first" value="" disabled selected>Choose County</option>
+                    <option id="county-first" value="county-first" selected>Choose County (none)</option>
                     <option id="county-NA" value="N/A">N/A</option>
                 </select>  
             </div>
             Congressional District:
             <div class='congressional-district-select select-style'>
                 <select name="congressional-district-select" id="congressional-district-select">
-                    <option id="congressional-district-first" value="" disabled selected>Choose District</option>
+                    <option id="congressional-district-first" value="congressional-district-first" selected>Choose District (none)</option>
                     <option id="congressional-district-NA" value="N/A">N/A</option>
                 </select>  
             </div>
             Precinct:
             <div class='precinct-select select-style'>
                 <select name="precinct-select" id="precinct-select">
-                    <option id="precinct-first" value="" disabled selected>Select A County First</option>
-                    <option id="precinct-NA" value="N/A">N/A</option>
+                    <option id="precinct-first" value="precinct-first" selected>Select A County First</option>
                 </select>  
             </div>
         </div>
@@ -306,7 +314,7 @@
 
     setupButtonEvents();
 
-    var responses = {"x-axis": "", "y-axis": "", "election-type": "", "election-year": "", "region": "statewide", "county": "", "congressional-district": "", "precinct": ""};
+    var responses = {"x-axis": "", "y-axis": "", "election-type": "", "election-year": "", "region": "statewide", "county-select": "", "congressional-district-select": "", "precinct-select": ""};
     var x_selected = false;
     var y_selected = false;
     var type_selected = false;
@@ -326,11 +334,13 @@
         let newOption = "<option value='" + countyName + "'>" + countyName + "</option>";
         $("#county-NA").before(newOption);
     }
+    $("#county-NA").remove();
 
     for (var i=1;i<15;i++) {
-        let newOption = "<option value='District" + i + "'>Congressional District " + i + "</option>";
+        let newOption = "<option value='District" + i + "'>CD " + i + "</option>";
         $("#congressional-district-NA").before(newOption);
     }
+    $("#congressional-district-NA").remove();
 
     $("select").change(function() {
         var value = $(this).val();
@@ -367,39 +377,72 @@
                 $(".county-select").addClass("select-style-selected");
                 responses["region"] = "county"; 
 
-                //let county = responses["county-select"];
+                $(".congressional-district-select").removeClass("select-style-selected");
+                $("#congressional-district-select").val("congressional-district-first");
+                responses["congressional-district-select"] = "";
+                $("#precinct-first").html("Select a County First");
+
+                //Remove previous county's precints
+                $("#precinct-select option").each(function() {
+                    if ($(this).attr("id") === undefined) {
+                        $(this).remove();
+                    }
+                })
                 county = value;
                 let precincts = ga_precincts[value];
 
-                for (var i=0;i<precincts.length;i++) {
-                    let newOption = "<option value='" + precincts[i] + "'>" + precincts[i] + "</option>";
-                    $("#precinct-NA").before(newOption);
+
+                if (value == "county-first") {
+                    responses["region"] = "statewide";
+                    responses["county-select"] = "";
+                    $("#precinct-first").html("Select a County First");
+                } else {
+                    for (var i=0;i<precincts.length;i++) {
+                        let newOption = "<option value='" + precincts[i] + "'>" + precincts[i] + "</option>";
+                        $("#precinct-first").after(newOption);
+                    }
+
+                    $("#precint-select").val("precinct-first");
+                    $(".precinct-select").removeClass("select-style-selected");
+
+                    $("#precinct-first").html("Choose Precinct (none)");
+
                 }
-
-                //either remove previos county's or all but
-
-                console.log(document.getElementById("precinct-select").options[0].id)
-                console.log(document.getElementById("precinct-select").options[1].value)
-                console.log(document.getElementById("precinct-select").options[2].text)
-
-                $(".precinct-select").each(function() {
-                    console.log(this)
-                    console.log('BISH')
-                    //for (var i=0,this.length,i++) {
-                        //console.log(this[i])
-                    //} 
-                    //$(this).remove();
-                });
-
-                document.getElementById("precinct-first").innerHTML = "Choose Precinct";
 
             } else if (selectID == "congressional-district-select") {
                 $(".congressional-district-select").addClass("select-style-selected");
                 responses["region"] = "congressional-district";
 
+                $(".county-select").removeClass("select-style-selected");
+                $("#county-select").val("county-first");
+                responses["county-select"] = "";
+
+                $("#precinct-select").val("precinct-first");
+                $(".precinct-select").removeClass("select-style-selected");
+                $("#precinct-first").html("Select a County First");
+                $("#precinct-select option").each(function() {
+                    if ($(this).attr("id") === undefined) {
+                        $(this).remove();
+                    }
+                })
+
+                if (value == "congressional-district-first") {
+                    responses["region"] = "statewide";
+                    responses["congressional-district-select"] = "";
+                }
+
             } else if (selectID == "precinct-select") {
                 $(".precinct-select").addClass("select-style-selected");
                 responses["region"] = "precinct";
+
+                if (value == "precinct-first") {
+                    if ($("#county-select").val() == "county-first") {
+                        responses["region"] = "statewide";
+                    } else {
+                        responses["region"] = "county";
+                    }
+                    responses["precinct-select"] = "";
+                }
 
             }
 
@@ -476,6 +519,24 @@
         let congressional_district = responses["congressional-district"];
         let precinct = responses["precinct"];
 
+        var levelText = "";
+
+        switch(regionLevel) {
+            case "statewide":
+                levelText = " across the entire state";
+                break;
+            case "county":
+                levelText = " in " + county + " County";
+                break;
+            case "congressional-district":
+                levelText = " in " + congressional_district;
+                break;
+            case "precinct":
+                levelText = " in " + precinct + " precinct of " + county + " County";
+        }
+
+        var title = "Georgia turnout % in " + year + "'s " + type +  " election based on " + x_axis + " and " + y_axis + levelText;
+
         switch (type) {
             case "general":
                 type = "General";
@@ -530,11 +591,15 @@
             }
 
             if (areBothSelected("gender", "race", x_axis, y_axis)) {
-                URL = year + "/" + type + "/Statewide/Congressional_percent_voted.csv" 
+                URL = year + "/" + type + "/Congressional/Congressional_percent_voted.csv";
+                //statewide doesn't have this file rn, and the one in Congressional is statewide, just sorted by CDs
+                //URL = year + "/" + type + "/Statewide/Congressional_percent_voted.csv" 
             } else if (isSelected("gender", x_axis, y_axis)) {
-                URL = year + "/" + type + "/Statewide/Congressional_percent_voted_gender.csv" 
+                URL = year + "/" + type + "/Congressional/Congressional_percent_voted_gender.csv";
+                //URL = year + "/" + type + "/Statewide/Congressional_percent_voted_gender.csv" 
             } else if (isSelected("race", x_axis, y_axis)) {
-                URL = year + "/" + type + "/Statewide/Congressional_percent_voted_race.csv"
+                URL = year + "/" + type + "/Congressional/Congressional_percent_voted_race.csv";
+                //URL = year + "/" + type + "/Statewide/Congressional_percent_voted_race.csv";
             }
 
         } else if (regionLevel == "county") {
@@ -568,7 +633,7 @@
 
         }
 
-    return URL
+    return [URL, title];
 
     }
 
@@ -581,8 +646,12 @@
 
             console.log("Clicked an enabled go button");
 
-            var table_url = "https://www.noahcovey.com/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/" + displayTableURL();
+            let urlInfo = displayTableURL();
+
+            let table_url = "https://www.noahcovey.com/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/" + urlInfo[0];
             console.log(table_url);
+
+            let title = urlInfo[1];
 
             $.ajax({
                 url:table_url,
@@ -592,7 +661,7 @@
                     console.log("successfully got csv!");
                     //console.log(data);
                     var employee_data = data.split(/\r?\n|\r/);
-                    var table_data = '<p id="scroll-for-more">Scroll for more &#x25B8;</p><br/><table id="data-table" class="display nowrap" style="width:100%"><thead>';
+                    var table_data = '<h2 id="table-title"><span id="table-title-span">' + title + '</span></h2><p id="scroll-for-more">Scroll for more &#x25B8;</p><br/><table id="data-table" class="display nowrap" style="width:100%"><thead>';
                     for(var count = 0; count<employee_data.length - 1; count++)
                     {
                         var cell_data = employee_data[count].split(",");
