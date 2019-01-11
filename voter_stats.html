@@ -124,7 +124,11 @@
 
     .select-style-selected {
         border-color: rgb(200,67,41);
-        background-color: rgb(240,240,240);
+        background-color: rgb(226, 226, 226);
+    }
+
+    .select-style-selected:hover {
+        background-color: rgb(211, 211, 211);
     }
 
     .select-style select:focus {
@@ -395,6 +399,7 @@
                     responses["region"] = "statewide";
                     responses["county-select"] = "";
                     $("#precinct-first").html("Select a County First");
+                    $(".county-select").removeClass("select-style-selected");
                 } else {
                     for (var i=0;i<precincts.length;i++) {
                         let newOption = "<option value='" + precincts[i] + "'>" + precincts[i] + "</option>";
@@ -441,6 +446,7 @@
                         responses["region"] = "county";
                     }
                     responses["precinct-select"] = "";
+                    $(".precinct-select").removeClass("select-style-selected");
                 }
 
             }
