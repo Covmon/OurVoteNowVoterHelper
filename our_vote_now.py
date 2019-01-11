@@ -143,8 +143,6 @@ def xlsx_to_csv(election_date,election_type_filler):
 		df_total_registered.fillna(0,inplace=True)
 		df_voted.fillna(0,inplace=True)
 
-		print df_total_registered
-
 		for column in df_total_registered.columns:
 			if column != 'PRECINCT NAME':
 				df_total_registered[column] = df_total_registered[column].apply(float)
@@ -175,14 +173,14 @@ def xlsx_to_csv(election_date,election_type_filler):
 		df_percentage_voted['PRECINCT NAME'] = df_percentage_voted['PRECINCT NAME'].str.replace(r"\(.*\)","").str.strip()
 		df_total_registered['PRECINCT NAME'] = df_total_registered['PRECINCT NAME'].str.replace(r"\(.*\)","").str.strip()
 
+		df_percentage_voted.dropna(subset=['PRECINCT NAME'],inplace=True)
+		df_voted.dropna(subset=['PRECINCT NAME'],inplace=True)
+		df_total_registered.dropna(subset=['PRECINCT NAME'],inplace=True)
+
 		df_total_registered.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Precinct/{}_total_registered.csv'.format(year,election_type,district),index=None)
 		df_voted.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Precinct/{}_total_voted.csv'.format(year,election_type,district),index=None)
 		df_percentage_voted = df_percentage_voted.replace(u"\u221e",100)
 		df_percentage_voted.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Precinct/{}_gender_vs_race_percent_voted.csv'.format(year,election_type,district),index=None)
-
-		df_total_registered = df_total_registered.loc[df_total_registered['PRECINCT NAME']=='TOTAL']
-		df_voted = df_voted.loc[df_voted['PRECINCT NAME']=='TOTAL']
-		df_percentage_voted = df_percentage_voted.loc[df_percentage_voted['PRECINCT NAME']=='TOTAL']
 
 	"""for county in ga_counties:
 
