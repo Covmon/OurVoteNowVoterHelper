@@ -515,9 +515,9 @@
         let regionLevel = responses["region"];
         let year = responses["election-year"];
         let type = responses["election-type"];
-        let county = responses["county"];
-        let congressional_district = responses["congressional-district"];
-        let precinct = responses["precinct"];
+        let county = responses["county-select"];
+        let congressional_district = responses["congressional-district-select"];
+        let precinct = responses["precinct-select"];
 
         var levelText = "";
 
@@ -578,8 +578,6 @@
                
                 else if (isSelected("precinct", x_axis, y_axis)) {
 
-                    let county = responses["county-select"];
-
                     if (isSelected("gender", x_axis, y_axis)) { 
                         //code URL = year + "/" + type + "/Precinct/" + county.toUpperCase() + "_percent_voted_gender.csv"
                     } else if (isSelected("race", x_axis, y_axis)) { 
@@ -604,8 +602,6 @@
 
         } else if (regionLevel == "county") {
 
-            let county = responses["county-select"];
-
             if (areBothSelected("gender", "race", x_axis, y_axis)) {
                 URL = year + "/" + type + "/County/" + county.toUpperCase() + "_gender_vs_race_percent_voted.csv" 
             } else if(areBothSelected("gender", "age", x_axis, y_axis)) {
@@ -616,7 +612,6 @@
 
         } else if (regionLevel == "congressional-district") {
 
-            let congressional_district = responses["congressional-district-select"];
             let congressional_district_number = congressional_district[congressional_district.length-1];
 
             if (areBothSelected("gender", "race", x_axis, y_axis)) {
