@@ -207,7 +207,7 @@
         <div class='title-container'>
             <div class='title'>
                 <a href="http://ourvotenow.org"><img id="logo" src="ourvotenowlogo.jpeg" /></a>
-                <h1>GA Election Turnout Tool</h1>
+                <h1>GA Election Turnout Data</h1>
             </div>
         </div>
         <br />
@@ -701,6 +701,11 @@
                         ordering: false,
                         fixedColumns: true
                     });
+
+                    //scroll down
+                    let height = $(".select-container").position().top + $(".select-container").outerHeight(true) + $(".select-container").offset().top + 50;
+                    console.log(height);
+                    $('html, body').animate({scrollTop: height + 'px'}, 800);
                 }
             });
         });
