@@ -19,7 +19,7 @@ def gender_combiner_congressional(year,election_type,df_voted,df_registered,prim
 	df_combined['UNKNOWN'] = ((df_unknown/df_unknown_r)*100).round(2)
 	df_combined['TOTAL'] = (df_voted['TOTAL']/df_registered['TOTAL']*100).round(2)
 	df_combined.fillna(0,inplace=True)
-	df_combined.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_vs_gender_percent_voted.csv'.format(year,election_type))
+	df_combined.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_vs_gender_percent_voted.csv'.format(year,election_type),index=False)
 
 def gender_combiner_county(year,election_type,df_voted,df_registered,county,primary):
 	df_combined = pd.DataFrame()
@@ -35,9 +35,9 @@ def gender_combiner_county(year,election_type,df_voted,df_registered,county,prim
 	df_combined['UNKNOWN'] = ((df_unknown/df_unknown_r)*100).round(2)
 	df_combined['TOTAL'] = (df_voted['TOTAL']/df_registered['TOTAL']*100).round(2)
 	df_combined.fillna(0,inplace=True)
-	df_combined.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_vs_gender_percent_voted.csv'.format(year,election_type,county))
+	df_combined.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_vs_gender_percent_voted.csv'.format(year,election_type,county),index=False)
 
-def gender_combiner_statewide(year,election_type,df_voted,df_registered,county,primary):
+def gender_combiner_statewide(year,election_type,df_voted,df_registered,primary):
 	df_combined = pd.DataFrame()
 	df_male = df_voted[df_voted.columns[pd.Series(df_voted.columns).str.endswith(' MALE')]].sum(axis=1)
 	df_female = df_voted[df_voted.columns[pd.Series(df_voted.columns).str.endswith('FEMALE')]].sum(axis=1)
@@ -45,12 +45,13 @@ def gender_combiner_statewide(year,election_type,df_voted,df_registered,county,p
 	df_male_r = df_registered[df_registered.columns[pd.Series(df_registered.columns).str.endswith(' MALE')]].sum(axis=1)
 	df_female_r = df_registered[df_registered.columns[pd.Series(df_registered.columns).str.endswith('FEMALE')]].sum(axis=1)
 	df_unknown_r = df_registered[df_registered.columns[pd.Series(df_registered.columns).str.endswith('UNKNOWN')]].sum(axis=1)
+	df_combined['COUNTY NAME'] = df_voted['COUNTY NAME']
 	df_combined['MALE'] = ((df_male/df_male_r)*100).round(2)
 	df_combined['FEMALE'] = ((df_female/df_female_r)*100).round(2)
 	df_combined['UNKNOWN'] = ((df_unknown/df_unknown_r)*100).round(2)
 	df_combined['TOTAL'] = (df_voted['TOTAL']/df_registered['TOTAL']*100).round(2)
 	df_combined.fillna(0,inplace=True)
-	df_combined.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Counties_vs_gender_percent_voted.csv'.format(year,election_type))
+	df_combined.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Counties_vs_gender_percent_voted.csv'.format(year,election_type),index=False)
 
 def race_combiner_congressional(year,election_type,df_voted,df_registered,primary):	
 	df_combined = pd.DataFrame()
@@ -78,7 +79,7 @@ def race_combiner_congressional(year,election_type,df_voted,df_registered,primar
 	df_combined['UNKNOWN'] = ((df_unknown/df_unknown_r)*100).round(2)
 	df_combined['TOTAL'] = (df_voted['TOTAL']/df_registered['TOTAL']*100).round(2)
 	df_combined.fillna(0,inplace=True)
-	df_combined.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_vs_race_percent_voted.csv'.format(year,election_type))
+	df_combined.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_vs_race_percent_voted.csv'.format(year,election_type),index=False)
 
 def race_combiner_county(year,election_type,df_voted,df_registered,county,primary):	
 	df_combined = pd.DataFrame()
@@ -106,36 +107,63 @@ def race_combiner_county(year,election_type,df_voted,df_registered,county,primar
 	df_combined['UNKNOWN'] = ((df_unknown/df_unknown_r)*100).round(2)
 	df_combined['TOTAL'] = (df_voted['TOTAL']/df_registered['TOTAL']*100).round(2)
 	df_combined.fillna(0,inplace=True)
-	df_combined.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_vs_race_percent_voted.csv'.format(year,election_type,county))
+	df_combined.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_vs_race_percent_voted.csv'.format(year,election_type,county),index=False)
 
-def race_combiner_statewide(year,election_type,df_voted,df_registered,county,primary):	
+def race_combiner_statewide(year,election_type,df_voted,df_registered,primary):	
 	df_combined = pd.DataFrame()
 	df_black = df_voted[df_voted.columns[pd.Series(df_voted.columns).str.startswith('BLACK')]].sum(axis=1)
-	print df_voted
-	raise ValueError('k')
 	df_white = df_voted[df_voted.columns[pd.Series(df_voted.columns).str.startswith('WHITE')]].sum(axis=1)
-	df_latino = df_voted[df_voted.columns[pd.Series(df_voted.columns).str.startswith('LATINO')]].sum(axis=1)
-	df_asian_pacific = df_voted[df_voted.columns[pd.Series(df_voted.columns).str.startswith('ASIAN')]].sum(axis=1)
+	df_latino = df_voted[df_voted.columns[pd.Series(df_voted.columns).str.startswith('HISP')]].sum(axis=1)
+	df_asian_pacific = df_voted[df_voted.columns[pd.Series(df_voted.columns).str.startswith('ASIA')]].sum(axis=1)
 	df_native = df_voted[df_voted.columns[pd.Series(df_voted.columns).str.startswith('NATIVE')]].sum(axis=1)
 	df_other = df_voted[df_voted.columns[pd.Series(df_voted.columns).str.startswith('OTHER')]].sum(axis=1)
 	df_unknown = df_voted[df_voted.columns[pd.Series(df_voted.columns).str.startswith('UNKNOWN')]].sum(axis=1)
 	df_black_r = df_registered[df_registered.columns[pd.Series(df_registered.columns).str.startswith('BLACK')]].sum(axis=1)
 	df_white_r = df_registered[df_registered.columns[pd.Series(df_registered.columns).str.startswith('WHITE')]].sum(axis=1)
-	df_latino_r = df_registered[df_registered.columns[pd.Series(df_registered.columns).str.startswith('LATINO')]].sum(axis=1)
-	df_asian_pacific_r = df_registered[df_registered.columns[pd.Series(df_registered.columns).str.startswith('ASIAN')]].sum(axis=1)
+	df_latino_r = df_registered[df_registered.columns[pd.Series(df_registered.columns).str.startswith('HISP')]].sum(axis=1)
+	df_asian_pacific_r = df_registered[df_registered.columns[pd.Series(df_registered.columns).str.startswith('ASIA')]].sum(axis=1)
 	df_native_r = df_registered[df_registered.columns[pd.Series(df_registered.columns).str.startswith('NATIVE')]].sum(axis=1)
 	df_other_r = df_registered[df_registered.columns[pd.Series(df_registered.columns).str.startswith('OTHER')]].sum(axis=1)
 	df_unknown_r = df_registered[df_registered.columns[pd.Series(df_registered.columns).str.startswith('UNKNOWN')]].sum(axis=1)
-	df_combined['ASIAN-PACIFIC'] = ((df_asian_pacific/df_asian_pacific_r)*100).round(2)
+	df_combined['COUNTY NAME'] = df_voted['COUNTY NAME']
+	df_combined['ASIA-PI'] = ((df_asian_pacific/df_asian_pacific_r)*100).round(2)
 	df_combined['BLACK'] =  ((df_black/df_black_r)*100).round(2)
-	df_combined['LATINO'] = ((df_latino/df_latino_r)*100).round(2)
+	df_combined['HISP-LT'] = ((df_latino/df_latino_r)*100).round(2)
 	df_combined['NATIVE-AMERICAN'] = ((df_native/df_native_r)*100).round(2)
 	df_combined['OTHER'] = ((df_other/df_other_r)*100).round(2)
 	df_combined['WHITE'] = ((df_white/df_white_r)*100).round(2)
 	df_combined['UNKNOWN'] = ((df_unknown/df_unknown_r)*100).round(2)
 	df_combined['TOTAL'] = (df_voted['TOTAL']/df_registered['TOTAL']*100).round(2)
 	df_combined.fillna(0,inplace=True)
-	df_combined.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Counties_vs_race_percent_voted.csv'.format(year,election_type))
+	df_combined.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Counties_vs_race_percent_voted.csv'.format(year,election_type),index=False)
+
+def race_combiner_statewide(year,election_type,df_voted,df_registered,primary):	
+	df_combined = pd.DataFrame()
+	df_black = df_voted[df_voted.columns[pd.Series(df_voted.columns).str.startswith('BLACK')]].sum(axis=1)
+	df_white = df_voted[df_voted.columns[pd.Series(df_voted.columns).str.startswith('WHITE')]].sum(axis=1)
+	df_latino = df_voted[df_voted.columns[pd.Series(df_voted.columns).str.startswith('HISP')]].sum(axis=1)
+	df_asian_pacific = df_voted[df_voted.columns[pd.Series(df_voted.columns).str.startswith('ASIA')]].sum(axis=1)
+	df_native = df_voted[df_voted.columns[pd.Series(df_voted.columns).str.startswith('NATIVE')]].sum(axis=1)
+	df_other = df_voted[df_voted.columns[pd.Series(df_voted.columns).str.startswith('OTHER')]].sum(axis=1)
+	df_unknown = df_voted[df_voted.columns[pd.Series(df_voted.columns).str.startswith('UNKNOWN')]].sum(axis=1)
+	df_black_r = df_registered[df_registered.columns[pd.Series(df_registered.columns).str.startswith('BLACK')]].sum(axis=1)
+	df_white_r = df_registered[df_registered.columns[pd.Series(df_registered.columns).str.startswith('WHITE')]].sum(axis=1)
+	df_latino_r = df_registered[df_registered.columns[pd.Series(df_registered.columns).str.startswith('HISP')]].sum(axis=1)
+	df_asian_pacific_r = df_registered[df_registered.columns[pd.Series(df_registered.columns).str.startswith('ASIA')]].sum(axis=1)
+	df_native_r = df_registered[df_registered.columns[pd.Series(df_registered.columns).str.startswith('NATIVE')]].sum(axis=1)
+	df_other_r = df_registered[df_registered.columns[pd.Series(df_registered.columns).str.startswith('OTHER')]].sum(axis=1)
+	df_unknown_r = df_registered[df_registered.columns[pd.Series(df_registered.columns).str.startswith('UNKNOWN')]].sum(axis=1)
+	df_combined['COUNTY NAME'] = df_voted['COUNTY NAME']
+	df_combined['ASIA-PI'] = ((df_asian_pacific/df_asian_pacific_r)*100).round(2)
+	df_combined['BLACK'] =  ((df_black/df_black_r)*100).round(2)
+	df_combined['HISP-LT'] = ((df_latino/df_latino_r)*100).round(2)
+	df_combined['NATIVE-AMERICAN'] = ((df_native/df_native_r)*100).round(2)
+	df_combined['OTHER'] = ((df_other/df_other_r)*100).round(2)
+	df_combined['WHITE'] = ((df_white/df_white_r)*100).round(2)
+	df_combined['UNKNOWN'] = ((df_unknown/df_unknown_r)*100).round(2)
+	df_combined['TOTAL'] = (df_voted['TOTAL']/df_registered['TOTAL']*100).round(2)
+	df_combined.fillna(0,inplace=True)
+	df_combined.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Counties_vs_race_percent_voted.csv'.format(year,election_type),index=False)
 
 def gender_vs_race_precinct(year,election_type,df_voted,df_registered,county,primary):	
 

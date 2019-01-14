@@ -234,6 +234,7 @@ def xlsx_to_csv(election_date,election_type_filler):
 		       u'WHITE UNKNOWN', u'WHITE FEMALE', u'WHITE MALE', u'BLACK UNKNOWN',
 		       u'BLACK FEMALE', u'BLACK MALE', u'TOTAL']
 
+
 		df_voted.rename(columns={'Unnamed: 45': u'NATIVE-AM UNKNOWN', 'Unnamed: 54': u'OTHER UNKNOWN', 'Unnamed: 6': u'BLACK FEMALE', 'Unnamed: 3': u'BLACK MALE', 'Unnamed: 9': u'BLACK UNKNOWN', 'Unnamed: 27': u'ASIA-PI UNKNOWN', 'Unnamed: 24': u'ASIA-PI FEMALE', 'Unnamed: 21': u'ASIA-PI MALE', 'Unnamed: 63': u'UNKNOWN', 'Unnamed: 60': u'UNKNOWN FEMALE', 'Unnamed: 66': u'TOTAL', 'Unnamed: 42': u'NATIVE-AM FEMALE', 'Unnamed: 48': u'OTHER MALE', 'GEORGIA SECRETARY OF STATE\nSSVRZ521R1 VOTER REGISTRATION SYSTEM SECRETARY OF STATE\nACTIVE/INACTIVE VOTERS BY RACE/GENDER/DISTRICT\nGENERAL ELECTION VOTING HISTORY SUMMARY\nELECTION DATE: {} '.format(formatted_date).replace('\\n','\n').replace('/INACTIVE',''): u'AGE GROUP', 'Unnamed: 15': u'WHITE FEMALE', 'Unnamed: 12': u'WHITE MALE', 'Unnamed: 39': u'NATIVE-AM MALE', 'Unnamed: 36': u'HISP-LT UNKNOWN', 'Unnamed: 51': u'OTHER FEMALE', 'Unnamed: 30': u'HISP-LT MALE', 'Unnamed: 57': u'UNKNOWN MALE', 'Unnamed: 18': u'WHITE UNKNOWN', 'Unnamed: 33': u'HISP-LT FEMALE'},inplace=True)
 		df_voted = df_voted.iloc[1:]
 		df_percentage_voted.rename(columns={'Unnamed: 4': u'BLACK MALE', 'Unnamed: 7': u'BLACK FEMALE', 'Unnamed: 28': u'ASIA-PI UNKNOWN', 'Unnamed: 25': u'ASIA-PI FEMALE', 'Unnamed: 22': u'ASIA-PI MALE', 'Unnamed: 61': u'UNKNOWN FEMALE', 'Unnamed: 46': u'NATIVE-AM UNKNOWN', 'Unnamed: 67': u'TOTAL', 'Unnamed: 40': u'NATIVE-AM MALE', 'Unnamed: 43': u'NATIVE-AM FEMALE', 'Unnamed: 64': u'UNKNOWN', 'Unnamed: 49': u'OTHER MALE', 'Unnamed: 34': u'HISP-LT FEMALE', 'Unnamed: 55': u'OTHER UNKNOWN', 'GEORGIA SECRETARY OF STATE\nSSVRZ521R1 VOTER REGISTRATION SYSTEM SECRETARY OF STATE\nACTIVE/INACTIVE VOTERS BY RACE/GENDER/DISTRICT\nGENERAL ELECTION VOTING HISTORY SUMMARY\nELECTION DATE: {} '.format(formatted_date).replace('\\n','\n').replace('/INACTIVE',''): u'AGE GROUP', 'Unnamed: 16': u'WHITE FEMALE', 'Unnamed: 58': u'UNKNOWN MALE', 'Unnamed: 13': u'WHITE MALE', 'Unnamed: 10': u'BLACK UNKNOWN', 'Unnamed: 52': u'OTHER FEMALE', 'Unnamed: 37': u'HISP-LT UNKNOWN', 'Unnamed: 31': u'HISP-LT MALE', 'Unnamed: 19': u'WHITE UNKNOWN'},inplace=True)
@@ -251,6 +252,10 @@ def xlsx_to_csv(election_date,election_type_filler):
 		for column in df_voted.columns:
 			if column != 'AGE GROUP':
 				df_voted[column] = df_voted[column].apply(float)
+		
+		print df_voted
+		#take the transpose of age group and total and make the county age dataftame
+		raise ValueError('l')
 
 		df_total_registered = df_total_registered.append(df_total_registered.sum(axis=0),ignore_index=True)
 		df_total_registered['AGE GROUP'][len(df_total_registered)-1] = 'TOTAL'
@@ -283,8 +288,6 @@ def xlsx_to_csv(election_date,election_type_filler):
 		df_total_registered.loc[df_total_registered['AGE GROUP']=='TOTAL',['AGE GROUP']] = district
 		df_voted.loc[df_voted['AGE GROUP']=='TOTAL',['AGE GROUP']] = district
 		df_percentage_voted.loc[df_percentage_voted['AGE GROUP']=='TOTAL',['AGE GROUP']] = district
-
-
 
 		df_total_registered.rename(columns={'AGE GROUP':'COUNTY NAME'},inplace=True)
 		df_voted.rename(columns={'AGE GROUP':'COUNTY NAME'},inplace=True)
