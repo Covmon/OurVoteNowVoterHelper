@@ -19,7 +19,7 @@ def gender_combiner_congressional(year,election_type,df_voted,df_registered,prim
 	df_combined['UNKNOWN'] = ((df_unknown/df_unknown_r)*100).round(2)
 	df_combined['TOTAL'] = (df_voted['TOTAL']/df_registered['TOTAL']*100).round(2)
 	df_combined.fillna(0,inplace=True)
-	df_combined.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Congressional/Congressional_vs_gender_percent_voted.csv'.format(year,election_type))
+	df_combined.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_vs_gender_percent_voted.csv'.format(year,election_type))
 
 def gender_combiner_county(year,election_type,df_voted,df_registered,county,primary):
 	df_combined = pd.DataFrame()
@@ -55,35 +55,34 @@ def race_combiner_congressional(year,election_type,df_voted,df_registered,primar
 	df_combined = pd.DataFrame()
 	df_black = df_voted[df_voted.columns[pd.Series(df_voted.columns).str.startswith('BLACK')]].sum(axis=1)
 	df_white = df_voted[df_voted.columns[pd.Series(df_voted.columns).str.startswith('WHITE')]].sum(axis=1)
-	df_latino = df_voted[df_voted.columns[pd.Series(df_voted.columns).str.startswith('LATINO')]].sum(axis=1)
-	df_asian_pacific = df_voted[df_voted.columns[pd.Series(df_voted.columns).str.startswith('ASIAN')]].sum(axis=1)
+	df_latino = df_voted[df_voted.columns[pd.Series(df_voted.columns).str.startswith('HISP')]].sum(axis=1)
+	df_asian_pacific = df_voted[df_voted.columns[pd.Series(df_voted.columns).str.startswith('ASIA')]].sum(axis=1)
 	df_native = df_voted[df_voted.columns[pd.Series(df_voted.columns).str.startswith('NATIVE')]].sum(axis=1)
 	df_other = df_voted[df_voted.columns[pd.Series(df_voted.columns).str.startswith('OTHER')]].sum(axis=1)
 	df_unknown = df_voted[df_voted.columns[pd.Series(df_voted.columns).str.startswith('UNKNOWN')]].sum(axis=1)
 	df_black_r = df_registered[df_registered.columns[pd.Series(df_registered.columns).str.startswith('BLACK')]].sum(axis=1)
 	df_white_r = df_registered[df_registered.columns[pd.Series(df_registered.columns).str.startswith('WHITE')]].sum(axis=1)
-	df_latino_r = df_registered[df_registered.columns[pd.Series(df_registered.columns).str.startswith('LATINO')]].sum(axis=1)
-	df_asian_pacific_r = df_registered[df_registered.columns[pd.Series(df_registered.columns).str.startswith('ASIAN')]].sum(axis=1)
+	df_latino_r = df_registered[df_registered.columns[pd.Series(df_registered.columns).str.startswith('HISP')]].sum(axis=1)
+	df_asian_pacific_r = df_registered[df_registered.columns[pd.Series(df_registered.columns).str.startswith('ASIA')]].sum(axis=1)
 	df_native_r = df_registered[df_registered.columns[pd.Series(df_registered.columns).str.startswith('NATIVE')]].sum(axis=1)
 	df_other_r = df_registered[df_registered.columns[pd.Series(df_registered.columns).str.startswith('OTHER')]].sum(axis=1)
 	df_unknown_r = df_registered[df_registered.columns[pd.Series(df_registered.columns).str.startswith('UNKNOWN')]].sum(axis=1)
 	df_combined['CONGRESSIONAL DISTRICT'] = pd.Series(list('District {}'.format(x) for x in range(1,15)))
-	df_combined['ASIAN-PACIFIC'] = ((df_asian_pacific/df_asian_pacific_r)*100).round(2)
+	df_combined['ASIA-PI'] = ((df_asian_pacific/df_asian_pacific_r)*100).round(2)
 	df_combined['BLACK'] =  ((df_black/df_black_r)*100).round(2)
-	df_combined['LATINO'] = ((df_latino/df_latino_r)*100).round(2)
+	df_combined['HISP-LT'] = ((df_latino/df_latino_r)*100).round(2)
 	df_combined['NATIVE-AMERICAN'] = ((df_native/df_native_r)*100).round(2)
 	df_combined['OTHER'] = ((df_other/df_other_r)*100).round(2)
 	df_combined['WHITE'] = ((df_white/df_white_r)*100).round(2)
 	df_combined['UNKNOWN'] = ((df_unknown/df_unknown_r)*100).round(2)
 	df_combined['TOTAL'] = (df_voted['TOTAL']/df_registered['TOTAL']*100).round(2)
 	df_combined.fillna(0,inplace=True)
-	df_combined.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Congressional/Congressional_vs_race_percent_voted.csv'.format(year,election_type))
+	df_combined.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_vs_race_percent_voted.csv'.format(year,election_type))
 
 def race_combiner_county(year,election_type,df_voted,df_registered,county,primary):	
 	df_combined = pd.DataFrame()
 	df_black = df_voted[df_voted.columns[pd.Series(df_voted.columns).str.startswith('BLACK')]].sum(axis=1)
 	print df_voted
-	raise ValueError('k')
 	df_white = df_voted[df_voted.columns[pd.Series(df_voted.columns).str.startswith('WHITE')]].sum(axis=1)
 	df_latino = df_voted[df_voted.columns[pd.Series(df_voted.columns).str.startswith('LATINO')]].sum(axis=1)
 	df_asian_pacific = df_voted[df_voted.columns[pd.Series(df_voted.columns).str.startswith('ASIAN')]].sum(axis=1)
@@ -106,6 +105,8 @@ def race_combiner_county(year,election_type,df_voted,df_registered,county,primar
 	df_combined['UNKNOWN'] = ((df_unknown/df_unknown_r)*100).round(2)
 	df_combined['TOTAL'] = (df_voted['TOTAL']/df_registered['TOTAL']*100).round(2)
 	df_combined.fillna(0,inplace=True)
+	print df_combined
+	raise ValueError('k')
 	df_combined.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_vs_race_percent_voted.csv'.format(year,election_type,county))
 
 def race_combiner_statewide(year,election_type,df_voted,df_registered,county,primary):	
@@ -190,9 +191,6 @@ def gender_vs_race_precinct(year,election_type,df_voted,df_registered,county,pri
 		df_combined.fillna(0,inplace=True)
 		df_combined.insert(loc=0,column='RACE',value=df_v['RACE'])
 		df_combined.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Precinct/{}_{}_gender_vs_race_percent_voted.csv'.format(year,election_type,county,precinct.replace('/','-')))
-
-/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/2018/General/Precinct/APPLING_3A1_gender_vs_race_percent_voted.csv"
-
 
 def gender_vs_race_county(year,election_type,df_voted,df_registered,county,primary):	
 		
@@ -398,16 +396,16 @@ def which_table_to_display(x_axis,y_axis,z_axis,region_1,region_2,election_type,
 
 	ga_counties = ['APPLING', 'ATKINSON', 'BACON', 'BAKER', 'BALDWIN', 'BANKS', 'BARROW', 'BARTOW', 'BEN HILL', 'BERRIEN', 'BIBB', 'BLECKLEY', 'BRANTLEY', 'BROOKS', 'BRYAN', 'BULLOCH', 'BURKE', 'BUTTS', 'CALHOUN', 'CAMDEN', 'CANDLER', 'CARROLL', 'CATOOSA', 'CHARLTON', 'CHATHAM', 'CHATTAHOOCHEE', 'CHATTOOGA', 'CHEROKEE', 'CLARKE', 'CLAY', 'CLAYTON', 'CLINCH', 'COBB', 'COFFEE', 'COLQUITT', 'COLUMBIA', 'COOK', 'COWETA', 'CRAWFORD', 'CRISP', 'DADE', 'DAWSON', 'DECATUR', 'DEKALB', 'DODGE', 'DOOLY', 'DOUGHERTY', 'DOUGLAS', 'EARLY', 'ECHOLS', 'EFFINGHAM', 'ELBERT', 'EMANUEL', 'EVANS', 'FANNIN', 'FAYETTE', 'FLOYD', 'FORSYTH', 'FRANKLIN', 'FULTON', 'GILMER', 'GLASCOCK', 'GLYNN', 'GORDON', 'GRADY', 'GREENE', 'GWINNETT', 'HABERSHAM', 'HALL', 'HANCOCK', 'HARALSON', 'HARRIS', 'HART', 'HEARD', 'HENRY', 'HOUSTON', 'IRWIN', 'JACKSON', 'JASPER', 'JEFF DAVIS', 'JEFFERSON', 'JENKINS', 'JOHNSON', 'JONES', 'LAMAR', 'LANIER', 'LAURENS', 'LEE', 'LIBERTY', 'LINCOLN', 'LONG', 'LOWNDES', 'LUMPKIN', 'MCDUFFIE', 'MCINTOSH', 'MACON', 'MADISON', 'MARION', 'MERIWETHER', 'MILLER', 'MITCHELL', 'MONROE', 'MONTGOMERY', 'MORGAN', 'MURRAY', 'MUSCOGEE', 'NEWTON', 'OCONEE', 'OGLETHORPE', 'PAULDING', 'PEACH', 'PICKENS', 'PIERCE', 'PIKE', 'POLK', 'PULASKI', 'PUTNAM', 'QUITMAN', 'RABUN', 'RANDOLPH', 'RICHMOND', 'ROCKDALE', 'SCHLEY', 'SCREVEN', 'SEMINOLE', 'SPALDING', 'STEPHENS', 'STEWART', 'SUMTER', 'TALBOT', 'TALIAFERRO', 'TATTNALL', 'TAYLOR', 'TELFAIR', 'TERRELL', 'THOMAS', 'TIFT', 'TOOMBS', 'TOWNS', 'TREUTLEN', 'TROUP', 'TURNER', 'TWIGGS', 'UNION', 'UPSON', 'WALKER', 'WALTON', 'WARE', 'WARREN', 'WASHINGTON', 'WAYNE', 'WEBSTER', 'WHEELER', 'WHITE', 'WHITFIELD', 'WILCOX', 'WILKES', 'WILKINSON', 'WORTH']
 
-	#race_combiner(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Congressional/Congressional_total_voted.csv'.format(year,election_type)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Congressional/Congressional_total_registered.csv'.format(year,election_type)),'general')
-	#gender_combiner(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Congressional/Congressional_total_voted.csv'.format(year,election_type)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Congressional/Congressional_total_registered.csv'.format(year,election_type)),'general')
+	#race_combiner_congressional(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_total_voted.csv'.format(year,election_type)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_total_registered.csv'.format(year,election_type)),'general')
+	#gender_combiner_congressional(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_total_voted.csv'.format(year,election_type)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_total_registered.csv'.format(year,election_type)),'general')
 	#AYYYYYYrace_vs_gender_combiner(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Congressional/{}_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_registered.csv'.format(year,election_type,county)),county,'general')
 
 	for county in ga_counties:
-		
+		pass
 		#AGE FOR STATEWIDE!
-		gender_vs_race_precinct(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Precinct/{}_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Precinct/{}_total_registered.csv'.format(year,election_type,county)),county,'general')
+		#gender_vs_race_precinct(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Precinct/{}_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Precinct/{}_total_registered.csv'.format(year,election_type,county)),county,'general')
 		#gender_vs_race_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_registered.csv'.format(year,election_type,county)),county,'general')
-		#race_combiner_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_registered.csv'.format(year,election_type,county)),county,'general')
+		race_combiner_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_registered.csv'.format(year,election_type,county)),county,'general')
 		#gender_combiner_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_registered.csv'.format(year,election_type,county)),county,'general')
 		#gender_vs_age_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_registered.csv'.format(year,election_type,county)),county,'general')
 		#race_vs_age_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_registered.csv'.format(year,election_type,county)),county,'general')

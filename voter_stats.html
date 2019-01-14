@@ -495,7 +495,16 @@
     }
 
     function isRegionSelected(x_axis, y_axis) {
-        let potential_regions = ["statewide","county","congressional","precinct"]
+        //congressional-district when calling isRegionSelected returns false when it is blantly true... 
+        console.log(y_axis)
+        console.log("congressional-district")
+        let potential_regions = ["statewide","county","congressional-district","precinct"];
+        console.log(y_axis in potential_regions)
+        console.log(potential_regions)
+        console.log("county" in potential_regions)
+        console.log("uguguguguguugug")
+        console.log("congressional-district" in potential_regions)
+        console.log("congressional-district" == y_axis)
         if ((x_axis in potential_regions) || (y_axis in potential_regions)) {
             return true;
         } else {
@@ -559,33 +568,39 @@
                 break;
         }
 
+        console.log(regionLevel)
+
         if (regionLevel == "statewide") {
 
+            console.log(isRegionSelected(x_axis,y_axis))
+
             if (isRegionSelected(x_axis,y_axis)) {
+
+                console.log("yoloswag")
                 
-                if (isSelected("statewide", x_axis, y_axis)) {
+                if (isEitherSelected("statewide", x_axis, y_axis)) {
                     //pass for now
                 }
                 
-                else if (isSelected("county", x_axis, y_axis)) {
+                else if (isEitherSelected("county", x_axis, y_axis)) {
                     //also pass for now
                 }
                 
-                else if (isSelected("congressional-district", x_axis, y_axis)) {
+                else if (isEitherSelected("congressional-district", x_axis, y_axis)) {
                        
-                    if (isSelected("gender", x_axis, y_axis)) {
-                        URL = year + "/" + type + "/Congressional/Congressional_vs_race_percent_voted.csv"; 
-                    } else if(isSelected("race", x_axis, y_axis)) {
-                        URL = year + "/" + type + "/Congressional/Congressional_vs_gender_percent_voted.csv"; 
+                    if (isEitherSelected("gender", x_axis, y_axis)) {
+                        URL = year + "/" + type + "/Statewide/Congressional_vs_gender_percent_voted_race.csv";
+                    } else if(isEitherSelected("race", x_axis, y_axis)) {
+                        URL = year + "/" + type + "/Statewide/Congressional_vs_race_percent_voted_race.csv";
                     } 
 
                 }    
                 
                 else if (isSelected("precinct", x_axis, y_axis)) {
 
-                    if (isSelected("gender", x_axis, y_axis)) { 
+                    if (isEitherSelected("gender", x_axis, y_axis)) { 
                         URL = year + "/" + type + "/County/" + county.toUpperCase() + "_precincts_vs_gender_percent_voted.csv";
-                    } else if (isSelected("race", x_axis, y_axis)) { 
+                    } else if (isEitherSelected("race", x_axis, y_axis)) { 
                         URL = year + "/" + type + "/County/" + county.toUpperCase() + "_precincts_vs_race_percent_voted.csv";
                     }
 
@@ -596,12 +611,11 @@
                 URL = year + "/" + type + "/Congressional/Congressional_percent_voted.csv";
                 //statewide doesn't have this file rn, and the one in Congressional is statewide, just sorted by CDs
                 //URL = year + "/" + type + "/Statewide/Congressional_percent_voted.csv" 
-            } else if (isSelected("gender", x_axis, y_axis)) {
-                URL = year + "/" + type + "/Congressional/Congressional_percent_voted_gender.csv";
-                //URL = year + "/" + type + "/Statewide/Congressional_percent_voted_gender.csv" 
-            } else if (isSelected("race", x_axis, y_axis)) {
+            } else if (isEitherSelected("gender", x_axis, y_axis)) {
+                URL = year + "/" + type + "/Statewide/Congressional_percent_voted_gender.csv" 
+            } else if (isEitherSelected("race", x_axis, y_axis)) {
                 URL = year + "/" + type + "/Congressional/Congressional_percent_voted_race.csv";
-                //URL = year + "/" + type + "/Statewide/Congressional_percent_voted_race.csv";
+                URL = year + "/" + type + "/Statewide/Congressional_percent_voted_race.csv";
             }
 
         } else if (regionLevel == "county") {
