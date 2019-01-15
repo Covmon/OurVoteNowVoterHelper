@@ -32,6 +32,12 @@ def xlsx_to_csv(election_date,election_type_filler):
 	       u'WHITE UNKNOWN', u'WHITE FEMALE', u'WHITE MALE', u'BLACK UNKNOWN',
 	       u'BLACK FEMALE', u'BLACK MALE'])
 
+	overall_total_registered_dataframe_transpose = pd.DataFrame(columns=[u'COUNTY NAME', u'25-29', u'30-34', u'35-39', u'40-44', u'45-49', u'50-54', u'55-59',
+       u'60-64', u'TOTAL'])
+	overall_total_voted_dataframe_transpose = pd.DataFrame(columns=[u'COUNTY NAME', u'25-29', u'30-34', u'35-39', u'40-44', u'45-49', u'50-54', u'55-59',
+       u'60-64', u'TOTAL'])
+	overall_percent_voted_dataframe_transpose = pd.DataFrame(columns=[u'COUNTY NAME', u'25-29', u'30-34', u'35-39', u'40-44', u'45-49', u'50-54', u'55-59',
+       u'60-64', u'TOTAL'])
 	"""for district in range(1,15):
 
 		district = str(district).zfill(2)
@@ -252,10 +258,8 @@ def xlsx_to_csv(election_date,election_type_filler):
 		for column in df_voted.columns:
 			if column != 'AGE GROUP':
 				df_voted[column] = df_voted[column].apply(float)
-		
-		print df_voted
+
 		#take the transpose of age group and total and make the county age dataftame
-		raise ValueError('l')
 
 		df_total_registered = df_total_registered.append(df_total_registered.sum(axis=0),ignore_index=True)
 		df_total_registered['AGE GROUP'][len(df_total_registered)-1] = 'TOTAL'
@@ -266,7 +270,7 @@ def xlsx_to_csv(election_date,election_type_filler):
 		pd_seires = pd.Series(df_divided.iloc[-1])
 		pd_seires = (pd_seires*100).round(2)
 		pd_seires['AGE GROUP'] = 'TOTAL'
-		df_percentage_voted.loc[len(df_total_registered)+1] = pd_seires
+		df_percentage_voted.loc[len(df_total_registered)+2] = pd_seires
 
 		df_total_registered.rename(columns={'UNKNOWN':'UNKNOWN', 'UNKNOWN FEMALE':'UNKNOWN FEMALE', 'UNKNOWN MALE':'UNKNOWN MALE', 'OTHER UNKNOWN':'OTHER UNKNOWN', 'OTHER FEMALE':'OTHER FEMALE', 'OTHER MALE':'OTHER MALE', 'NATIVE-AM UNKNOWN':'NATIVE-AM UNKNOWN', 'NATIVE-AM FEMALE':'NATIVE-AM FEMALE', 'NATIVE-AM MALE':'NATIVE-AM MALE', 'HISP-LT UNKNOWN':'HISP-LT UNKNOWN', 'HISP-LT FEMALE':'HISP-LT FEMALE', 'HISP-LT MALE':'HISP-LT MALE', 'ASIA-PI UNKNOWN':'ASIA-PI UNKNOWN', 'ASIA-PI FEMALE':'ASIA-PI FEMALE', 'ASIA-PI MALE':'ASIA-PI MALE', 'WHITE UNKNOWN':'WHITE UNKNOWN', 'WHITE FEMALE':'WHITE FEMALE', 'WHITE MALE':'WHITE MALE', 'BLACK UNKNOWN':'BLACK UNKNOWN', 'BLACK FEMALE':'BLACK FEMALE', 'BLACK MALE':'BLACK MALE', 'TOTAL VOTERS':'TOTAL'},inplace=True)
 		df_total_registered = df_total_registered[['AGE GROUP','UNKNOWN','UNKNOWN FEMALE','UNKNOWN MALE','OTHER UNKNOWN','OTHER FEMALE','OTHER MALE','NATIVE-AM UNKNOWN','NATIVE-AM FEMALE','NATIVE-AM MALE','HISP-LT UNKNOWN','HISP-LT FEMALE','HISP-LT MALE','ASIA-PI UNKNOWN','ASIA-PI FEMALE','ASIA-PI MALE','WHITE UNKNOWN','WHITE FEMALE','WHITE MALE','BLACK UNKNOWN','BLACK FEMALE','BLACK MALE','TOTAL']]
@@ -274,6 +278,28 @@ def xlsx_to_csv(election_date,election_type_filler):
 		df_percentage_voted = df_percentage_voted[['AGE GROUP','UNKNOWN','UNKNOWN FEMALE','UNKNOWN MALE','OTHER UNKNOWN','OTHER FEMALE','OTHER MALE','NATIVE-AM UNKNOWN','NATIVE-AM FEMALE','NATIVE-AM MALE','HISP-LT UNKNOWN','HISP-LT FEMALE','HISP-LT MALE','ASIA-PI UNKNOWN','ASIA-PI FEMALE','ASIA-PI MALE','WHITE UNKNOWN','WHITE FEMALE','WHITE MALE','BLACK UNKNOWN','BLACK FEMALE','BLACK MALE','TOTAL']]
 		df_voted.rename(columns={'UNKNOWN':'UNKNOWN', 'UNKNOWN FEMALE':'UNKNOWN FEMALE', 'UNKNOWN MALE':'UNKNOWN MALE', 'OTHER UNKNOWN':'OTHER UNKNOWN', 'OTHER FEMALE':'OTHER FEMALE', 'OTHER MALE':'OTHER MALE', 'NATIVE-AM UNKNOWN':'NATIVE-AM UNKNOWN', 'NATIVE-AM FEMALE':'NATIVE-AM FEMALE', 'NATIVE-AM MALE':'NATIVE-AM MALE', 'HISP-LT UNKNOWN':'HISP-LT UNKNOWN', 'HISP-LT FEMALE':'HISP-LT FEMALE', 'HISP-LT MALE':'HISP-LT MALE', 'ASIA-PI UNKNOWN':'ASIA-PI UNKNOWN', 'ASIA-PI FEMALE':'ASIA-PI FEMALE', 'ASIA-PI MALE':'ASIA-PI MALE', 'WHITE UNKNOWN':'WHITE UNKNOWN', 'WHITE FEMALE':'WHITE FEMALE', 'WHITE MALE':'WHITE MALE', 'BLACK UNKNOWN':'BLACK UNKNOWN', 'BLACK FEMALE':'BLACK FEMALE', 'BLACK MALE':'BLACK MALE', 'TOTAL VOTERS':'TOTAL'},inplace=True)
 		df_voted = df_voted[['AGE GROUP','UNKNOWN','UNKNOWN FEMALE','UNKNOWN MALE','OTHER UNKNOWN','OTHER FEMALE','OTHER MALE','NATIVE-AM UNKNOWN','NATIVE-AM FEMALE','NATIVE-AM MALE','HISP-LT UNKNOWN','HISP-LT FEMALE','HISP-LT MALE','ASIA-PI UNKNOWN','ASIA-PI FEMALE','ASIA-PI MALE','WHITE UNKNOWN','WHITE FEMALE','WHITE MALE','BLACK UNKNOWN','BLACK FEMALE','BLACK MALE','TOTAL']]
+
+		df_total_registered_transpose = df_total_registered[['AGE GROUP','TOTAL']].T
+		df_voted_transpose = df_voted[['AGE GROUP','TOTAL']].T
+		df_percentage_voted_transpose = df_percentage_voted[['AGE GROUP','TOTAL']].T
+
+
+		df_total_registered_transpose.columns = df_total_registered_transpose.iloc[0]
+		df_total_registered_transpose = df_total_registered_transpose.reindex(df_total_registered_transpose.index.drop('AGE GROUP'))
+		df_voted_transpose.columns = df_voted_transpose.iloc[0]
+		df_voted_transpose = df_voted_transpose.reindex(df_voted_transpose.index.drop('AGE GROUP'))		
+		df_percentage_voted_transpose.columns = df_percentage_voted_transpose.iloc[0]
+		df_percentage_voted_transpose = df_percentage_voted_transpose.reindex(df_percentage_voted_transpose.index.drop('AGE GROUP'))		
+		
+		df_percentage_voted_transpose.index = [district]
+		df_percentage_voted_transpose.reset_index(inplace=True)
+		df_percentage_voted_transpose.rename(columns={'index':'COUNTY NAME'},inplace=True)
+		df_voted_transpose.index = [district]
+		df_voted_transpose.reset_index(inplace=True)
+		df_voted_transpose.rename(columns={'index':'COUNTY NAME'},inplace=True)
+		df_total_registered_transpose.index = [district]
+		df_total_registered_transpose.reset_index(inplace=True)
+		df_total_registered_transpose.rename(columns={'index':'COUNTY NAME'},inplace=True)
 
 		df_total_registered.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_registered.csv'.format(year,election_type,district),index=None)
 		df_voted.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_voted.csv'.format(year,election_type,district),index=None)
@@ -305,7 +331,12 @@ def xlsx_to_csv(election_date,election_type_filler):
 		overall_total_voted_dataframe = overall_total_voted_dataframe.append(df_voted)
 		overall_percent_voted_dataframe = overall_percent_voted_dataframe.append(df_percentage_voted)
 
+		overall_total_registered_dataframe_transpose = overall_total_registered_dataframe_transpose.append(df_total_registered_transpose)
+		overall_total_voted_dataframe_transpose = overall_total_voted_dataframe_transpose.append(df_voted_transpose)
+		overall_percent_voted_dataframe_transpose = overall_percent_voted_dataframe_transpose.append(df_percentage_voted_transpose)
+
 	overall_percent_voted_dataframe.fillna(0,inplace=True)
+	overall_percent_voted_dataframe_transpose.fillna(0,inplace=True)
 
 	overall_total_registered_dataframe = overall_total_registered_dataframe[[u'COUNTY NAME', u'UNKNOWN', u'UNKNOWN FEMALE',
 	       u'UNKNOWN MALE', u'OTHER UNKNOWN', u'OTHER FEMALE', u'OTHER MALE',
@@ -328,12 +359,24 @@ def xlsx_to_csv(election_date,election_type_filler):
 	       u'ASIA-PI UNKNOWN', u'ASIA-PI FEMALE', u'ASIA-PI MALE',
 	       u'WHITE UNKNOWN', u'WHITE FEMALE', u'WHITE MALE', u'BLACK UNKNOWN',
 	       u'BLACK FEMALE', u'BLACK MALE', u'TOTAL']]
+	overall_total_registered_dataframe_transpose = overall_total_registered_dataframe_transpose[[u'COUNTY NAME',       u'25-29',       u'30-34',       u'35-39',
+             u'40-44',       u'45-49',       u'50-54',       u'55-59',
+             u'60-64',       u'65-OVER',       u'TOTAL']]
+	overall_total_voted_dataframe_transpose = overall_total_voted_dataframe_transpose[[u'COUNTY NAME',       u'25-29',       u'30-34',       u'35-39',
+             u'40-44',       u'45-49',       u'50-54',       u'55-59',
+             u'60-64',       u'65-OVER',       u'TOTAL']]
+	overall_percent_voted_dataframe_transpose = overall_percent_voted_dataframe_transpose[[u'COUNTY NAME',       u'25-29',       u'30-34',       u'35-39',
+             u'40-44',       u'45-49',       u'50-54',       u'55-59',
+             u'60-64',       u'65-OVER',       u'TOTAL']]
 
 	overall_total_registered_dataframe.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/County_total_registered.csv'.format(year,election_type,district),index=None)
 	overall_total_voted_dataframe.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/County_total_voted.csv'.format(year,election_type,district),index=None)
 	overall_percent_voted_dataframe.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/County_percent_voted.csv'.format(year,election_type,district),index=None)
 	
-
+	overall_total_registered_dataframe_transpose.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/County_age_total_registered.csv'.format(year,election_type,district),index=None)
+	overall_total_voted_dataframe_transpose.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/County_age_total_voted.csv'.format(year,election_type,district),index=None)
+	overall_percent_voted_dataframe_transpose.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Counties_vs_age_percent_voted.csv'.format(year,election_type,district),index=None)
+	
 xlsx_to_csv('November6_2018','')
 
 
