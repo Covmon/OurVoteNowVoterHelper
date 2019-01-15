@@ -325,6 +325,8 @@
     var year_selected = false;
     var has_chosen_year_x_axis = false;
     var has_chosen_year_y_axis = false;
+    var requires_county_x_axis = false;
+    var requires_county_y_axis = false;
 
     let ga_counties = ["Appling","Atkinson","Bacon","Baker","Baldwin","Banks","Bartow","Ben Hill","Berrien","Bibb","Bleckley","Brantley","Brooks","Bryan","Bulloch","Burke","Calhoun","Camden","Candler","Carroll","Catoosa","Charlton","Chatham","Chattahoochee","Chattooga","Cherokee","Clarke","Clay","Clayton","Clinch",
     "Cobb","Coffee","Colquitt","Columbia","Cook","Coweta","Crawford","Crisp","Dade","Dawson","DeKalb","Decatur","Dodge","Dooly","Dougherty","Douglas","Early","Echols","Effingham","Elbert","Emanuel","Evans","Fannin","Fayette","Floyd","Forsyth","Franklin","Fulton","Gilmer","Glascock","Glynn","Gordon","Grady","Greene",
@@ -352,10 +354,35 @@
         var selectID = $(this).attr("id");  
         console.log(value);
         console.log(selectID);
+
+        responses[selectID] = value;
+        console.log(responses);
+
         if (value != "") {
             
             if (selectID == "x-axis") {
                 $(".x-axis").addClass("select-style-selected");
+
+                if (value == "age") {
+                    $(".y-axis").find("#congressional-district").prop("disabled", true);
+                    $(".y-axis").find("#precinct").prop("disabled", true);
+                } else {
+                    $(".y-axis").find("#congressional-district").prop("disabled", false);
+                    $(".y-axis").find("#precinct").prop("disabled", false);
+                }
+
+                if (value == "county") {
+                    $(".y-axis").find("#congressional-district").prop("disabled", true);
+                } else if (responses["x-axis"] != "age") {
+                    $(".y-axis").find("#congressional-district").prop("disabled", false);
+                }
+
+                if (value == "congressional-district") {
+                    $(".y-axis").find("#county").prop("disabled", true);
+                } else {
+                    $(".y-axis").find("#county").prop("disabled", false);
+                }
+
                 $(".y-axis").find("#" + value).prop("disabled", true);
                 if (x_selected) {
                     $(".y-axis").find("#" + responses["x-axis"]).prop("disabled", false);
@@ -367,8 +394,35 @@
                     has_chosen_year_x_axis = false;
                 }
 
+                if (value == "precinct") {
+                    requires_county_x_axis = true;
+                } else {
+                    requires_county_x_axis = false;
+                }
+
             } else if (selectID == "y-axis") { 
                 $(".y-axis").addClass("select-style-selected");
+
+                if (value == "age") {
+                    $(".x-axis").find("#congressional-district").prop("disabled", true);
+                    $(".x-axis").find("#precinct").prop("disabled", true);
+                } else {
+                    $(".x-axis").find("#congressional-district").prop("disabled", false);
+                    $(".x-axis").find("#precinct").prop("disabled", false);
+                }
+
+                if (value == "county") {
+                    $(".x-axis").find("#congressional-district").prop("disabled", true);
+                } else if (responses["y-axis"] != "age") {
+                    $(".x-axis").find("#congressional-district").prop("disabled", false);
+                }
+
+                if (value == "congressional-district") {
+                    $(".x-axis").find("#county").prop("disabled", true);
+                } else {
+                    $(".x-axis").find("#county").prop("disabled", false);
+                }
+
                 $(".x-axis").find("#" + value).prop("disabled", true);
                 if (y_selected) {
                     $(".x-axis").find("#" + responses["y-axis"]).prop("disabled", false);
@@ -378,6 +432,12 @@
                     has_chosen_year_y_axis = true;
                 } else {
                     has_chosen_year_y_axis = false;
+                }
+
+                if (value == "precinct") {
+                    requires_county_y_axis = true;
+                } else {
+                    requires_county_y_axis = false;
                 }
 
             } else if (selectID == "election-type") {
@@ -412,6 +472,12 @@
                     responses["county-select"] = "";
                     $("#precinct-first").html("Select a County First");
                     $(".county-select").removeClass("select-style-selected");
+
+                    if (responses["x-axis"] == "precinct") {
+                        requires_county_x_axis = true;
+                    } else if (responses["y-axis"] == "precinct") {
+                        requires_county_y_axis = true;
+                    }
                 } else {
                     for (var i=0;i<precincts.length;i++) {
                         let newOption = "<option value='" + precincts[i] + "'>" + precincts[i] + "</option>";
@@ -422,6 +488,9 @@
                     $(".precinct-select").removeClass("select-style-selected");
 
                     $("#precinct-first").html("Choose Precinct (none)");
+
+                    requires_county_x_axis = false;
+                    requires_county_y_axis = false;
 
                 }
 
@@ -463,13 +532,13 @@
 
             }
 
-            responses[selectID] = $(this).val();
-            console.log(responses);
         } 
 
-        if ((x_selected && y_selected && type_selected && year_selected) || (x_selected && y_selected && (has_chosen_year_x_axis || has_chosen_year_y_axis))) {
+        if (((x_selected && y_selected && type_selected && year_selected) || (x_selected && y_selected && (has_chosen_year_x_axis || has_chosen_year_y_axis))) && !requires_county_x_axis && !requires_county_y_axis) {
             console.log("Ready to hit go");
             $("#go-button").addClass("enabled").removeClass("disabled");
+        } else {
+            $("#go-button").removeClass("enabled").addClass("disabled");
         }
 
     });
@@ -572,7 +641,7 @@
                 break;
         }
 
-        if (isEitherSelected("year", x_axis, y_axis)) {
+        if (isEitherSelected("Year", x_axis, y_axis)) {
 
             if (isRegionSelected(x_axis,y_axis)) {
 
@@ -675,10 +744,31 @@
 
     }
 
+    function responseEquals(label, value) {
+        if (responses[label] == value) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     $(document).ready(function(){
         $('#go-button').click(function(){
 
             if ($(this).hasClass("disabled")) {
+                var errorMessage = "";
+
+                if ((responseEquals("x-axis", "precinct") || responseEquals("y-axis", "precinct")) && responses["county-select"] == "") {
+                    errorMessage = "To view data by precinct, please select a county from the county dropdown.";
+                } else if (responseEquals("x-axis", "Year") && responseEquals("y-axis", "")) {
+                    errorMessage = "Make sure to choose a y-axis to view data by year.";
+                } else if (responseEquals("y-axis", "Year") && responseEquals("x-axis", "")) {
+                    errorMessage = "Make sure to choose an x-axis to view data by year.";
+                } else {
+                    errorMessage = "Make sure to fill out x-axis, y-axis, election type, and year to view results.";
+                }
+
+                alert(errorMessage);
                 return false;
             }
 
@@ -699,7 +789,7 @@
                     console.log("successfully got csv!");
                     //console.log(data);
                     var employee_data = data.split(/\r?\n|\r/);
-                    var table_data = '<h2 id="table-title"><span id="table-title-span">' + title + '</span></h2><p id="scroll-for-more">Scroll for more &#x25B8;</p><br/><table id="data-table" class="display nowrap" style="width:100%"><thead>';
+                    var table_data = '<h2 id="table-title"><span id="table-title-span">' + title + '</span></h2><p id="scroll-for-more">You may need to scroll for more &#x25B8;</p><br/><table id="data-table" class="display nowrap" style="width:100%"><thead>';
                     for(var count = 0; count<employee_data.length - 1; count++)
                     {
                         var cell_data = employee_data[count].split(",");
