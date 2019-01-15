@@ -323,6 +323,8 @@
     var y_selected = false;
     var type_selected = false;
     var year_selected = false;
+    var has_chosen_year_x_axis = false;
+    var has_chosen_year_y_axis = false;
 
     let ga_counties = ["Appling","Atkinson","Bacon","Baker","Baldwin","Banks","Bartow","Ben Hill","Berrien","Bibb","Bleckley","Brantley","Brooks","Bryan","Bulloch","Burke","Calhoun","Camden","Candler","Carroll","Catoosa","Charlton","Chatham","Chattahoochee","Chattooga","Cherokee","Clarke","Clay","Clayton","Clinch",
     "Cobb","Coffee","Colquitt","Columbia","Cook","Coweta","Crawford","Crisp","Dade","Dawson","DeKalb","Decatur","Dodge","Dooly","Dougherty","Douglas","Early","Echols","Effingham","Elbert","Emanuel","Evans","Fannin","Fayette","Floyd","Forsyth","Franklin","Fulton","Gilmer","Glascock","Glynn","Gordon","Grady","Greene",
@@ -359,6 +361,11 @@
                     $(".y-axis").find("#" + responses["x-axis"]).prop("disabled", false);
                 }
                 x_selected = true;
+                if (value == "Year") {
+                    has_chosen_year_x_axis = true;
+                } else {
+                    has_chosen_year_x_axis = false;
+                }
 
             } else if (selectID == "y-axis") { 
                 $(".y-axis").addClass("select-style-selected");
@@ -367,6 +374,11 @@
                     $(".x-axis").find("#" + responses["y-axis"]).prop("disabled", false);
                 }
                 y_selected = true;
+                if (value == "Year") {
+                    has_chosen_year_y_axis = true;
+                } else {
+                    has_chosen_year_y_axis = false;
+                }
 
             } else if (selectID == "election-type") {
                 $(".election-type").addClass("select-style-selected");
@@ -455,7 +467,7 @@
             console.log(responses);
         } 
 
-        if (x_selected && y_selected && type_selected && year_selected) {
+        if ((x_selected && y_selected && type_selected && year_selected) || (x_selected && y_selected && (has_chosen_year_x_axis || has_chosen_year_y_axis))) {
             console.log("Ready to hit go");
             $("#go-button").addClass("enabled").removeClass("disabled");
         }
