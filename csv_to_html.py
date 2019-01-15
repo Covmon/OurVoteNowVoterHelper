@@ -292,7 +292,7 @@ def race_vs_age_county(year,election_type,df_voted,df_registered,county,primary)
 	df_combined.fillna(0,inplace=True)
 	df_combined.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_race_vs_age_percent_voted.csv'.format(year,election_type,county),index=False)
 
-def race_vs_inter_year_county(county,years={'2016':['General'],'2018':['General']}):
+def race_vs_inter_year_county(county,years={'2018':['General']}):
 		
 	df_combined = pd.DataFrame(columns=['ELECTION TYPE/YEAR','ASIA-PI','BLACK','HISP-LT','NATIVE-AM','OTHER','WHITE','UNKNOWN','TOTAL'])#race names])
 	for year in years.keys():
@@ -312,50 +312,56 @@ def gender_vs_inter_year_county(county,years={'2016':['General'],'2018':['Genera
 		if any(years[year]):
 			for election_type in years[year]:
 				df_year = pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_gender_vs_age_percent_voted.csv'.format(year,election_type,county))		
-				df_combined = df_combined.append(df_year.loc[df_year['-']=='TOTAL'],ignore_index=True)
-				df_combined['-'][len(df_combined)-1] = '{} {}'.format(year,election_type)
-
+				df_combined = df_combined.append(df_year.loc[df_year['AGE GROUP']=='TOTAL'],ignore_index=True)
+				df_combined['ELECTION TYPE/YEAR'][len(df_combined)-1] = '{} {}'.format(year,election_type)
+	
+	df_combined = df_combined[['ELECTION TYPE/YEAR','MALE','FEMALE','UNKNOWN','TOTAL']]
 	df_combined.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/Inter_Year/County/{}_inter_year_vs_gender_percent_voted.csv'.format(county),index=False)				
-	df_combined = df_combined[['-','ASIAN-PACIFIC','BLACK','LATINO','NATIVE-AMERICAN','OTHER','WHITE','UNKNOWN','TOTAL']]
 
-def age_vs_inter_year_county(county,years={'2016':['General'],'2018':['General']}):
+def age_vs_inter_year_county(county,years={'2018':['General']}):
 		
-	df_combined = pd.DataFrame(columns=['ELECTION TYPE/YEAR','ASIAN-PACIFIC','BLACK','LATINO','NATIVE-AMERICAN','OTHER','WHITE','UNKNOWN','TOTAL'])#race names])
+	df_combined = pd.DataFrame(columns=['ELECTION TYPE/YEAR','25-29','30-34','35-39','40-44','45-49','50-54','55-59','60-64','65-OVER','TOTAL'])
 	for year in years.keys():
 		if any(years[year]):
 			for election_type in years[year]:
-				df_year = pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_gender_vs_age_percent_voted_race.csv'.format(year,election_type,county))		
-				df_combined = df_combined.append(df_year.loc[df_year['-']=='TOTAL'],ignore_index=True)
-				df_combined['-'][len(df_combined)-1] = '{} {}'.format(year,election_type)
+				df_year = pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_gender_vs_age_percent_voted.csv'.format(year,election_type,county))		
+				df_year = df_year[['AGE GROUP','TOTAL VOTERS']].T
+				df_year.columns = df_year.iloc[0]
+				df_year = df_year.reindex(df_year.index.drop('AGE GROUP'))
+				df_year.index = ['{} {}'.format(year,election_type)]
+				df_year.reset_index(inplace=True)
+				df_year.rename(columns={'index':'ELECTION TYPE/YEAR'},inplace=True)
+				df_combined = df_year
+				
+	df_combined = df_combined[['ELECTION TYPE/YEAR','25-29','30-34','35-39','40-44','45-49','50-54','55-59','60-64','65-OVER','TOTAL']]
 
 	df_combined.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/Inter_Year/County/{}_inter_year_vs_age_percent_voted.csv'.format(county),index=False)			
-	df_combined = df_combined[['-','ASIAN-PACIFIC','BLACK','LATINO','NATIVE-AMERICAN','OTHER','WHITE','UNKNOWN','TOTAL']]
 
-def race_vs_inter_year_congressional(congressional_district,years={'2016':['General'],'2018':['General']}):
+def race_vs_inter_year_congressional(congressional_district,years={'2018':['General']}):
 		
-	df_combined = pd.DataFrame(columns=['ELECTION TYPE/YEAR','ASIAN-PACIFIC','BLACK','LATINO','NATIVE-AMERICAN','OTHER','WHITE','UNKNOWN','TOTAL'])#race names])
+	df_combined = pd.DataFrame(columns=['ELECTION TYPE/YEAR','ASIAN-PACIFIC','BLACK','LATINO','NATIVE-AMERICAN','OTHER','WHITE','UNKNOWN','TOTAL'])
 	for year in years.keys():
 		if any(years[year]):
 			for election_type in years[year]:
 				df_year = pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Congressional/{}_race_vs_age_percent_voted_race.csv'.format(year,election_type,county))		
 				df_combined = df_combined.append(df_year.loc[df_year['-']=='TOTAL'],ignore_index=True)
-				df_combined['-'][len(df_combined)-1] = '{} {}'.format(year,election_type)
-
+				df_combined['ELECTION TYPE/YEAR'][len(df_combined)-1] = '{} {}'.format(year,election_type)
+	
+	df_combined = df_combined[['ELECTION TYPE/YEAR','ASIA-PI','BLACK','HISP-LT','NATIVE-AM','OTHER','WHITE','UNKNOWN','TOTAL']]
 	df_combined.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/Inter_Year/Congressional/{}_inter_year_vs_race_percent_voted.csv'.format(county),index=False)			
-	df_combined = df_combined[['-','ASIAN-PACIFIC','BLACK','LATINO','NATIVE-AMERICAN','OTHER','WHITE','UNKNOWN','TOTAL']]
 
-def gender_vs_inter_year_congressional(congressional_district,years={'2016':['General'],'2018':['General']}):
+def gender_vs_inter_year_congressional(congressional_district,years={'2018':['General']}):
 		
-	df_combined = pd.DataFrame(columns=['ELECTION TYPE/YEAR','MALE','FEMALE','UNKNOWN','TOTAL'])#race names])
+	df_combined = pd.DataFrame(columns=['ELECTION TYPE/YEAR','MALE','FEMALE','UNKNOWN','TOTAL'])
 	for year in years.keys():
 		if any(years[year]):
 			for election_type in years[year]:
 				df_year = pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Congressional/{}_gender_vs_age_percent_voted.csv'.format(year,election_type,county))		
 				df_combined = df_combined.append(df_year.loc[df_year['-']=='TOTAL'],ignore_index=True)
-				df_combined['-'][len(df_combined)-1] = '{} {}'.format(year,election_type)
-
+				df_combined['ELECTION TYPE/YEAR'][len(df_combined)-1] = '{} {}'.format(year,election_type)
+	
+	df_combined = df_combined[['ELECTION TYPE/YEAR','ASIA-PI','BLACK','HISP-LT','NATIVE-AM','OTHER','WHITE','UNKNOWN','TOTAL']]
 	df_combined.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/Inter_Year/Congressional/{}_inter_year_vs_gender_percent_voted.csv'.format(county),index=False)				
-	df_combined = df_combined[['-','ASIAN-PACIFIC','BLACK','LATINO','NATIVE-AMERICAN','OTHER','WHITE','UNKNOWN','TOTAL']]
 
 def region_vs_inter_year_county(county,years={'2016':['General'],'2018':['General']}):
 		
@@ -365,10 +371,10 @@ def region_vs_inter_year_county(county,years={'2016':['General'],'2018':['Genera
 			for election_type in years[year]:
 				df_year = pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_race_vs_age_percent_voted_race.csv'.format(year,election_type,county))		
 				df_combined = df_combined.append(df_year.loc[df_year['-']=='TOTAL'],ignore_index=True)
-				df_combined['-'][len(df_combined)-1] = '{} {}'.format(year,election_type)
-
+				df_combined['ELECTION TYPE/YEAR'][len(df_combined)-1] = '{} {}'.format(year,election_type)
+	
+	df_combined = df_combined[['ELECTION TYPE/YEAR','ASIA-PI','BLACK','HISP-LT','NATIVE-AM','OTHER','WHITE','UNKNOWN','TOTAL']]
 	df_combined.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/Inter_Year/{}_inter_year_vs_race_percent_voted.csv'.format(county),index=False)				
-	df_combined = df_combined[['-','ASIAN-PACIFIC','BLACK','LATINO','NATIVE-AMERICAN','OTHER','WHITE','UNKNOWN','TOTAL']]		
 
 def race_vs_inter_year_precinct(years=['2016','2018']):
 	
@@ -407,7 +413,9 @@ def which_table_to_display(x_axis,y_axis,z_axis,region_1,region_2,election_type,
 		#gender_combiner_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_registered.csv'.format(year,election_type,county)),county,'general')
 		#gender_vs_age_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_registered.csv'.format(year,election_type,county)),county,'general')
 		#race_vs_age_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_registered.csv'.format(year,election_type,county)),county,'general')
-		race_vs_inter_year_county(county)
+		#race_vs_inter_year_county(county)
+		#gender_vs_inter_year_county(county)
+		age_vs_inter_year_county(county)
 
 	"""if x_axis == 'Statewide' or y_axis == 'Statewide':
 		pass
