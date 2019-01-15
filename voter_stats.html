@@ -654,15 +654,14 @@
 
             } else {
 
-                let selector = ["race","gender","age"].filter(value => -1 !== [x_axis, y_axis].indexOf(value))
-                console.log(selector)
+                let selector = ["race","gender","age"].filter(value => -1 !== [x_axis, y_axis].indexOf(value))[0]
 
                 if (regionLevel == "county") {
-                    URL = "Inter_Year/" + county.toUpperCase() + "_inter_year_vs_" + selector + "_percent_voted.csv.csv";
+                    URL = "Inter_Year/County/" + county.toUpperCase() + "_inter_year_vs_" + selector + "_percent_voted.csv";
                 } else if (regionLevel == "congressional-district") {
-                    URL = "Inter_Year/" + congressional_district + "_inter_year_vs_" + selector + "_percent_voted.csv.csv";
+                    URL = "Inter_Year/Congressional/US" + zfill(congressional_district_number,2)  + "_inter_year_vs_" + selector + "_percent_voted.csv";
                 } else if (regionLevel == "precinct") {
-                    URL = "Inter_Year/Precinct/" + county.toUpperCase() + "/" + precinct.toUpperCase() + "_inter_year_vs_" + selector + "_percent_voted.csv.csv"
+                    URL = "Inter_Year/Precinct/" + county.toUpperCase() + "/" + precinct.toUpperCase() + "_inter_year_vs_" + selector + "_percent_voted.csv"
                 }
 
             }    
@@ -721,10 +720,7 @@
 
             if (areBothSelected("gender", "race", x_axis, y_axis)) {
                 URL = year + "/" + type + "/Congressional/US" + zfill(congressional_district_number,2) + "_gender_vs_race_percent_voted.csv"; 
-            } else if(areBothSelected("gender", "age", x_axis, y_axis)) {
-                URL = year + "/" + type + "/Congressional/US" + zfill(congressional_district_number,2) + "_gender_vs_age_percent_voted.csv"; 
-            } else if (areBothSelected("race", "age", x_axis, y_axis)) {
-                URL = year + "/" + type + "/Congressional/US" + zfill(congressional_district_number,2) + "_race_vs_age_percent_voted_race.csv";
+
             }
 
             console.log(URL)
