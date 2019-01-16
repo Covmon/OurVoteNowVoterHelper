@@ -38,7 +38,7 @@ def xlsx_to_csv(election_date,election_type_filler):
        u'60-64', u'TOTAL'])
 	overall_percent_voted_dataframe_transpose = pd.DataFrame(columns=[u'COUNTY NAME', u'25-29', u'30-34', u'35-39', u'40-44', u'45-49', u'50-54', u'55-59',
        u'60-64', u'TOTAL'])
-	"""for district in range(1,15):
+	for district in range(1,15):
 
 		district = str(district).zfill(2)
 
@@ -145,15 +145,22 @@ def xlsx_to_csv(election_date,election_type_filler):
 	       u'WHITE UNKNOWN', u'WHITE FEMALE', u'WHITE MALE', u'BLACK UNKNOWN',
 	       u'BLACK FEMALE', u'BLACK MALE', u'TOTAL']]
 
+	overall_total_registered_dataframe = overall_total_registered_dataframe.append(overall_total_registered_dataframe.sum(axis=0),ignore_index=True)
+	overall_total_registered_dataframe['CONGRESSIONAL DISTRICT'][len(overall_total_registered_dataframe)-1] = 'TOTAL'
+	overall_total_voted_dataframe = overall_total_voted_dataframe.append(overall_total_voted_dataframe.sum(axis=0),ignore_index=True)
+	overall_total_voted_dataframe['CONGRESSIONAL DISTRICT'][len(overall_total_voted_dataframe)-1] = 'TOTAL'	
+	overall_percent_voted_dataframe = overall_percent_voted_dataframe.append(overall_percent_voted_dataframe.sum(axis=0),ignore_index=True)
+	overall_percent_voted_dataframe['CONGRESSIONAL DISTRICT'][len(overall_percent_voted_dataframe)-1] = 'TOTAL'
+
 	overall_total_registered_dataframe.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_total_registered.csv'.format(year,election_type,district),index=None)
 	overall_total_voted_dataframe.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_total_voted.csv'.format(year,election_type,district),index=None)
-	overall_percent_voted_dataframe.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_percent_voted.csv'.format(year,election_type,district),index=None)"""
+	overall_percent_voted_dataframe.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_percent_voted.csv'.format(year,election_type,district),index=None)
 	
-	for county in ga_counties:
+	"""for county in ga_counties:
 
 		district = county
 
-		"""df = pd.read_excel('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_Source_XLSX/{}/{}{}(CountyPrecinct)/{}.xlsx'.format(year,election_date,election_type_filler,district))
+		df = pd.read_excel('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_Source_XLSX/{}/{}{}(CountyPrecinct)/{}.xlsx'.format(year,election_date,election_type_filler,district))
 		df = df.iloc[1:]
 		df.rename(columns={[col for col in df if col.startswith('GEORGIA')][0]:'GEORGIA'},inplace=True)
 		df_total_registered = df[['Unnamed: 1', 'Unnamed: 65', 'Unnamed: 62', 'Unnamed: 59', 'Unnamed: 56', 'Unnamed: 53', 'Unnamed: 50', 'Unnamed: 47', 'Unnamed: 44', 'Unnamed: 41', 'Unnamed: 38', 'Unnamed: 35', 'Unnamed: 32', 'Unnamed: 29', 'Unnamed: 26', 'Unnamed: 23', 'Unnamed: 20', 'Unnamed: 17', 'Unnamed: 14', 'Unnamed: 11', 'Unnamed: 8', 'Unnamed: 5', 'Unnamed: 2']]
@@ -199,12 +206,12 @@ def xlsx_to_csv(election_date,election_type_filler):
 		pd_seires['PRECINCT NAME'] = 'TOTAL'
 		df_percentage_voted.loc[len(df_total_registered)+1] = pd_seires
 
-		df_total_registered.rename(columns={'PRECINCT NAME':'PRECINCT NAME', 'UNKNOWN':'UNKNOWN', 'UNKNOWN FEMALE':'UNKNOWN FEMALE', 'UNKNOWN MALE':'UNKNOWN MALE', 'OTHER UNKNOWN':'OTHER UNKNOWN', 'OTHER FEMALE':'OTHER FEMALE', 'OTHER MALE':'OTHER MALE', 'NATIVE-AM UNKNOWN':'NATIVE AMERICAN UNKNOWN', 'NATIVE-AM FEMALE':'NATIVE AMERICAN FEMALE', 'NATIVE-AM MALE':'NATIVE AMERICAN MALE', 'HISP-LT UNKNOWN':'LATINO UNKNOWN', 'HISP-LT FEMALE':'LATINO FEMALE', 'HISP-LT MALE':'LATINO MALE', 'ASIA-PI UNKNOWN':'ASIAN-PACIFIC UNKNOWN', 'ASIA-PI FEMALE':'ASIAN-PACIFIC FEMALE', 'ASIA-PI MALE':'ASIAN-PACIFIC MALE', 'WHITE UNKNOWN':'WHITE UNKNOWN', 'WHITE FEMALE':'WHITE FEMALE', 'WHITE MALE':'WHITE MALE', 'BLACK UNKNOWN':'BLACK UNKNOWN', 'BLACK FEMALE':'BLACK FEMALE', 'BLACK MALE':'BLACK MALE', 'TOTAL VOTERS':'TOTAL'},inplace=True)
-		df_total_registered = df_total_registered[['PRECINCT NAME','UNKNOWN','UNKNOWN FEMALE','UNKNOWN MALE','OTHER UNKNOWN','OTHER FEMALE','OTHER MALE','NATIVE AMERICAN UNKNOWN','NATIVE AMERICAN FEMALE','NATIVE AMERICAN MALE','LATINO UNKNOWN','LATINO FEMALE','LATINO MALE','ASIAN-PACIFIC UNKNOWN','ASIAN-PACIFIC FEMALE','ASIAN-PACIFIC MALE','WHITE UNKNOWN','WHITE FEMALE','WHITE MALE','BLACK UNKNOWN','BLACK FEMALE','BLACK MALE','TOTAL']]
-		df_percentage_voted.rename(columns={'PRECINCT NAME':'PRECINCT NAME', 'UNKNOWN':'UNKNOWN', 'UNKNOWN FEMALE':'UNKNOWN FEMALE', 'UNKNOWN MALE':'UNKNOWN MALE', 'OTHER UNKNOWN':'OTHER UNKNOWN', 'OTHER FEMALE':'OTHER FEMALE', 'OTHER MALE':'OTHER MALE', 'NATIVE-AM UNKNOWN':'NATIVE AMERICAN UNKNOWN', 'NATIVE-AM FEMALE':'NATIVE AMERICAN FEMALE', 'NATIVE-AM MALE':'NATIVE AMERICAN MALE', 'HISP-LT UNKNOWN':'LATINO UNKNOWN', 'HISP-LT FEMALE':'LATINO FEMALE', 'HISP-LT MALE':'LATINO MALE', 'ASIA-PI UNKNOWN':'ASIAN-PACIFIC UNKNOWN', 'ASIA-PI FEMALE':'ASIAN-PACIFIC FEMALE', 'ASIA-PI MALE':'ASIAN-PACIFIC MALE', 'WHITE UNKNOWN':'WHITE UNKNOWN', 'WHITE FEMALE':'WHITE FEMALE', 'WHITE MALE':'WHITE MALE', 'BLACK UNKNOWN':'BLACK UNKNOWN', 'BLACK FEMALE':'BLACK FEMALE', 'BLACK MALE':'BLACK MALE', 'TOTAL VOTERS':'TOTAL'},inplace=True)
-		df_percentage_voted = df_percentage_voted[['PRECINCT NAME','UNKNOWN','UNKNOWN FEMALE','UNKNOWN MALE','OTHER UNKNOWN','OTHER FEMALE','OTHER MALE','NATIVE AMERICAN UNKNOWN','NATIVE AMERICAN FEMALE','NATIVE AMERICAN MALE','LATINO UNKNOWN','LATINO FEMALE','LATINO MALE','ASIAN-PACIFIC UNKNOWN','ASIAN-PACIFIC FEMALE','ASIAN-PACIFIC MALE','WHITE UNKNOWN','WHITE FEMALE','WHITE MALE','BLACK UNKNOWN','BLACK FEMALE','BLACK MALE','TOTAL']]
-		df_voted.rename(columns={'PRECINCT NAME':'PRECINCT NAME', 'UNKNOWN':'UNKNOWN', 'UNKNOWN FEMALE':'UNKNOWN FEMALE', 'UNKNOWN MALE':'UNKNOWN MALE', 'OTHER UNKNOWN':'OTHER UNKNOWN', 'OTHER FEMALE':'OTHER FEMALE', 'OTHER MALE':'OTHER MALE', 'NATIVE-AM UNKNOWN':'NATIVE AMERICAN UNKNOWN', 'NATIVE-AM FEMALE':'NATIVE AMERICAN FEMALE', 'NATIVE-AM MALE':'NATIVE AMERICAN MALE', 'HISP-LT UNKNOWN':'LATINO UNKNOWN', 'HISP-LT FEMALE':'LATINO FEMALE', 'HISP-LT MALE':'LATINO MALE', 'ASIA-PI UNKNOWN':'ASIAN-PACIFIC UNKNOWN', 'ASIA-PI FEMALE':'ASIAN-PACIFIC FEMALE', 'ASIA-PI MALE':'ASIAN-PACIFIC MALE', 'WHITE UNKNOWN':'WHITE UNKNOWN', 'WHITE FEMALE':'WHITE FEMALE', 'WHITE MALE':'WHITE MALE', 'BLACK UNKNOWN':'BLACK UNKNOWN', 'BLACK FEMALE':'BLACK FEMALE', 'BLACK MALE':'BLACK MALE', 'TOTAL VOTERS':'TOTAL'},inplace=True)
-		df_voted = df_voted[['PRECINCT NAME','UNKNOWN','UNKNOWN FEMALE','UNKNOWN MALE','OTHER UNKNOWN','OTHER FEMALE','OTHER MALE','NATIVE AMERICAN UNKNOWN','NATIVE AMERICAN FEMALE','NATIVE AMERICAN MALE','LATINO UNKNOWN','LATINO FEMALE','LATINO MALE','ASIAN-PACIFIC UNKNOWN','ASIAN-PACIFIC FEMALE','ASIAN-PACIFIC MALE','WHITE UNKNOWN','WHITE FEMALE','WHITE MALE','BLACK UNKNOWN','BLACK FEMALE','BLACK MALE','TOTAL']]
+		df_total_registered.rename(columns={'UNKNOWN':'UNKNOWN', 'UNKNOWN FEMALE':'UNKNOWN FEMALE', 'UNKNOWN MALE':'UNKNOWN MALE', 'OTHER UNKNOWN':'OTHER UNKNOWN', 'OTHER FEMALE':'OTHER FEMALE', 'OTHER MALE':'OTHER MALE', 'NATIVE-AM UNKNOWN':'NATIVE-AM UNKNOWN', 'NATIVE-AM FEMALE':'NATIVE-AM FEMALE', 'NATIVE-AM MALE':'NATIVE-AM MALE', 'HISP-LT UNKNOWN':'HISP-LT UNKNOWN', 'HISP-LT FEMALE':'HISP-LT FEMALE', 'HISP-LT MALE':'HISP-LT MALE', 'ASIA-PI UNKNOWN':'ASIA-PI UNKNOWN', 'ASIA-PI FEMALE':'ASIA-PI FEMALE', 'ASIA-PI MALE':'ASIA-PI MALE', 'WHITE UNKNOWN':'WHITE UNKNOWN', 'WHITE FEMALE':'WHITE FEMALE', 'WHITE MALE':'WHITE MALE', 'BLACK UNKNOWN':'BLACK UNKNOWN', 'BLACK FEMALE':'BLACK FEMALE', 'BLACK MALE':'BLACK MALE', 'TOTAL VOTERS':'TOTAL'},inplace=True)
+		df_total_registered = df_total_registered[['PRECINCT NAME','UNKNOWN','UNKNOWN FEMALE','UNKNOWN MALE','OTHER UNKNOWN','OTHER FEMALE','OTHER MALE','NATIVE-AM UNKNOWN','NATIVE-AM FEMALE','NATIVE-AM MALE','HISP-LT UNKNOWN','HISP-LT FEMALE','HISP-LT MALE','ASIA-PI UNKNOWN','ASIA-PI FEMALE','ASIA-PI MALE','WHITE UNKNOWN','WHITE FEMALE','WHITE MALE','BLACK UNKNOWN','BLACK FEMALE','BLACK MALE','TOTAL']]
+		df_percentage_voted.rename(columns={'UNKNOWN':'UNKNOWN', 'UNKNOWN FEMALE':'UNKNOWN FEMALE', 'UNKNOWN MALE':'UNKNOWN MALE', 'OTHER UNKNOWN':'OTHER UNKNOWN', 'OTHER FEMALE':'OTHER FEMALE', 'OTHER MALE':'OTHER MALE', 'NATIVE-AM UNKNOWN':'NATIVE-AM UNKNOWN', 'NATIVE-AM FEMALE':'NATIVE-AM FEMALE', 'NATIVE-AM MALE':'NATIVE-AM MALE', 'HISP-LT UNKNOWN':'HISP-LT UNKNOWN', 'HISP-LT FEMALE':'HISP-LT FEMALE', 'HISP-LT MALE':'HISP-LT MALE', 'ASIA-PI UNKNOWN':'ASIA-PI UNKNOWN', 'ASIA-PI FEMALE':'ASIA-PI FEMALE', 'ASIA-PI MALE':'ASIA-PI MALE', 'WHITE UNKNOWN':'WHITE UNKNOWN', 'WHITE FEMALE':'WHITE FEMALE', 'WHITE MALE':'WHITE MALE', 'BLACK UNKNOWN':'BLACK UNKNOWN', 'BLACK FEMALE':'BLACK FEMALE', 'BLACK MALE':'BLACK MALE', 'TOTAL VOTERS':'TOTAL'},inplace=True)
+		df_percentage_voted = df_percentage_voted[['PRECINCT NAME','UNKNOWN','UNKNOWN FEMALE','UNKNOWN MALE','OTHER UNKNOWN','OTHER FEMALE','OTHER MALE','NATIVE-AM UNKNOWN','NATIVE-AM FEMALE','NATIVE-AM MALE','HISP-LT UNKNOWN','HISP-LT FEMALE','HISP-LT MALE','ASIA-PI UNKNOWN','ASIA-PI FEMALE','ASIA-PI MALE','WHITE UNKNOWN','WHITE FEMALE','WHITE MALE','BLACK UNKNOWN','BLACK FEMALE','BLACK MALE','TOTAL']]
+		df_voted.rename(columns={'UNKNOWN':'UNKNOWN', 'UNKNOWN FEMALE':'UNKNOWN FEMALE', 'UNKNOWN MALE':'UNKNOWN MALE', 'OTHER UNKNOWN':'OTHER UNKNOWN', 'OTHER FEMALE':'OTHER FEMALE', 'OTHER MALE':'OTHER MALE', 'NATIVE-AM UNKNOWN':'NATIVE-AM UNKNOWN', 'NATIVE-AM FEMALE':'NATIVE-AM FEMALE', 'NATIVE-AM MALE':'NATIVE-AM MALE', 'HISP-LT UNKNOWN':'HISP-LT UNKNOWN', 'HISP-LT FEMALE':'HISP-LT FEMALE', 'HISP-LT MALE':'HISP-LT MALE', 'ASIA-PI UNKNOWN':'ASIA-PI UNKNOWN', 'ASIA-PI FEMALE':'ASIA-PI FEMALE', 'ASIA-PI MALE':'ASIA-PI MALE', 'WHITE UNKNOWN':'WHITE UNKNOWN', 'WHITE FEMALE':'WHITE FEMALE', 'WHITE MALE':'WHITE MALE', 'BLACK UNKNOWN':'BLACK UNKNOWN', 'BLACK FEMALE':'BLACK FEMALE', 'BLACK MALE':'BLACK MALE', 'TOTAL VOTERS':'TOTAL'},inplace=True)
+		df_voted = df_voted[['PRECINCT NAME','UNKNOWN','UNKNOWN FEMALE','UNKNOWN MALE','OTHER UNKNOWN','OTHER FEMALE','OTHER MALE','NATIVE-AM UNKNOWN','NATIVE-AM FEMALE','NATIVE-AM MALE','HISP-LT UNKNOWN','HISP-LT FEMALE','HISP-LT MALE','ASIA-PI UNKNOWN','ASIA-PI FEMALE','ASIA-PI MALE','WHITE UNKNOWN','WHITE FEMALE','WHITE MALE','BLACK UNKNOWN','BLACK FEMALE','BLACK MALE','TOTAL']]
 
 		df_voted['PRECINCT NAME'] = df_voted['PRECINCT NAME'].str.replace(r"\(.*\)","").str.strip()
 		df_percentage_voted['PRECINCT NAME'] = df_percentage_voted['PRECINCT NAME'].str.replace(r"\(.*\)","").str.strip()
@@ -217,9 +224,9 @@ def xlsx_to_csv(election_date,election_type_filler):
 		df_total_registered.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_registered.csv'.format(year,election_type,district),index=None)
 		df_voted.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_voted.csv'.format(year,election_type,district),index=None)
 		df_percentage_voted = df_percentage_voted.replace(u"\u221e",100)
-		df_percentage_voted.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Precinct/{}_gender_vs_race_percent_voted.csv'.format(year,election_type,district),index=None)"""
+		df_percentage_voted.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_gender_vs_race_percent_voted.csv'.format(year,election_type,district),index=None)"""
 
-	for county in ga_counties:
+	"""for county in ga_counties:
 
 		district = county
 
@@ -368,6 +375,20 @@ def xlsx_to_csv(election_date,election_type_filler):
 	overall_percent_voted_dataframe_transpose = overall_percent_voted_dataframe_transpose[[u'COUNTY NAME',       u'25-29',       u'30-34',       u'35-39',
              u'40-44',       u'45-49',       u'50-54',       u'55-59',
              u'60-64',       u'65-OVER',       u'TOTAL']]
+	
+	overall_total_registered_dataframe = overall_total_registered_dataframe.append(overall_total_registered_dataframe.sum(axis=0),ignore_index=True)
+	overall_total_registered_dataframe['COUNTY NAME'][len(overall_total_registered_dataframe)-1] = 'TOTAL'
+	overall_total_voted_dataframe = overall_total_voted_dataframe.append(overall_total_voted_dataframe.sum(axis=0),ignore_index=True)
+	overall_total_voted_dataframe['COUNTY NAME'][len(overall_total_voted_dataframe)-1] = 'TOTAL'	
+	overall_percent_voted_dataframe = overall_percent_voted_dataframe.append(overall_percent_voted_dataframe.sum(axis=0),ignore_index=True)
+	overall_percent_voted_dataframe['COUNTY NAME'][len(overall_percent_voted_dataframe)-1] = 'TOTAL'
+
+	overall_total_registered_dataframe_transpose = overall_total_registered_dataframe_transpose.append(overall_total_registered_dataframe_transpose.sum(axis=0),ignore_index=True)
+	overall_total_registered_dataframe_transpose['COUNTY NAME'][len(overall_total_registered_dataframe_transpose)-1] = 'TOTAL'
+	overall_total_voted_dataframe_transpose = overall_total_voted_dataframe_transpose.append(overall_total_voted_dataframe_transpose.sum(axis=0),ignore_index=True)
+	overall_total_voted_dataframe_transpose['COUNTY NAME'][len(overall_total_voted_dataframe_transpose)-1] = 'TOTAL'	
+	overall_percent_voted_dataframe_transpose = overall_percent_voted_dataframe_transpose.append(overall_percent_voted_dataframe_transpose.sum(axis=0),ignore_index=True)
+	overall_percent_voted_dataframe_transpose['COUNTY NAME'][len(overall_percent_voted_dataframe_transpose)-1] = 'TOTAL'
 
 	overall_total_registered_dataframe.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/County_total_registered.csv'.format(year,election_type,district),index=None)
 	overall_total_voted_dataframe.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/County_total_voted.csv'.format(year,election_type,district),index=None)
@@ -375,7 +396,7 @@ def xlsx_to_csv(election_date,election_type_filler):
 	
 	overall_total_registered_dataframe_transpose.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/County_age_total_registered.csv'.format(year,election_type,district),index=None)
 	overall_total_voted_dataframe_transpose.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/County_age_total_voted.csv'.format(year,election_type,district),index=None)
-	overall_percent_voted_dataframe_transpose.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Counties_vs_age_percent_voted.csv'.format(year,election_type,district),index=None)
+	overall_percent_voted_dataframe_transpose.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Counties_vs_age_percent_voted.csv'.format(year,election_type,district),index=None)"""
 	
 xlsx_to_csv('November6_2018','')
 

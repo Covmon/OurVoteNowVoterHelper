@@ -1,7 +1,8 @@
 import os
+import re
 from collections import OrderedDict
 
-ga_counties = ["Appling","Atkinson","Bacon","Baker","Baldwin","Banks","Bartow","Ben Hill","Berrien","Bibb","Bleckley","Brantley","Brooks","Bryan","Bulloch","Burke","Calhoun","Camden","Candler","Carroll","Catoosa","Charlton","Chatham","Chattahoochee","Chattooga","Cherokee","Clarke","Clay","Clayton","Clinch",
+ga_counties = ["Appling","Atkinson","Bacon","Baker","Baldwin","Banks","Barrow","Bartow","Ben Hill","Berrien","Bibb","Bleckley","Brantley","Brooks","Bryan","Bulloch","Burke","Butts","Calhoun","Camden","Candler","Carroll","Catoosa","Charlton","Chatham","Chattahoochee","Chattooga","Cherokee","Clarke","Clay","Clayton","Clinch",
     "Cobb","Coffee","Colquitt","Columbia","Cook","Coweta","Crawford","Crisp","Dade","Dawson","DeKalb","Decatur","Dodge","Dooly","Dougherty","Douglas","Early","Echols","Effingham","Elbert","Emanuel","Evans","Fannin","Fayette","Floyd","Forsyth","Franklin","Fulton","Gilmer","Glascock","Glynn","Gordon","Grady","Greene",
     "Gwinnett","Habersham","Hall","Hancock","Haralson","Harris","Hart","Heard","Henry","Houston","Irwin","Jackson","Jasper","Jeff Davis","Jefferson","Jenkins","Johnson","Jones","Lamar","Lanier","Laurens","Lee","Liberty","Lincoln","Long","Lowndes","Lumpkin","Macon","Madison","Marion","McDuffie","McIntosh","Meriwether",
     "Miller","Mitchell","Monroe","Montgomery","Morgan","Murray","Muscogee","Newton","Oconee","Oglethorpe","Paulding","Peach","Pickens","Pierce","Pike","Polk","Pulaski","Putnam","Quitman","Rabun","Randolph","Richmond","Rockdale","Schley","Screven","Seminole","Spalding","Stephens","Stewart","Sumter","Talbot","Taliaferro",
@@ -13,9 +14,12 @@ precinct_dict = OrderedDict()
 
 for county in ga_counties:
 	county_list = []
+	print county_list
 	for file_name in precinct_files:
-		if county.upper() + '_' in file_name and county.upper() + '_total_voted.csv' != file_name and county.upper() + '_percent_voted.csv' != file_name and county.upper() + '_total_registered.csv' != file_name and county.upper() + '_TOTAL_percent_voted.csv' != file_name and file_name != '{}_gender_vs_race_percent_voted.csv'.format(county.upper()):
-			county_list.append(file_name.replace('{}_'.format(county.upper()),'').split('_')[0].title())
+		if county.upper() + '_' == file_name[0:len(county)+1] in file_name and county.upper() + '_total_voted.csv' != file_name and county.upper() + '_percent_voted.csv' != file_name and county.upper() + '_total_registered.csv' != file_name and county.upper() + '_TOTAL_percent_voted.csv' != file_name and file_name != '{}_gender_vs_race_percent_voted.csv'.format(county.upper()):
+			#print file_name
+			#print file_name.replace('{}_'.format(county.upper()),'',1).split('_')[0].title()
+			county_list.append(file_name.replace('{}_'.format(county.upper()),'',1).split('_')[0].title())
 	for precinct in county_list:
 		try:
 			int(precinct)
