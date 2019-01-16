@@ -353,6 +353,8 @@
         console.log(value);
         console.log(selectID);
 
+        let prevX = responses["x-axis"];
+        let prevY = responses["y-axis"];
         responses[selectID] = value;
         console.log(responses);
 
@@ -377,13 +379,31 @@
 
                 if (value == "congressional-district") {
                     $(".y-axis").find("#county").prop("disabled", true);
+                    $(".y-axis").find("#age").prop("disabled", true);
+                    $(".y-axis").find("#precinct").prop("disabled", true);
                 } else {
                     $(".y-axis").find("#county").prop("disabled", false);
+                    $(".y-axis").find("#age").prop("disabled", false);
+                    if (responses["x-axis"] != "age") {
+                        $(".y-axis").find("#precinct").prop("disabled", false);
+                    }
+                }
+
+                if (value == "precinct") {
+                    $(".y-axis").find("#congressional-district").prop("disabled", true);
+                    $(".y-axis").find("#county").prop("disabled", true);
+                } else {
+                    if (responses["x-axis"] != "age" && responses["x-axis"] != "county") {
+                        $(".y-axis").find("#congressional-district").prop("disabled", false);
+                    }
+                    if (responses["x-axis"] != "congressional-district") {
+                        $(".y-axis").find("#county").prop("disabled", false);
+                    }
                 }
 
                 $(".y-axis").find("#" + value).prop("disabled", true);
                 if (x_selected) {
-                    $(".y-axis").find("#" + responses["x-axis"]).prop("disabled", false);
+                    $(".y-axis").find("#" + prevX).prop("disabled", false);
                 }
                 x_selected = true;
                 if (value == "Year") {
@@ -417,13 +437,30 @@
 
                 if (value == "congressional-district") {
                     $(".x-axis").find("#county").prop("disabled", true);
+                    $(".x-axis").find("#age").prop("disabled", true);
                 } else {
                     $(".x-axis").find("#county").prop("disabled", false);
+                    $(".x-axis").find("#age").prop("disabled", false);
+                    if (responses["y-axis"] != "age") {
+                        $(".x-axis").find("#precinct").prop("disabled", false);
+                    }
+                }
+
+                if (value == "precinct") {
+                    $(".x-axis").find("#congressional-district").prop("disabled", true);
+                    $(".x-axis").find("#county").prop("disabled", true);
+                } else {
+                    if (responses["y-axis"] != "age" && responses["y-axis"] != "county") {
+                        $(".x-axis").find("#congressional-district").prop("disabled", false);
+                    }
+                    if (responses["y-axis"] != "congressional-district") {
+                        $(".x-axis").find("#county").prop("disabled", false);
+                    }
                 }
 
                 $(".x-axis").find("#" + value).prop("disabled", true);
                 if (y_selected) {
-                    $(".x-axis").find("#" + responses["y-axis"]).prop("disabled", false);
+                    $(".x-axis").find("#" + prevY).prop("disabled", false);
                 }
                 y_selected = true;
                 if (value == "Year") {
@@ -665,7 +702,7 @@
                     URL = "Inter_Year/Precinct/" + county.toUpperCase() + "/" + precinct.toUpperCase() + "_inter_year_vs_" + selector + "_percent_voted.csv"
                 }
 
-            }    
+            }
 
         } else if (regionLevel == "statewide") {
 
@@ -703,6 +740,10 @@
                     }
 
                 }
+            } else if (areBothSelected("race","gender",x_axis,y_axis)) {
+                URL = year + "/" + type + "/Statewide/Congressional_percent_voted.csv";
+            } else if (areBothSelected("age","gender",x_axis,y_axis)) {
+                URL = year + "/" + type + "/Statewide/age_vs_gender_percent_voted.csv";
             }
 
         } else if (regionLevel == "county") {
