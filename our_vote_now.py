@@ -1,10 +1,11 @@
 import pandas as pd
+import re
 from collections import OrderedDict
 def xlsx_to_csv(election_date,election_type_filler):
 
 	year = election_date[len(election_date)-4:]
 	date = str(election_date.split('_')[0])[-1]
-	month = str(election_date.split('_')[0])[:len(str(election_date.split('_')[0]))-1]
+	month = re.findall(r'^\D+',election_date)[0]
 	month_to_election_type_dict = {'March':'Presidential_Primary','May':'Primary','July':'Primary_Runoff','November':'General'}
 	election_type = month_to_election_type_dict[month]
 	formatted_date = '{} {}, {}'.format(month.upper(),date.zfill(2),year)
@@ -156,7 +157,7 @@ def xlsx_to_csv(election_date,election_type_filler):
 	overall_total_voted_dataframe.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_total_voted.csv'.format(year,election_type,district),index=None)
 	overall_percent_voted_dataframe.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_percent_voted.csv'.format(year,election_type,district),index=None)
 	
-	"""for county in ga_counties:
+	for county in ga_counties:
 
 		district = county
 
@@ -224,9 +225,9 @@ def xlsx_to_csv(election_date,election_type_filler):
 		df_total_registered.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_registered.csv'.format(year,election_type,district),index=None)
 		df_voted.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_voted.csv'.format(year,election_type,district),index=None)
 		df_percentage_voted = df_percentage_voted.replace(u"\u221e",100)
-		df_percentage_voted.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_gender_vs_race_percent_voted.csv'.format(year,election_type,district),index=None)"""
+		df_percentage_voted.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_gender_vs_race_percent_voted.csv'.format(year,election_type,district),index=None)
 
-	"""for county in ga_counties:
+	for county in ga_counties:
 
 		district = county
 
@@ -396,8 +397,10 @@ def xlsx_to_csv(election_date,election_type_filler):
 	
 	overall_total_registered_dataframe_transpose.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/County_age_total_registered.csv'.format(year,election_type,district),index=None)
 	overall_total_voted_dataframe_transpose.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/County_age_total_voted.csv'.format(year,election_type,district),index=None)
-	overall_percent_voted_dataframe_transpose.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Counties_vs_age_percent_voted.csv'.format(year,election_type,district),index=None)"""
+	overall_percent_voted_dataframe_transpose.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Counties_vs_age_percent_voted.csv'.format(year,election_type,district),index=None)
 	
+#xlsx_to_csv('July26_2016','')	
+xlsx_to_csv('November8_2016','')	
 xlsx_to_csv('November6_2018','')
 
 
