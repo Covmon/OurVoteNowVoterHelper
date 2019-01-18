@@ -740,10 +740,18 @@
                     }
 
                 }
-            } else if (areBothSelected("race","gender",x_axis,y_axis)) {
-                URL = year + "/" + type + "/Statewide/Congressional_percent_voted.csv";
             } else if (areBothSelected("age","gender",x_axis,y_axis)) {
-                URL = year + "/" + type + "/Statewide/age_vs_gender_percent_voted.csv";
+
+                URL = year + "/" + type + "/Statewide/Gender_vs_age_percent_voted.csv";
+
+            } else if (areBothSelected("race","gender",x_axis,y_axis)) {
+
+                URL = year + "/" + type + "/Statewide/Gender_vs_race_percent_voted.csv";
+
+            } else if (areBothSelected("age","race",x_axis,y_axis)) {
+
+                URL = year + "/" + type + "/Statewide/Race_vs_age_percent_voted.csv";
+                
             }
 
         } else if (regionLevel == "county") {
