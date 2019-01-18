@@ -681,13 +681,13 @@
             if (isRegionSelected(x_axis,y_axis)) {
 
                 if (isEitherSelected("county", x_axis, y_axis)) {
-                    URL = "/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/Inter_Year/Statewide/Inter_year_vs_counties_percent_voted.csv"
+                    URL = "Inter_Year/Statewide/Inter_year_vs_counties_percent_voted.csv"
                 }
                 else if (isEitherSelected("congressional-district", x_axis, y_axis)) {  
-                    URL = "/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/Inter_Year/Statewide/Inter_year_vs_congressional_districts_percent_voted.csv"
+                    URL = "Inter_Year/Statewide/Inter_year_vs_congressional_districts_percent_voted.csv"
                 }
                 else if (isEitherSelected("precinct", x_axis, y_axis)) {
-                    URL = "/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/Inter_Year/County/Inter_year_vs_" + county.toUpperCase() + "_precincts_percent_voted.csv"    
+                    URL = "Inter_Year/County/Inter_year_vs_" + county.toUpperCase() + "_precincts_percent_voted.csv"    
                 }      
 
             } else {
@@ -700,6 +700,10 @@
                     URL = "Inter_Year/Congressional/US" + zfill(congressional_district_number,2)  + "_inter_year_vs_" + selector + "_percent_voted.csv";
                 } else if (regionLevel == "precinct") {
                     URL = "Inter_Year/Precinct/" + county.toUpperCase() + "/" + precinct.toUpperCase() + "_inter_year_vs_" + selector + "_percent_voted.csv"
+                }
+                else {
+                    URL = "Inter_Year/Statewide/" + "Inter_year_vs_" + selector + "_percent_voted.csv"
+
                 }
 
             }
@@ -751,7 +755,7 @@
             } else if (areBothSelected("age","race",x_axis,y_axis)) {
 
                 URL = year + "/" + type + "/Statewide/Race_vs_age_percent_voted.csv";
-                
+
             }
 
         } else if (regionLevel == "county") {

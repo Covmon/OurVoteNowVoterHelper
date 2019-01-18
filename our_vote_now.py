@@ -1,6 +1,13 @@
 import pandas as pd
 import re
 from collections import OrderedDict
+
+def zero_filler(df):
+	df = df.astype(str)
+	for col in df.columns[1:]:
+		df[col] = df[col].str.pad(5,side='right',fillchar='0').replace('0.000','0.00')
+	return df
+
 def xlsx_to_csv(election_date,election_type_filler):
 
 	year = election_date[len(election_date)-4:]
@@ -40,7 +47,7 @@ def xlsx_to_csv(election_date,election_type_filler):
 	overall_percent_voted_dataframe_transpose = pd.DataFrame(columns=[u'COUNTY NAME', u'18-24', u'25-29', u'30-34', u'35-39', u'40-44', u'45-49', u'50-54', u'55-59',
        u'60-64', u'TOTAL'])
 	
-	"""for district in range(1,15):
+	for district in range(1,15):
 
 		district = str(district).zfill(2)
 		district_3fill = str(district).zfill(3)
@@ -210,10 +217,9 @@ def xlsx_to_csv(election_date,election_type_filler):
 	pd_seires['CONGRESSIONAL DISTRICT'] = 'TOTAL'
 	overall_percent_voted_dataframe.loc[len(overall_percent_voted_dataframe)+2]  = pd_seires
 
-
-	overall_total_registered_dataframe.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_total_registered.csv'.format(year,election_type,district),index=None)
-	overall_total_voted_dataframe.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_total_voted.csv'.format(year,election_type,district),index=None)
-	overall_percent_voted_dataframe.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_percent_voted.csv'.format(year,election_type,district),index=None)
+	zero_filler(overall_total_registered_dataframe).to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_total_registered.csv'.format(year,election_type,district),index=None)
+	zero_filler(overall_total_voted_dataframe).to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_total_voted.csv'.format(year,election_type,district),index=None)
+	zero_filler(overall_percent_voted_dataframe).to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_percent_voted.csv'.format(year,election_type,district),index=None)
 	
 	for county in ga_counties:
 
@@ -328,11 +334,11 @@ def xlsx_to_csv(election_date,election_type_filler):
 		df_voted.dropna(subset=['PRECINCT NAME'],inplace=True)
 		df_total_registered.dropna(subset=['PRECINCT NAME'],inplace=True)
 
-		df_total_registered.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_registered.csv'.format(year,election_type,district),index=None)
-		df_voted.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_voted.csv'.format(year,election_type,district),index=None)
+		zero_filler(df_total_registered).to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_registered.csv'.format(year,election_type,district),index=None)
+		zero_filler(df_voted).to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_voted.csv'.format(year,election_type,district),index=None)
 		df_percentage_voted.fillna(0,inplace=True)
 		df_percentage_voted = df_percentage_voted.replace(u"\u221e",100)
-		df_percentage_voted.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_percent_voted.csv'.format(year,election_type,district),index=None)
+		zero_filler(df_percentage_voted).to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_percent_voted.csv'.format(year,election_type,district),index=None)
 
 	overall_total_registered_dataframe = pd.DataFrame(columns=[u'COUNTY NAME', u'TOTAL VOTERS', u'UNKNOWN', u'UNKNOWN FEMALE',
 	       u'UNKNOWN MALE', u'OTHER UNKNOWN', u'OTHER FEMALE', u'OTHER MALE',
@@ -565,13 +571,13 @@ def xlsx_to_csv(election_date,election_type_filler):
 	pd_seires['COUNTY NAME'] = 'TOTAL'
 	overall_percent_voted_dataframe_transpose.loc[len(overall_percent_voted_dataframe_transpose)+2]  = pd_seires
 
-	overall_total_registered_dataframe.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/County_total_registered.csv'.format(year,election_type),index=None)
-	overall_total_voted_dataframe.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/County_total_voted.csv'.format(year,election_type),index=None)
-	overall_percent_voted_dataframe.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/County_percent_voted.csv'.format(year,election_type),index=None)
+	zero_filler(overall_total_registered_dataframe).to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/County_total_registered.csv'.format(year,election_type),index=None)
+	zero_filler(overall_total_voted_dataframe).to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/County_total_voted.csv'.format(year,election_type),index=None)
+	zero_filler(overall_percent_voted_dataframe).to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/County_percent_voted.csv'.format(year,election_type),index=None)
 	
-	overall_total_registered_dataframe_transpose.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/County_age_total_registered.csv'.format(year,election_type),index=None)
-	overall_total_voted_dataframe_transpose.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/County_age_total_voted.csv'.format(year,election_type),index=None)
-	overall_percent_voted_dataframe_transpose.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Counties_vs_age_percent_voted.csv'.format(year,election_type),index=None)"""
+	zero_filler(overall_total_registered_dataframe_transpose).to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/County_age_total_registered.csv'.format(year,election_type),index=None)
+	zero_filler(overall_total_voted_dataframe_transpose).to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/County_age_total_voted.csv'.format(year,election_type),index=None)
+	zero_filler(overall_percent_voted_dataframe_transpose).to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Counties_vs_age_percent_voted.csv'.format(year,election_type),index=None)
 	
 	overall_total_age_registered_dataframe = pd.DataFrame(columns=[u'TOTAL', u'UNKNOWN', u'UNKNOWN FEMALE',
 	       u'UNKNOWN MALE', u'OTHER UNKNOWN', u'OTHER FEMALE', u'OTHER MALE',
@@ -627,13 +633,9 @@ def xlsx_to_csv(election_date,election_type_filler):
 	       u'WHITE UNKNOWN', u'WHITE FEMALE', u'WHITE MALE', u'BLACK UNKNOWN',
 	       u'BLACK FEMALE', u'BLACK MALE', u'TOTAL']]       
 
-	overall_total_age_voted_dataframe.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Age_total_voted.csv'.format(year,election_type),index=None)
-	overall_total_age_registered_dataframe.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Age_total_registered.csv'.format(year,election_type),index=None)
-
-#xlsx_to_csv('July26_2016','')	
-#xlsx_to_csv('July24_2018','primary')	
-xlsx_to_csv('November8_2016','')
-xlsx_to_csv('July24_2018','primary')	
-xlsx_to_csv('November6_2018','')
-
+	zero_filler(overall_total_age_voted_dataframe).to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Age_total_voted.csv'.format(year,election_type),index=None)
+	zero_filler(overall_total_age_registered_dataframe).to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Age_total_registered.csv'.format(year,election_type),index=None)
+	
+xlsx_to_csv('May24_2016','primary')	
+xlsx_to_csv('July26_2016','primary')	
 
