@@ -5,7 +5,8 @@ from collections import OrderedDict
 def zero_filler(df):
 	df = df.astype(str)
 	for col in df.columns[1:]:
-		df[col] = df[col].str.pad(5,side='right',fillchar='0').replace('0.000','0.00')
+		df[col] = df[col].str.pad(5,side='right',fillchar='0').str.replace(r'\.(\d{2})(\d)',r'.\1',regex=True)
+	print df
 	return df
 
 def xlsx_to_csv(election_date,election_type_filler):
@@ -217,10 +218,12 @@ def xlsx_to_csv(election_date,election_type_filler):
 	pd_seires['CONGRESSIONAL DISTRICT'] = 'TOTAL'
 	overall_percent_voted_dataframe.loc[len(overall_percent_voted_dataframe)+2]  = pd_seires
 
-	zero_filler(overall_total_registered_dataframe).to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_total_registered.csv'.format(year,election_type,district),index=None)
-	zero_filler(overall_total_voted_dataframe).to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_total_voted.csv'.format(year,election_type,district),index=None)
+	overall_total_registered_dataframe.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_total_registered.csv'.format(year,election_type,district),index=None)
+	overall_total_voted_dataframe.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_total_voted.csv'.format(year,election_type,district),index=None)
 	zero_filler(overall_percent_voted_dataframe).to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_percent_voted.csv'.format(year,election_type,district),index=None)
 	
+	raise ValueError('l')
+
 	for county in ga_counties:
 
 		district = county
