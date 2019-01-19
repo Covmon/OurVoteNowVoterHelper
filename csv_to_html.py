@@ -9,6 +9,7 @@ parameters = cgi.FieldStorage()
 def zero_filler(df):
 	df = df.astype(str)
 	for col in df.columns[1:]:
+		df[col] = df[col].str.replace(r'^(\d+)$',r'\1.',regex=True)
 		df[col] = df[col].str.pad(5,side='right',fillchar='0').str.replace(r'\.(\d{2})(\d)',r'.\1',regex=True)
 	return df
 
@@ -263,8 +264,6 @@ def gender_vs_race_precinct(year,election_type,df_voted,df_registered,county,pri
 
 	for precinct in df_voted['PRECINCT NAME'].unique():
 
-		print precinct
-		
 		df_v = pd.DataFrame(columns=['RACE','MALE','FEMALE','UNKNOWN'])
 		df_voted_precinct = df_voted.loc[df_voted['PRECINCT NAME']==precinct]
 		df_registered_precinct = df_registered.loc[df_registered['PRECINCT NAME']==precinct]
@@ -319,7 +318,6 @@ def gender_vs_race_precinct(year,election_type,df_voted,df_registered,county,pri
 		df_combined = (df_v.loc[:,df_v.columns!='RACE'] / df_r.loc[:,df_r.columns!='RACE']).multiply(100).round(2)
 		df_combined.fillna(0,inplace=True)
 		df_combined.insert(loc=0,column='RACE',value=df_v['RACE'])
-		print zero_filler(df_combined)
 		zero_filler(df_combined).to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Precinct/{}_{}_gender_vs_race_percent_voted.csv'.format(year,election_type,county,precinct.replace('/','-')),index=False)
 
 def gender_vs_race_county(year,election_type,df_voted,df_registered,county,primary):	
@@ -740,22 +738,19 @@ def table_calculator(election_type,election_year):
 				pass
 
 	for county in ga_counties:
-		if county == 'DEKALB':
-			#precinct_vs_inter_year(county)
-			gender_vs_race_precinct(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_registered.csv'.format(year,election_type,county)),county,'general')
-			if county == 'DEKALB':
-				raise ValueError('l')
-			#race_combiner_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_registered.csv'.format(year,election_type,county)),county,'general')
-			#gender_combiner_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_registered.csv'.format(year,election_type,county)),county,'general')
-			#gender_vs_race_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_registered.csv'.format(year,election_type,county)),county,'general')
-			#gender_vs_age_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_registered.csv'.format(year,election_type,county)),county,'general')
-			#race_vs_age_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_registered.csv'.format(year,election_type,county)),county,'general')
-			#race_vs_inter_year_county(county)
-			#gender_vs_inter_year_county(county)
-			#age_vs_inter_year_county(county)
+		#precinct_vs_inter_year(county)
+		gender_vs_race_precinct(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_registered.csv'.format(year,election_type,county)),county,'general')
+		race_combiner_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_registered.csv'.format(year,election_type,county)),county,'general')
+		gender_combiner_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_registered.csv'.format(year,election_type,county)),county,'general')
+		gender_vs_race_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_registered.csv'.format(year,election_type,county)),county,'general')
+		gender_vs_age_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_registered.csv'.format(year,election_type,county)),county,'general')
+		race_vs_age_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_registered.csv'.format(year,election_type,county)),county,'general')
+		#race_vs_inter_year_county(county)
+		#gender_vs_inter_year_county(county)
+		#age_vs_inter_year_county(county)
 
 	for congressional_district in range(1,15):
-		#gender_vs_race_congressional(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Congressional/US{}_total_voted.csv'.format(year,election_type,str(congressional_district).zfill(2))),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Congressional/US{}_total_registered.csv'.format(year,election_type,str(congressional_district).zfill(2))),congressional_district,'general')
+		gender_vs_race_congressional(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Congressional/US{}_total_voted.csv'.format(year,election_type,str(congressional_district).zfill(2))),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Congressional/US{}_total_registered.csv'.format(year,election_type,str(congressional_district).zfill(2))),congressional_district,'general')
 		#race_vs_inter_year_congressional(congressional_district)
 		#gender_vs_inter_year_congressional(congressional_district)
 		pass
@@ -894,13 +889,13 @@ def table_calculator(election_type,election_year):
 #table_calculator('Primary_Runoff','2014')
 #table_calculator('Primary','2014')
 #table_calculator('General','2014')
-#table_calculator('Primary_Runoff','2016')
-#table_calculator('Primary','2016')
+table_calculator('Primary_Runoff','2016')
+table_calculator('Primary','2016')
 table_calculator('General','2016')
-#table_calculator('Presidential_Primary','2016')
-#table_calculator('Primary_Runoff','2018')
-#table_calculator('Primary','2018')
-#table_calculator('General','2018')
+table_calculator('Presidential_Primary','2016')
+table_calculator('Primary_Runoff','2018')
+table_calculator('Primary','2018')
+table_calculator('General','2018')
 
 #codeString = which_table_to_display(parameters.getvalue("x-axis"),parameters.getvalue("y-axis"),parameters.getvalue("z-axis"),parameters.getvalue("region_1"),parameters.getvalue("region_2"),parameters.getvalue("election_type"),parameters.getvalue("election_year"))
 
