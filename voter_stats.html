@@ -676,6 +676,8 @@
                 break;
         }
 
+        console.log(regionLevel);
+
         if (isEitherSelected("Year", x_axis, y_axis)) {
 
             if (isRegionSelected(x_axis,y_axis)) {
@@ -736,8 +738,7 @@
                 
                 else if (isEitherSelected("precinct", x_axis, y_axis)) {
 
-                    //raise Flag that makes you choose a county
-
+                    console.log("here");
                     if (isEitherSelected("gender", x_axis, y_axis)) { 
                         URL = year + "/" + type + "/County/" + county.toUpperCase() + "_precincts_vs_gender_percent_voted.csv";
                     } else if (isEitherSelected("race", x_axis, y_axis)) { 
@@ -890,7 +891,7 @@
         });
 
     });
-
+//precinct vs age cant be
 </script>
 
 </body>

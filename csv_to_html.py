@@ -263,6 +263,8 @@ def gender_vs_race_precinct(year,election_type,df_voted,df_registered,county,pri
 
 	for precinct in df_voted['PRECINCT NAME'].unique():
 
+		print precinct
+		
 		df_v = pd.DataFrame(columns=['RACE','MALE','FEMALE','UNKNOWN'])
 		df_voted_precinct = df_voted.loc[df_voted['PRECINCT NAME']==precinct]
 		df_registered_precinct = df_registered.loc[df_registered['PRECINCT NAME']==precinct]
@@ -317,6 +319,7 @@ def gender_vs_race_precinct(year,election_type,df_voted,df_registered,county,pri
 		df_combined = (df_v.loc[:,df_v.columns!='RACE'] / df_r.loc[:,df_r.columns!='RACE']).multiply(100).round(2)
 		df_combined.fillna(0,inplace=True)
 		df_combined.insert(loc=0,column='RACE',value=df_v['RACE'])
+		print zero_filler(df_combined)
 		zero_filler(df_combined).to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Precinct/{}_{}_gender_vs_race_percent_voted.csv'.format(year,election_type,county,precinct.replace('/','-')),index=False)
 
 def gender_vs_race_county(year,election_type,df_voted,df_registered,county,primary):	
@@ -427,32 +430,32 @@ def gender_vs_race_congressional(year,election_type,df_voted,df_registered,congr
 
 	df_v = pd.DataFrame(columns=['RACE','MALE','FEMALE','UNKNOWN'])
 
-	for col,value in zip(df_voted[df_voted.columns[pd.Series(df_voted.columns).str.endswith(' MALE')]].columns,df_voted[df_voted.columns[pd.Series(df_voted.columns).str.endswith(' MALE')]].iloc[0]):
+	for col,value in zip(df_voted[df_voted.columns[pd.Series(df_voted.columns).str.endswith(' MALE')]].columns,df_voted[df_voted.columns[pd.Series(df_voted.columns).str.endswith(' MALE')]].iloc[len(df_voted[df_voted.columns[pd.Series(df_voted.columns).str.endswith(' MALE')]])-1]):
 		col = col.replace(' MALE','')
 		if col == 'UNKNOWN':
 			df_v.loc[len(df_v)] = [col,value,'',0]
 		else:	
 			df_v.loc[len(df_v)] = [col,value,'','']
-	for col,value in zip(df_voted[df_voted.columns[pd.Series(df_voted.columns).str.endswith(' FEMALE')]].columns,df_voted[df_voted.columns[pd.Series(df_voted.columns).str.endswith(' FEMALE')]].iloc[0]):
+	for col,value in zip(df_voted[df_voted.columns[pd.Series(df_voted.columns).str.endswith(' FEMALE')]].columns,df_voted[df_voted.columns[pd.Series(df_voted.columns).str.endswith(' FEMALE')]].iloc[len(df_voted[df_voted.columns[pd.Series(df_voted.columns).str.endswith(' FEMALE')]])-1]):
 		col = col.replace(' FEMALE','')
 		df_v.loc[df_v['RACE']==col,'FEMALE'] = value
-	for col,value in zip(df_voted[df_voted.columns[pd.Series(df_voted.columns).str.endswith(' UNKNOWN')]].columns,df_voted[df_voted.columns[pd.Series(df_voted.columns).str.endswith(' UNKNOWN')]].iloc[0]):
+	for col,value in zip(df_voted[df_voted.columns[pd.Series(df_voted.columns).str.endswith('UNKNOWN')]].columns,df_voted[df_voted.columns[pd.Series(df_voted.columns).str.endswith('UNKNOWN')]].iloc[len(df_voted[df_voted.columns[pd.Series(df_voted.columns).str.endswith('UNKNOWN')]])-1]):
 		if col != 'UNKNOWN':
 			col = col.replace(' UNKNOWN','')
 		df_v.loc[df_v['RACE']==col,'UNKNOWN'] = value
 	df_v.fillna(0,inplace=True)	
 
 	df_r = pd.DataFrame(columns=['RACE','MALE','FEMALE','UNKNOWN'])
-	for col,value in zip(df_registered[df_registered.columns[pd.Series(df_registered.columns).str.endswith(' MALE')]].columns,df_registered[df_registered.columns[pd.Series(df_registered.columns).str.endswith(' MALE')]].iloc[0]):
+	for col,value in zip(df_registered[df_registered.columns[pd.Series(df_registered.columns).str.endswith(' MALE')]].columns,df_registered[df_registered.columns[pd.Series(df_registered.columns).str.endswith(' MALE')]].iloc[len(df_registered[df_registered.columns[pd.Series(df_registered.columns).str.endswith(' MALE')]])-1]):
 		col = col.replace(' MALE','')
 		if col == 'UNKNOWN':
 			df_r.loc[len(df_r)] = [col,value,'',0]
 		else:	
 			df_r.loc[len(df_r)] = [col,value,'','']
-	for col,value in zip(df_registered[df_registered.columns[pd.Series(df_registered.columns).str.endswith(' FEMALE')]].columns,df_registered[df_registered.columns[pd.Series(df_registered.columns).str.endswith(' FEMALE')]].iloc[0]):
+	for col,value in zip(df_registered[df_registered.columns[pd.Series(df_registered.columns).str.endswith(' FEMALE')]].columns,df_registered[df_registered.columns[pd.Series(df_registered.columns).str.endswith(' FEMALE')]].iloc[len(df_registered[df_registered.columns[pd.Series(df_registered.columns).str.endswith(' FEMALE')]])-1]):
 		col = col.replace(' FEMALE','')
 		df_r.loc[df_r['RACE']==col,'FEMALE'] = value
-	for col,value in zip(df_registered[df_registered.columns[pd.Series(df_registered.columns).str.endswith(' UNKNOWN')]].columns,df_registered[df_registered.columns[pd.Series(df_registered.columns).str.endswith(' UNKNOWN')]].iloc[0]):
+	for col,value in zip(df_registered[df_registered.columns[pd.Series(df_registered.columns).str.endswith('UNKNOWN')]].columns,df_registered[df_registered.columns[pd.Series(df_registered.columns).str.endswith('UNKNOWN')]].iloc[len(df_registered[df_registered.columns[pd.Series(df_registered.columns).str.endswith('UNKNOWN')]])-1]):
 		if col != 'UNKNOWN':
 			col = col.replace(' UNKNOWN','')
 		df_r.loc[df_r['RACE']==col,'UNKNOWN'] = value
@@ -737,19 +740,22 @@ def table_calculator(election_type,election_year):
 				pass
 
 	for county in ga_counties:
-		#precinct_vs_inter_year(county)
-		gender_vs_race_precinct(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_registered.csv'.format(year,election_type,county)),county,'general')
-		race_combiner_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_registered.csv'.format(year,election_type,county)),county,'general')
-		gender_combiner_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_registered.csv'.format(year,election_type,county)),county,'general')
-		gender_vs_race_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_registered.csv'.format(year,election_type,county)),county,'general')
-		gender_vs_age_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_registered.csv'.format(year,election_type,county)),county,'general')
-		race_vs_age_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_registered.csv'.format(year,election_type,county)),county,'general')
-		#race_vs_inter_year_county(county)
-		#gender_vs_inter_year_county(county)
-		#age_vs_inter_year_county(county)
+		if county == 'DEKALB':
+			#precinct_vs_inter_year(county)
+			gender_vs_race_precinct(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_registered.csv'.format(year,election_type,county)),county,'general')
+			if county == 'DEKALB':
+				raise ValueError('l')
+			#race_combiner_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_registered.csv'.format(year,election_type,county)),county,'general')
+			#gender_combiner_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_registered.csv'.format(year,election_type,county)),county,'general')
+			#gender_vs_race_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_registered.csv'.format(year,election_type,county)),county,'general')
+			#gender_vs_age_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_registered.csv'.format(year,election_type,county)),county,'general')
+			#race_vs_age_county(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_voted.csv'.format(year,election_type,county)),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_total_registered.csv'.format(year,election_type,county)),county,'general')
+			#race_vs_inter_year_county(county)
+			#gender_vs_inter_year_county(county)
+			#age_vs_inter_year_county(county)
 
 	for congressional_district in range(1,15):
-		gender_vs_race_congressional(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Congressional/US{}_total_voted.csv'.format(year,election_type,str(congressional_district).zfill(2))),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Congressional/US{}_total_registered.csv'.format(year,election_type,str(congressional_district).zfill(2))),congressional_district,'general')
+		#gender_vs_race_congressional(year,election_type,pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Congressional/US{}_total_voted.csv'.format(year,election_type,str(congressional_district).zfill(2))),pd.read_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Congressional/US{}_total_registered.csv'.format(year,election_type,str(congressional_district).zfill(2))),congressional_district,'general')
 		#race_vs_inter_year_congressional(congressional_district)
 		#gender_vs_inter_year_congressional(congressional_district)
 		pass
@@ -902,12 +908,5 @@ returnData = {
 	"data": codeString
 }
 self.response.out.write(json.dumps(returnData))
-
-
-#second CD 2;
-
-
-
-
 
 #also if 2018 presidential primary should go away and vice versa(pp than only 2016)
