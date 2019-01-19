@@ -6,7 +6,6 @@ def zero_filler(df):
 	df = df.astype(str)
 	for col in df.columns[1:]:
 		df[col] = df[col].str.pad(5,side='right',fillchar='0').str.replace(r'\.(\d{2})(\d)',r'.\1',regex=True)
-	print df
 	return df
 
 def xlsx_to_csv(election_date,election_type_filler):
@@ -48,7 +47,7 @@ def xlsx_to_csv(election_date,election_type_filler):
 	overall_percent_voted_dataframe_transpose = pd.DataFrame(columns=[u'COUNTY NAME', u'18-24', u'25-29', u'30-34', u'35-39', u'40-44', u'45-49', u'50-54', u'55-59',
        u'60-64', u'TOTAL'])
 	
-	for district in range(1,15):
+	"""for district in range(1,15):
 
 		district = str(district).zfill(2)
 		district_3fill = str(district).zfill(3)
@@ -220,10 +219,8 @@ def xlsx_to_csv(election_date,election_type_filler):
 
 	overall_total_registered_dataframe.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_total_registered.csv'.format(year,election_type,district),index=None)
 	overall_total_voted_dataframe.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_total_voted.csv'.format(year,election_type,district),index=None)
-	zero_filler(overall_percent_voted_dataframe).to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_percent_voted.csv'.format(year,election_type,district),index=None)
+	zero_filler(overall_percent_voted_dataframe).to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_percent_voted.csv'.format(year,election_type,district),index=None)"""
 	
-	raise ValueError('l')
-
 	for county in ga_counties:
 
 		district = county
@@ -232,9 +229,9 @@ def xlsx_to_csv(election_date,election_type_filler):
 			df = pd.read_excel('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_Source_XLSX/{}/{}(CountyPrecinct){}/{}.xlsx'.format(year,election_date,election_type_filler,district))
 			df = df.iloc[1:]
 			df.rename(columns={[col for col in df if col.startswith('GEORGIA')][0]:'GEORGIA'},inplace=True)
-			df_total_registered = df[['GEORGIA', 'Unnamed: 65', 'Unnamed: 62', 'Unnamed: 59', 'Unnamed: 56', 'Unnamed: 53', 'Unnamed: 50', 'Unnamed: 47', 'Unnamed: 44', 'Unnamed: 41', 'Unnamed: 38', 'Unnamed: 35', 'Unnamed: 32', 'Unnamed: 29', 'Unnamed: 26', 'Unnamed: 23', 'Unnamed: 20', 'Unnamed: 17', 'Unnamed: 14', 'Unnamed: 11', 'Unnamed: 8', 'Unnamed: 5', 'Unnamed: 2']]
-			df_percentage_voted = df[['GEORGIA', 'Unnamed: 67', 'Unnamed: 64', 'Unnamed: 61', 'Unnamed: 58', 'Unnamed: 55', 'Unnamed: 52', 'Unnamed: 49', 'Unnamed: 46', 'Unnamed: 43', 'Unnamed: 40', 'Unnamed: 37', 'Unnamed: 34', 'Unnamed: 31', 'Unnamed: 28', 'Unnamed: 25', 'Unnamed: 22', 'Unnamed: 19', 'Unnamed: 16', 'Unnamed: 13', 'Unnamed: 10', 'Unnamed: 7', 'Unnamed: 4']]
-			df_voted = df[['GEORGIA', 'Unnamed: 66', 'Unnamed: 63', 'Unnamed: 60', 'Unnamed: 57', 'Unnamed: 54', 'Unnamed: 51', 'Unnamed: 48', 'Unnamed: 45', 'Unnamed: 42', 'Unnamed: 39', 'Unnamed: 36', 'Unnamed: 33', 'Unnamed: 30', 'Unnamed: 27', 'Unnamed: 24', 'Unnamed: 21', 'Unnamed: 18', 'Unnamed: 15', 'Unnamed: 12', 'Unnamed: 9', 'Unnamed: 6', 'Unnamed: 3']]
+			df_total_registered = df[['Unnamed: 1', 'Unnamed: 65', 'Unnamed: 62', 'Unnamed: 59', 'Unnamed: 56', 'Unnamed: 53', 'Unnamed: 50', 'Unnamed: 47', 'Unnamed: 44', 'Unnamed: 41', 'Unnamed: 38', 'Unnamed: 35', 'Unnamed: 32', 'Unnamed: 29', 'Unnamed: 26', 'Unnamed: 23', 'Unnamed: 20', 'Unnamed: 17', 'Unnamed: 14', 'Unnamed: 11', 'Unnamed: 8', 'Unnamed: 5', 'Unnamed: 2']]
+			df_percentage_voted = df[['Unnamed: 1', 'Unnamed: 67', 'Unnamed: 64', 'Unnamed: 61', 'Unnamed: 58', 'Unnamed: 55', 'Unnamed: 52', 'Unnamed: 49', 'Unnamed: 46', 'Unnamed: 43', 'Unnamed: 40', 'Unnamed: 37', 'Unnamed: 34', 'Unnamed: 31', 'Unnamed: 28', 'Unnamed: 25', 'Unnamed: 22', 'Unnamed: 19', 'Unnamed: 16', 'Unnamed: 13', 'Unnamed: 10', 'Unnamed: 7', 'Unnamed: 4']]
+			df_voted = df[['Unnamed: 1', 'Unnamed: 66', 'Unnamed: 63', 'Unnamed: 60', 'Unnamed: 57', 'Unnamed: 54', 'Unnamed: 51', 'Unnamed: 48', 'Unnamed: 45', 'Unnamed: 42', 'Unnamed: 39', 'Unnamed: 36', 'Unnamed: 33', 'Unnamed: 30', 'Unnamed: 27', 'Unnamed: 24', 'Unnamed: 21', 'Unnamed: 18', 'Unnamed: 15', 'Unnamed: 12', 'Unnamed: 9', 'Unnamed: 6', 'Unnamed: 3']]
 			df_total_registered = df_total_registered.loc[df_total_registered['Unnamed: 65']!='Reg #']
 			df_voted = df_voted.loc[df_voted['Unnamed: 66']!='Voted']
 			df_percentage_voted = df_percentage_voted.loc[df_percentage_voted['Unnamed: 67']!='%']
@@ -245,9 +242,9 @@ def xlsx_to_csv(election_date,election_type_filler):
 			df_total_registered.fillna(0,inplace=True)
 			df_voted.fillna(0,inplace=True)
 			df_percentage_voted.fillna(0,inplace=True)
-			df_voted.rename(columns={'GEORGIA':'PRECINCT NAME'},inplace=True)
-			df_percentage_voted.rename(columns={'GEORGIA':'PRECINCT NAME'},inplace=True)
-			df_total_registered.rename(columns={'GEORGIA':'PRECINCT NAME'},inplace=True)
+			df_voted.rename(columns={'Unnamed: 1':'PRECINCT NAME'},inplace=True)
+			df_percentage_voted.rename(columns={'Unnamed: 1':'PRECINCT NAME'},inplace=True)
+			df_total_registered.rename(columns={'Unnamed: 1':'PRECINCT NAME'},inplace=True)
 
 		elif election_type_filler == 'primary':
 			df_dem = pd.read_excel('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_Source_XLSX/{}/{}(CountyPrecinct){}/{}.xlsx'.format(year,election_date,'/DEM',district))
@@ -256,9 +253,9 @@ def xlsx_to_csv(election_date,election_type_filler):
 			df_dem = df_dem.iloc[1:]
 
 			df_dem.rename(columns={[col for col in df_dem if col.startswith('GEORGIA')][0]:'GEORGIA'},inplace=True)
-			df_total_registered_dem = df_dem[['GEORGIA', 'Unnamed: 65', 'Unnamed: 62', 'Unnamed: 59', 'Unnamed: 56', 'Unnamed: 53', 'Unnamed: 50', 'Unnamed: 47', 'Unnamed: 44', 'Unnamed: 41', 'Unnamed: 38', 'Unnamed: 35', 'Unnamed: 32', 'Unnamed: 29', 'Unnamed: 26', 'Unnamed: 23', 'Unnamed: 20', 'Unnamed: 17', 'Unnamed: 14', 'Unnamed: 11', 'Unnamed: 8', 'Unnamed: 5', 'Unnamed: 2']]
-			df_percentage_voted_dem = df_dem[['GEORGIA', 'Unnamed: 67', 'Unnamed: 64', 'Unnamed: 61', 'Unnamed: 58', 'Unnamed: 55', 'Unnamed: 52', 'Unnamed: 49', 'Unnamed: 46', 'Unnamed: 43', 'Unnamed: 40', 'Unnamed: 37', 'Unnamed: 34', 'Unnamed: 31', 'Unnamed: 28', 'Unnamed: 25', 'Unnamed: 22', 'Unnamed: 19', 'Unnamed: 16', 'Unnamed: 13', 'Unnamed: 10', 'Unnamed: 7', 'Unnamed: 4']]
-			df_voted_dem = df_dem[['GEORGIA', 'Unnamed: 66', 'Unnamed: 63', 'Unnamed: 60', 'Unnamed: 57', 'Unnamed: 54', 'Unnamed: 51', 'Unnamed: 48', 'Unnamed: 45', 'Unnamed: 42', 'Unnamed: 39', 'Unnamed: 36', 'Unnamed: 33', 'Unnamed: 30', 'Unnamed: 27', 'Unnamed: 24', 'Unnamed: 21', 'Unnamed: 18', 'Unnamed: 15', 'Unnamed: 12', 'Unnamed: 9', 'Unnamed: 6', 'Unnamed: 3']]
+			df_total_registered_dem = df_dem[['Unnamed: 1', 'Unnamed: 65', 'Unnamed: 62', 'Unnamed: 59', 'Unnamed: 56', 'Unnamed: 53', 'Unnamed: 50', 'Unnamed: 47', 'Unnamed: 44', 'Unnamed: 41', 'Unnamed: 38', 'Unnamed: 35', 'Unnamed: 32', 'Unnamed: 29', 'Unnamed: 26', 'Unnamed: 23', 'Unnamed: 20', 'Unnamed: 17', 'Unnamed: 14', 'Unnamed: 11', 'Unnamed: 8', 'Unnamed: 5', 'Unnamed: 2']]
+			df_percentage_voted_dem = df_dem[['Unnamed: 1', 'Unnamed: 67', 'Unnamed: 64', 'Unnamed: 61', 'Unnamed: 58', 'Unnamed: 55', 'Unnamed: 52', 'Unnamed: 49', 'Unnamed: 46', 'Unnamed: 43', 'Unnamed: 40', 'Unnamed: 37', 'Unnamed: 34', 'Unnamed: 31', 'Unnamed: 28', 'Unnamed: 25', 'Unnamed: 22', 'Unnamed: 19', 'Unnamed: 16', 'Unnamed: 13', 'Unnamed: 10', 'Unnamed: 7', 'Unnamed: 4']]
+			df_voted_dem = df_dem[['Unnamed: 1', 'Unnamed: 66', 'Unnamed: 63', 'Unnamed: 60', 'Unnamed: 57', 'Unnamed: 54', 'Unnamed: 51', 'Unnamed: 48', 'Unnamed: 45', 'Unnamed: 42', 'Unnamed: 39', 'Unnamed: 36', 'Unnamed: 33', 'Unnamed: 30', 'Unnamed: 27', 'Unnamed: 24', 'Unnamed: 21', 'Unnamed: 18', 'Unnamed: 15', 'Unnamed: 12', 'Unnamed: 9', 'Unnamed: 6', 'Unnamed: 3']]
 			df_total_registered_dem = df_total_registered_dem.loc[df_total_registered_dem['Unnamed: 65']!='Reg #']
 			df_voted_dem = df_voted_dem.loc[df_voted_dem['Unnamed: 66']!='Voted']
 			df_percentage_voted_dem = df_percentage_voted_dem.loc[df_percentage_voted_dem['Unnamed: 67']!='%']
@@ -267,9 +264,9 @@ def xlsx_to_csv(election_date,election_type_filler):
 			df_total_registered_dem.rename(columns={'Unnamed: 44': u'NATIVE-AM UNKNOWN', 'Unnamed: 5': u'BLACK FEMALE', 'Unnamed: 2': u'BLACK MALE', 'Unnamed: 8': u'BLACK UNKNOWN', 'Unnamed: 29': u'HISP-LT MALE', 'Unnamed: 26': u'ASIA-PI UNKNOWN', 'Unnamed: 23': u'ASIA-PI FEMALE', 'Unnamed: 20': u'ASIA-PI MALE', 'Unnamed: 62': u'UNKNOWN', 'Unnamed: 47': u'OTHER MALE', 'Unnamed: 41': u'NATIVE-AM FEMALE', 'Unnamed: 65': u'TOTAL', 'Unnamed: 53': u'OTHER UNKNOWN', 'GEORGIA SECRETARY OF STATE\nSSVRZ521R1 VOTER REGISTRATION SYSTEM SECRETARY OF STATE\nACTIVE/INACTIVE VOTERS BY RACE/GENDER/DISTRICT\nGENERAL ELECTION VOTING HISTORY SUMMARY\nELECTION DATE: {} '.format(formatted_date).replace('\\n','\n').replace('/INACTIVE',''): u'AGE GROUP', 'Unnamed: 17': u'WHITE UNKNOWN', 'Unnamed: 14': u'WHITE FEMALE', 'Unnamed: 59': u'UNKNOWN FEMALE', 'Unnamed: 38': u'NATIVE-AM MALE', 'Unnamed: 11': u'WHITE MALE', 'Unnamed: 35': u'HISP-LT UNKNOWN', 'Unnamed: 50': u'OTHER FEMALE', 'Unnamed: 56': u'UNKNOWN MALE', 'Unnamed: 32': u'HISP-LT FEMALE'},inplace=True)
 
 			df_rep.rename(columns={[col for col in df_rep if col.startswith('GEORGIA')][0]:'GEORGIA'},inplace=True)
-			df_total_registered_rep = df_rep[['GEORGIA', 'Unnamed: 65', 'Unnamed: 62', 'Unnamed: 59', 'Unnamed: 56', 'Unnamed: 53', 'Unnamed: 50', 'Unnamed: 47', 'Unnamed: 44', 'Unnamed: 41', 'Unnamed: 38', 'Unnamed: 35', 'Unnamed: 32', 'Unnamed: 29', 'Unnamed: 26', 'Unnamed: 23', 'Unnamed: 20', 'Unnamed: 17', 'Unnamed: 14', 'Unnamed: 11', 'Unnamed: 8', 'Unnamed: 5', 'Unnamed: 2']]
-			df_percentage_voted_rep = df_rep[['GEORGIA', 'Unnamed: 67', 'Unnamed: 64', 'Unnamed: 61', 'Unnamed: 58', 'Unnamed: 55', 'Unnamed: 52', 'Unnamed: 49', 'Unnamed: 46', 'Unnamed: 43', 'Unnamed: 40', 'Unnamed: 37', 'Unnamed: 34', 'Unnamed: 31', 'Unnamed: 28', 'Unnamed: 25', 'Unnamed: 22', 'Unnamed: 19', 'Unnamed: 16', 'Unnamed: 13', 'Unnamed: 10', 'Unnamed: 7', 'Unnamed: 4']]
-			df_voted_rep = df_rep[['GEORGIA', 'Unnamed: 66', 'Unnamed: 63', 'Unnamed: 60', 'Unnamed: 57', 'Unnamed: 54', 'Unnamed: 51', 'Unnamed: 48', 'Unnamed: 45', 'Unnamed: 42', 'Unnamed: 39', 'Unnamed: 36', 'Unnamed: 33', 'Unnamed: 30', 'Unnamed: 27', 'Unnamed: 24', 'Unnamed: 21', 'Unnamed: 18', 'Unnamed: 15', 'Unnamed: 12', 'Unnamed: 9', 'Unnamed: 6', 'Unnamed: 3']]
+			df_total_registered_rep = df_rep[['Unnamed: 1', 'Unnamed: 65', 'Unnamed: 62', 'Unnamed: 59', 'Unnamed: 56', 'Unnamed: 53', 'Unnamed: 50', 'Unnamed: 47', 'Unnamed: 44', 'Unnamed: 41', 'Unnamed: 38', 'Unnamed: 35', 'Unnamed: 32', 'Unnamed: 29', 'Unnamed: 26', 'Unnamed: 23', 'Unnamed: 20', 'Unnamed: 17', 'Unnamed: 14', 'Unnamed: 11', 'Unnamed: 8', 'Unnamed: 5', 'Unnamed: 2']]
+			df_percentage_voted_rep = df_rep[['Unnamed: 1', 'Unnamed: 67', 'Unnamed: 64', 'Unnamed: 61', 'Unnamed: 58', 'Unnamed: 55', 'Unnamed: 52', 'Unnamed: 49', 'Unnamed: 46', 'Unnamed: 43', 'Unnamed: 40', 'Unnamed: 37', 'Unnamed: 34', 'Unnamed: 31', 'Unnamed: 28', 'Unnamed: 25', 'Unnamed: 22', 'Unnamed: 19', 'Unnamed: 16', 'Unnamed: 13', 'Unnamed: 10', 'Unnamed: 7', 'Unnamed: 4']]
+			df_voted_rep = df_rep[['Unnamed: 1', 'Unnamed: 66', 'Unnamed: 63', 'Unnamed: 60', 'Unnamed: 57', 'Unnamed: 54', 'Unnamed: 51', 'Unnamed: 48', 'Unnamed: 45', 'Unnamed: 42', 'Unnamed: 39', 'Unnamed: 36', 'Unnamed: 33', 'Unnamed: 30', 'Unnamed: 27', 'Unnamed: 24', 'Unnamed: 21', 'Unnamed: 18', 'Unnamed: 15', 'Unnamed: 12', 'Unnamed: 9', 'Unnamed: 6', 'Unnamed: 3']]
 			df_total_registered_rep = df_total_registered_rep.loc[df_total_registered_rep['Unnamed: 65']!='Reg #']
 			df_voted_rep = df_voted_rep.loc[df_voted_rep['Unnamed: 66']!='Voted']
 			df_percentage_voted_rep = df_percentage_voted_rep.loc[df_percentage_voted_rep['Unnamed: 67']!='%']
@@ -283,12 +280,12 @@ def xlsx_to_csv(election_date,election_type_filler):
 			df_voted_dem.fillna(0,inplace=True)
 
 			df_voted = df_voted_dem[df_voted_dem.columns[1:]].astype(int).add(df_voted_rep[df_voted_rep.columns[1:]].astype(int), fill_value=0)
-			df_voted.insert(loc=0,column='PRECINCT NAME',value=df_voted_dem['GEORGIA'])
+			df_voted.insert(loc=0,column='PRECINCT NAME',value=df_voted_dem['Unnamed: 1'])
 			df_total_registered = df_total_registered_dem
-			df_total_registered.rename(columns={'GEORGIA':'PRECINCT NAME'},inplace=True)
+			df_total_registered.rename(columns={'Unnamed: 1':'PRECINCT NAME'},inplace=True)
 			df_percentage_voted = df_voted[df_voted.columns[1:]].astype(int)*100/df_total_registered[df_total_registered.columns[1:]].astype(int)
 			df_percentage_voted = df_percentage_voted.round(2)
-			df_percentage_voted.insert(loc=0,column='PRECINCT NAME',value=df_voted_dem['GEORGIA'])
+			df_percentage_voted.insert(loc=0,column='PRECINCT NAME',value=df_voted_dem['Unnamed: 1'])
 
 
 		new_columns = [u'COUNTY NAME', u'TOTAL VOTERS', u'UNKNOWN', u'UNKNOWN FEMALE',
@@ -365,7 +362,7 @@ def xlsx_to_csv(election_date,election_type_filler):
 	       u'WHITE UNKNOWN', u'WHITE FEMALE', u'WHITE MALE', u'BLACK UNKNOWN',
 	       u'BLACK FEMALE', u'BLACK MALE'])
 
-	for county in ga_counties:
+	"""for county in ga_counties:
 
 		district = county
 
@@ -637,8 +634,14 @@ def xlsx_to_csv(election_date,election_type_filler):
 	       u'BLACK FEMALE', u'BLACK MALE', u'TOTAL']]       
 
 	zero_filler(overall_total_age_voted_dataframe).to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Age_total_voted.csv'.format(year,election_type),index=None)
-	zero_filler(overall_total_age_registered_dataframe).to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Age_total_registered.csv'.format(year,election_type),index=None)
+	zero_filler(overall_total_age_registered_dataframe).to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Age_total_registered.csv'.format(year,election_type),index=None)"""
 	
+#xlsx_to_csv('May24_2016','primary')	
+xlsx_to_csv('March1_2016','primary')	
 xlsx_to_csv('May24_2016','primary')	
 xlsx_to_csv('July26_2016','primary')	
+xlsx_to_csv('November8_2016','')	
+xlsx_to_csv('May22_2018','primary')	
+xlsx_to_csv('July24_2018','primary')	
+xlsx_to_csv('November6_2018','')	
 

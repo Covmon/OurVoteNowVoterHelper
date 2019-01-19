@@ -736,16 +736,6 @@
 
                 }   
                 
-                else if (isEitherSelected("precinct", x_axis, y_axis)) {
-
-                    console.log("here");
-                    if (isEitherSelected("gender", x_axis, y_axis)) { 
-                        URL = year + "/" + type + "/County/" + county.toUpperCase() + "_precincts_vs_gender_percent_voted.csv";
-                    } else if (isEitherSelected("race", x_axis, y_axis)) { 
-                        URL = year + "/" + type + "/County/" + county.toUpperCase() + "_precincts_vs_race_percent_voted.csv";
-                    }
-
-                }
             } else if (areBothSelected("age","gender",x_axis,y_axis)) {
 
                 URL = year + "/" + type + "/Statewide/Gender_vs_age_percent_voted.csv";
@@ -769,7 +759,17 @@
             } else if (areBothSelected("race", "age", x_axis, y_axis)) {
                 URL = year + "/" + type + "/County/" + county.toUpperCase() + "_race_vs_age_percent_voted_race.csv";
             }
+                
+            else if (isEitherSelected("precinct", x_axis, y_axis)) {
 
+                if (isEitherSelected("gender", x_axis, y_axis)) { 
+                    URL = year + "/" + type + "/County/" + county.toUpperCase() + "_precincts_vs_gender_percent_voted.csv";
+                } else if (isEitherSelected("race", x_axis, y_axis)) { 
+                    URL = year + "/" + type + "/County/" + county.toUpperCase() + "_precincts_vs_race_percent_voted.csv";
+                }
+
+            }
+            
         } else if (regionLevel == "congressional-district") {
 
             let congressional_district_number = congressional_district[congressional_district.length-1];
@@ -891,6 +891,7 @@
         });
 
     });
+
 //precinct vs age cant be
 </script>
 
