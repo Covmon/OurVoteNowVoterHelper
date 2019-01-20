@@ -702,7 +702,7 @@
                     let congressional_district_number = congressional_district[congressional_district.length-1];
                     URL = "Inter_Year/Congressional/US" + zfill(congressional_district_number,2)  + "_inter_year_vs_" + selector + "_percent_voted.csv";
                 } else if (regionLevel == "precinct") {
-                    URL = "Inter_Year/Precinct/" + county.toUpperCase() + "/" + precinct.toUpperCase() + "_inter_year_vs_" + selector + "_percent_voted.csv"
+                    URL = "Inter_Year/Precinct/" + county.toUpperCase() + "/" + precinct + "_inter_year_vs_" + selector + "_percent_voted.csv"
                 }
                 else {
                     URL = "Inter_Year/Statewide/" + "Inter_year_vs_" + selector + "_percent_voted.csv"

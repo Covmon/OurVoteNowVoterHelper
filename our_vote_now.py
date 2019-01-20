@@ -222,7 +222,7 @@ def xlsx_to_csv(election_date,election_type_filler):
 	overall_total_voted_dataframe.to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_total_voted.csv'.format(year,election_type,district),index=None)
 	zero_filler(overall_percent_voted_dataframe).to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Congressional_percent_voted.csv'.format(year,election_type,district),index=None)
 	
-	for county in ga_counties:
+	"""for county in ga_counties:
 
 		district = county
 
@@ -340,7 +340,7 @@ def xlsx_to_csv(election_date,election_type_filler):
 			zero_filler(df_voted).to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_total_voted.csv'.format(year,election_type,district),index=None)
 			df_percentage_voted.fillna(0,inplace=True)
 			df_percentage_voted = df_percentage_voted.replace(u"\u221e",100)
-			zero_filler(df_percentage_voted).to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_percent_voted.csv'.format(year,election_type,district),index=None)
+			zero_filler(df_percentage_voted).to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/County/{}_precincts_percent_voted.csv'.format(year,election_type,district),index=None)"""
 
 	overall_total_registered_dataframe = pd.DataFrame(columns=[u'COUNTY NAME', u'TOTAL VOTERS', u'UNKNOWN', u'UNKNOWN FEMALE',
 	       u'UNKNOWN MALE', u'OTHER UNKNOWN', u'OTHER FEMALE', u'OTHER MALE',
@@ -638,22 +638,30 @@ def xlsx_to_csv(election_date,election_type_filler):
 	zero_filler(overall_total_age_voted_dataframe).to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Age_total_voted.csv'.format(year,election_type),index=None)
 	zero_filler(overall_total_age_registered_dataframe).to_csv('/Users/sammahle/Desktop/OurVoteNowVoterHelper/Georgia_Election_Data_CSVs/{}/{}/Statewide/Age_total_registered.csv'.format(year,election_type),index=None)
 	
-#xlsx_to_csv('May24_2016','primary')	
-xlsx_to_csv('March1_2016','primary')	
+xlsx_to_csv('May20_2014','primary')
+xlsx_to_csv('July22_2014','primary')
+xlsx_to_csv('November4_2014','')
+
+"""xlsx_to_csv('March1_2016','primary')	
 xlsx_to_csv('May24_2016','primary')	
 xlsx_to_csv('July26_2016','primary')
 
 xlsx_to_csv('November8_2016','')	
 xlsx_to_csv('May22_2018','primary')	
 xlsx_to_csv('July24_2018','primary')	
-xlsx_to_csv('November6_2018','')	
+xlsx_to_csv('November6_2018','')"""
 
 from csv_to_html import table_calculator
-table_calculator('Primary_Runoff','2016')
+
+table_calculator('Primary_Runoff','2014')
+table_calculator('Primary','2014')
+table_calculator('General','2014')
+
+"""table_calculator('Primary_Runoff','2016')
 table_calculator('Primary','2016')
 table_calculator('General','2016')
 table_calculator('Presidential_Primary','2016')
 table_calculator('Primary_Runoff','2018')
 table_calculator('Primary','2018')
-table_calculator('General','2018')
+table_calculator('General','2018')"""
 
