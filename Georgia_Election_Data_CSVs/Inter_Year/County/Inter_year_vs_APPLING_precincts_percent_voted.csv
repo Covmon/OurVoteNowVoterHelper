@@ -1,2 +1,15 @@
-ELECTION TYPE/YEAR,1C,2,3A1,3C,4B,4D,5A,5B,TOTAL
-2018 General,64.87,51.03,69.1,57.68,71.19,65.52,55.25,60.44,59.95
+ELECTION TYPE/YEAR,1B,1C,2,3A1,3C,4B,4D,5A,5B,TOTAL
+nan,nan00,nan00,nan00,nan00,nan00,nan00,nan00,nan00,nan00,34.93
+2016 Presidential Primary,34.94,39.83,24.12,43.17,35.21,48.78,41.84,28.53,30.84,34.93
+nan,nan00,nan00,nan00,nan00,nan00,nan00,nan00,nan00,nan00,43.99
+2016 Primary,47.12,53.55,29.28,54.26,45.01,59.90,50.10,39.98,41.24,43.99
+nan,nan00,nan00,nan00,nan00,nan00,nan00,nan00,nan00,nan00,0.00
+2016 Primary Runoff,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00
+nan,nan00,nan00,nan00,nan00,nan00,nan00,nan00,nan00,nan00,63.38
+2016 General,63.28,67.48,52.31,71.16,63.24,75.12,70.03,58.44,62.12,63.38
+nan,nan00,nan00,nan00,nan00,nan00,nan00,nan00,nan00,nan00,22.32
+2018 Primary,25.72,25.59,18.48,28.93,23.99,28.21,26.05,13.58,16.39,22.32
+nan,nan00,nan00,nan00,nan00,nan00,nan00,nan00,nan00,nan00,14.66
+2018 Primary Runoff,17.44,16.38,6.47,19.03,15.68,22.67,20.21,11.09,12.80,14.66
+nan,nan00,nan00,nan00,nan00,nan00,nan00,nan00,nan00,nan00,60.13
+2018 General,61.62,64.87,51.03,69.10,57.68,71.19,65.52,55.25,60.44,60.13
